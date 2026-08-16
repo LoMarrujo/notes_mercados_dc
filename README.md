@@ -1,0 +1,84 @@
+# Mercados de Deuda y Capitales
+
+Este repositorio guarda el material de la Unidad Didáctica **Mercados de Deuda y de Capitales**,
+de la Licenciatura en Comercio y Finanzas Internacionales, impartida en la Unidad Académica de
+Economía de la Universidad Autónoma de Zacatecas: diapositivas, lecturas y apuntes.
+
+## Competencia de la materia
+
+Analizar el funcionamiento de los mercados de deuda y de capitales, así como los instrumentos financieros que se negocian en ellos, mediante la aplicación de fundamentos teóricos, el análisis de información financiera, la valuación de instrumentos, la resolución de casos y el desarrollo de ejercicios prácticos, para evaluar alternativas de financiamiento e inversión y sustentar la toma de decisiones financieras en entornos nacionales e internacionales con criterios de rentabilidad, riesgo, ética y cumplimiento normativo.
+
+## Temario
+
+
+### 1. Introducción [Evaluación al finalizar]
+
+- El sistema financiero y la intermediación financiera
+- Estructura de los mercados financieros
+- Participantes del mercado
+- Organización y marco regulatorio del mercado financiero
+- Matemática financiera y mecánica del mercado
+
+Objetivo:
+
+### 2. Mercado de Deuda [Evaluación al finalizar]
+
+- Características del mercado de deuda
+- Instrumentos de deuda: CETES, Bonos gubernamentales, UDIBONOS, Bonos corporativos, Papel comercial y Certificados bursátiles
+- Valuación de instrumentos de deuda
+- Riesgos del mercado de deuda
+- Estrategias de inversión en renta fija
+- Ejercicio práctico (evaluación)
+
+### 3. Mercado de Capitales [Evaluación al finalizar o Proyecto final]
+
+- Características del mercado de capitales
+- Instrumentos de capital: acciones comunes, acciones preferentes, FIBRAS, Certificados de Capital de Desarrollo (CKD) y Certificados de Proyectos de Inversión (CERPIs)
+- Funcionamiento bursátil e índices bursátiles
+- Riesgo y rendimiento de las acciones; tasas nominales y efectivas
+- Valuación de instrumentos financieros y análisis de información financiera para la inversión
+- Ética y conducta profesional del asesor/gestor financiero
+- Ejercicio práctico (evaluación)
+
+### 4. Mercados de deuda y capitales en el contexto internacional
+
+- Mercados financieros internacionales
+- Organismos e infraestructura internacional
+- Innovación y tendencias en los mercados financieros
+- Evaluación de oportunidades de inversión
+
+## Esquema de evaluación
+
+| Parámetro                      | Porcentaje |
+| ------------------------------ | ---------- |
+| Evaluaciones escritas u orales | 100%       |
+| Quiz, participación            | +25%       |
+
+## Qué vas a encontrar aquí
+
+- **`notas_unidades/`**: diapositivas y apuntes de cada unidad, en su propia carpeta. La Unidad 1 ya tiene dos partes: `notas_unidades/unidad1/sistema_financiero_mexicano.{pptx,md}` (1) y `notas_unidades/unidad1/matematica_financiera_mecanica_mercado.md` (1.1).
+- **`references/`**: programa académico y bibliografía de apoyo del curso.
+  - `programa_mercados_dc.docx` — programa oficial de la unidad didáctica (temario, evaluación y bibliografía).
+  - `Frank J. Fabozzi Capital Markets, Financial Management, and Investment Management, 2009.pdf`
+  - `Lecciones De Economía Monetaria. Guadalupe Mántey, 2024.epub`
+
+## Cómo usar este material
+
+No necesitas saber usar Git. Simplemente:
+
+1. Entra a la carpeta correspondiente a la semana o tema que te interese.
+2. Descarga o abre el archivo directamente (PowerPoint, Markdown, ...).
+
+## Bibliografía del curso
+
+- Mántey, Guadalupe. *Lecciones de Economía Monetaria*. UNAM, México, 1994.
+- *Finanzas para todos desde el Financiero*. Banamex, México.
+- Fabozzi, F. J., & Fabozzi, F. A. (2021). *Bond Markets, Analysis, and Strategies* (10th ed.). MIT Press.
+- Fabozzi, F. J., Modigliani, F., & Jones, F. J. (2010). *Foundations of Financial Markets and Institutions* (4th ed.). Pearson.
+- Mishkin, F. S., & Eakins, S. G. (2024). *Financial Markets and Institutions* (10th ed.). Pearson.
+- Hull, J. C. (2022). *Options, Futures, and Other Derivatives* (11th ed.). Pearson.
+- ...
+
+## Estructura del curso
+
+El contenido se irá agregando sesión a sesión conforme avance el curso.
