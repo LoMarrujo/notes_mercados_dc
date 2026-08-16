@@ -58,7 +58,7 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 | Examen                         | 100%       |
 | Quiz, participación            | +25%       |
 
-> El examen por sí solo vale el 100% de la calificación. Quiz y participación son puntos **extra**, adicionales a ese 100% — no restan si no se obtienen, solo suman.
+> El examen por sí solo vale el 100% de la calificación. Los 25 puntos extra de quiz y participación son, literalmente, un **préstamo de puntos**: se otorgan por adelantado desde el inicio del curso (es decir, el alumno ya los tiene) y cada quiz es un pago que amortiza esa deuda. Faltar a un quiz es como caer en impago de una cuota: se descuentan **25/N puntos** (N = número total de quizzes del semestre). Responder mal no cuenta como impago. El descuento es solo por no presentarse.
 
 ## Qué vas a encontrar aquí
 
