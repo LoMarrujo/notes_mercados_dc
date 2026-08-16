@@ -63,10 +63,7 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 ## Qué vas a encontrar aquí
 
 - **`notas_unidades/`**: diapositivas y apuntes de cada unidad, en su propia carpeta. La Unidad 1 ya tiene dos partes: `notas_unidades/unidad1/sistema_financiero_mexicano.{pptx,md}` (1) y `notas_unidades/unidad1/matematica_financiera_mecanica_mercado.md` (1.1).
-- **`references/`**: programa académico y bibliografía de apoyo del curso.
-  - `programa_mercados_dc.docx` — programa oficial de la unidad didáctica (temario, evaluación y bibliografía).
-  - `Frank J. Fabozzi Capital Markets, Financial Management, and Investment Management, 2009.pdf`
-  - `Lecciones De Economía Monetaria. Guadalupe Mántey, 2024.epub`
+- **`references/`**: solicitar al profesor.
 
 ## Cómo usar este material
 
