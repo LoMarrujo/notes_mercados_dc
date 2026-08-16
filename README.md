@@ -19,7 +19,12 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 - Organización y marco regulatorio del mercado financiero
 - Matemática financiera y mecánica del mercado
 
-Objetivo:
+**Objetivo:** al terminar esta unidad, el alumno podrá:
+
+- Explicar qué es la intermediación financiera y cómo se organiza el Sistema Financiero Mexicano.
+- Identificar a los principales participantes del mercado y qué institución regula, supervisa o protege en cada caso.
+- Calcular el valor de un flujo en el tiempo (valor presente/futuro, tasa nominal vs. efectiva).
+- Describir cómo se emite, negocia y liquida un instrumento financiero.
 
 ### 2. Mercado de Deuda [Evaluación al finalizar]
 
