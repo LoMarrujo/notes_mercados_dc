@@ -10,7 +10,6 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 
 ## Temario
 
-
 ### 1. Introducción [Evaluación al finalizar]
 
 - El sistema financiero y la intermediación financiera
@@ -56,8 +55,10 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 
 | Parámetro                      | Porcentaje |
 | ------------------------------ | ---------- |
-| Evaluaciones escritas u orales | 100%       |
+| Examen                         | 100%       |
 | Quiz, participación            | +25%       |
+
+> El examen por sí solo vale el 100% de la calificación. Quiz y participación son puntos **extra**, adicionales a ese 100% — no restan si no se obtienen, solo suman.
 
 ## Qué vas a encontrar aquí
 
