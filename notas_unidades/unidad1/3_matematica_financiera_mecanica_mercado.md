@@ -12,7 +12,8 @@ Que el estudiante pueda calcular el valor de un flujo en el tiempo y entienda c�
 | --- | --- | --- |
 | I | Matemática financiera básica | Interés simple/compuesto, valor presente y futuro, tasas nominal/efectiva, anualidades |
 | II | Mecánica operativa del mercado | Mercado primario/secundario, BMV/BIVA, Indeval, calificadoras |
-| III | Taller práctico | Ejercicios numéricos y recorrido institucional de un instrumento real |
+
+> La práctica de este tema (ejercicios y taller) está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
 
 ---
 
@@ -20,33 +21,44 @@ Que el estudiante pueda calcular el valor de un flujo en el tiempo y entienda c�
 
 ### 1. Interés simple vs. interés compuesto
 
-- **Interés simple** — el interés se retira al final de cada periodo; el principal permanece constante y no genera "interés sobre interés".
-- **Interés compuesto** — el interés se queda invertido junto con el principal, así que en el siguiente periodo también genera rendimiento. Es el supuesto que se usa en casi toda la valuación financiera del curso.
+- **Interés simple** — el interés se retira al final de cada periodo; el capital permanece constante y no genera "interés sobre interés".
+- **Interés compuesto** — el interés se queda invertido junto con el capital, así que en el siguiente periodo también genera rendimiento. Es el supuesto que se usa en casi toda la valuación financiera del curso.
 
 *Fuente: Fabozzi, F. J. y Peterson Drake, P. (2009). Finance, Cap. 2 "Mathematics of Finance", p. 13, Wiley.*
 
 ### 2. Valor futuro y valor presente de un flujo único
 
-$$FV = PV(1+i)^N \qquad PV = \dfrac{FV}{(1+i)^N}$$
+**¿De dónde sale la fórmula?** Parte del interés compuesto de la sección anterior: cada periodo, el capital que tienes crece un factor $(1+r)$ respecto al periodo anterior.
 
-- **i** — tasa de interés por periodo.
+- Al final del periodo 1: $VF_1 = VP(1+r)$
+- Al final del periodo 2, ese $VF_1$ vuelve a crecer un factor $(1+r)$: $VF_2 = VF_1(1+r) = VP(1+r)(1+r) = VP(1+r)^2$
+- Repitiendo el mismo paso N veces: $VF_N = VP(1+r)^N$
+
+Para despejar VP solo se invierte la operación: dividir entre $(1+r)^N$ deshace exactamente los N pasos de crecimiento compuesto, es decir, trae el flujo futuro de vuelta al presente ("descontarlo").
+
+$$VF = VP(1+r)^N \qquad VP = \dfrac{VF}{(1+r)^N}$$
+
+- **r** — tasa de interés por periodo.
 - **N** — número de periodos.
 
 > **Ejemplo:** ¿cuánto necesitas invertir hoy para tener \$100,000 en 3 años, si la tasa es 8% anual compuesta?
-> PV = 100,000 / (1.08)³ ≈ **\$79,383**
+> VP = 100,000 / (1.08)³ ≈ **\$79,383**
 
 *Fuente: Fabozzi, F. J. y Peterson Drake, P. (2009). Finance, Cap. 2, Ec. (2.1) p. 15 y Ec. (2.5) p. 21, Wiley.*
 
-### 3. Tasa nominal (APR) vs. tasa efectiva (EAR)
+### 3. Tasa nominal (TNA) vs. tasa efectiva (TEA)
 
-$$APR = i \times n \qquad EAR = (1+i)^n - 1$$
+**¿De dónde sale la fórmula?** La TNA es solo la tasa por periodo multiplicada por el número de periodos del año — una simple regla de tres que ignora que esos intereses también generan intereses. La TEA sí lo considera: aplica la fórmula de la sección anterior con la tasa periódica $r = TNA/n$ capitalizada durante los $n$ periodos del año ($VF = VP(1+r)^n$), y le resta el capital inicial para quedarse solo con el rendimiento neto del año:
 
-- **APR** (*annual percentage rate*) — la tasa "de etiqueta", sin considerar cuántas veces al año se capitaliza.
-- **EAR** (*effective annual rate*) — la tasa que realmente se gana/paga en un año, ya con el efecto de la capitalización.
+$$TNA = r \times n \qquad TEA = (1+r)^n - 1$$
+
+- **TNA** (tasa nominal anual) — la tasa "de etiqueta", sin considerar cuántas veces al año se capitaliza.
+- **TEA** (tasa efectiva anual) — la tasa que realmente se gana/paga en un año, ya con el efecto de la capitalización.
 - **n** — número de periodos de capitalización al año.
+- **r** — tasa de interés por periodo de capitalización, $r = TNA/n$.
 
-> **Ejemplo:** un banco ofrece una tasa nominal anual del 12%, capitalizable mensualmente (n = 12, i = 0.12/12 = 0.01).
-> EAR = (1.01)¹² − 1 ≈ **12.68%**
+> **Ejemplo:** un banco ofrece una tasa nominal anual del 12%, capitalizable mensualmente (n = 12, r = 0.12/12 = 0.01).
+> TEA = (1.01)¹² − 1 ≈ **12.68%**
 >
 > La tasa efectiva siempre es mayor o igual a la nominal cuando hay más de una capitalización al año — la diferencia es "el interés que gana el interés".
 
@@ -54,13 +66,19 @@ $$APR = i \times n \qquad EAR = (1+i)^n - 1$$
 
 ### 4. Valor presente de una serie de flujos (anualidad)
 
-$$PV = CF \cdot \dfrac{1-(1+i)^{-N}}{i} \qquad FV = CF \cdot \dfrac{(1+i)^N-1}{i}$$
+**¿De dónde sale la fórmula?** Una anualidad no es más que varios flujos únicos, cada uno descontado con la fórmula de la sección 2 según cuántos periodos falten para recibirlo, y luego sumados:
 
-- **CF** — el flujo (pago) constante que se repite cada periodo.
+$$VP = \dfrac{FC}{(1+r)^1} + \dfrac{FC}{(1+r)^2} + \dots + \dfrac{FC}{(1+r)^N} = FC\sum_{t=1}^{N}\dfrac{1}{(1+r)^t}$$
+
+Esa suma es una serie geométrica; al resolverla término por término se simplifica en una sola fracción (válida para $r \neq 0$, ya que se divide entre $r$; si $r = 0$ no hay descuento que aplicar y simplemente $VP = FC \cdot N$), lo que evita sumar a mano cuando N es grande:
+
+$$VP = FC \cdot \dfrac{1-(1+r)^{-N}}{r} \qquad VF = FC \cdot \dfrac{(1+r)^N-1}{r} \qquad (r \neq 0)$$
+
+- **FC** — el flujo (pago) constante que se repite cada periodo.
 - Esta es la fórmula que en la Unidad de Deuda se convierte en "el precio de un bono": los cupones son justamente una serie de flujos constantes.
 
 > **Ejemplo:** un instrumento paga \$5,000 de cupón anual durante 5 años. Si la tasa de descuento es 9%:
-> PV = 5,000 × [1 − (1.09)⁻⁵] / 0.09 ≈ **\$19,448**
+> VP = 5,000 × [1 − (1.09)⁻⁵] / 0.09 ≈ **\$19,448**
 
 *Fuente: Fabozzi, F. J. y Peterson Drake, P. (2009). Finance, Cap. 2, Ec. (2.9) p. 30 y Ec. (2.11) pp. 32–33, Wiley.*
 
@@ -85,29 +103,6 @@ $$PV = CF \cdot \dfrac{1-(1+i)^{-N}}{i} \qquad FV = CF \cdot \dfrac{(1+i)^N-1}{i
 - Es central para instrumentos de deuda corporativa (papel comercial, certificados bursátiles, bonos corporativos) que se verán en la Unidad de Deuda — a diferencia de la deuda gubernamental, cuyo riesgo de crédito se asume mínimo.
 
 *Fuente: elaboración propia a partir de la organización del mercado de valores mexicano (BMV, BIVA, Indeval, CNBV).*
-
----
-
-## Parte II — Práctica
-
-### Ejercicio numérico
-
-1. Un banco ofrece una tasa nominal anual del 18%, capitalizable trimestralmente. Calcula la tasa efectiva anual.
-   *Respuesta: EAR = (1 + 0.18/4)⁴ − 1 ≈ 19.25%*
-2. ¿Cuál es el valor presente de \$50,000 que recibirás en 4 años, si la tasa de descuento es 10% anual?
-   *Respuesta: PV = 50,000 / (1.10)⁴ ≈ \$34,151*
-3. Un instrumento paga \$2,000 anuales durante 3 años. Con una tasa de descuento de 7%, ¿cuál es su valor presente?
-   *Respuesta: PV = 2,000 × [1 − (1.07)⁻³] / 0.07 ≈ \$5,247*
-
-### Taller: recorrido institucional de un CETE
-
-Traza el camino completo de un CETE, identificando qué institución interviene en cada paso:
-
-1. **Subasta primaria** — Banxico subasta el CETE a bancos y casas de bolsa. → *Banxico*
-2. **Colocación con el inversionista final** — una casa de bolsa vende el CETE a un cliente (persona física o institucional). → *Casa de bolsa*
-3. **Custodia y registro** — el título queda registrado electrónicamente a nombre del inversionista. → *Indeval*
-4. **Mercado secundario** — el inversionista decide venderlo antes de su vencimiento a otro inversionista. → *Casa de bolsa (ejecuta la operación) + Indeval (liquida el cambio de dueño)*
-5. **Vencimiento** — Banxico paga el valor nominal al tenedor final registrado en Indeval. → *Banxico*
 
 ---
 
