@@ -89,6 +89,7 @@ No necesitas saber usar Git. Simplemente:
 - Fabozzi, F. J., Modigliani, F., & Jones, F. J. (2010). *Foundations of Financial Markets and Institutions* (4th ed.). Pearson.
 - Mishkin, F. S., & Eakins, S. G. (2024). *Financial Markets and Institutions* (10th ed.). Pearson.
 - Hull, J. C. (2022). *Options, Futures, and Other Derivatives* (11th ed.). Pearson.
+- Linton, O. (2019). *Financial Econometrics: Models and Methods*. Cambridge University Press.
 - ...
 
 ## Estructura del curso

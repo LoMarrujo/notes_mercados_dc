@@ -8,14 +8,15 @@ Que el estudiante distinga un activo financiero de otros tipos de activo, y al e
 
 ## Contenido
 
-|     | Tema                             | Qué cubre                                                                          |
-|-----|----------------------------------|------------------------------------------------------------------------------------|
-| I   | ¿Qué es un activo financiero?    | Activo tangible/intangible, activo financiero, emisor, inversionista               |
-| II  | Intermediación financiera        | Unidades superavitarias/deficitarias, por qué existen los intermediarios           |
-| III | Dos caminos para el crédito      | Intermediación bancaria (crédito indirecto) vs. mercado bursátil (crédito directo) |
-| IV  | El ciclo de captación-colocación | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread) |
-| V   | El ciclo del crédito directo     | Emisión, negociación y liquidación de un instrumento en el mercado bursátil        |
-| VI  | Fuentes y referencias            | Bibliografía del curso                                                             |
+|     | Tema                                       | Qué cubre                                                                           |
+|-----|--------------------------------------------|-------------------------------------------------------------------------------------|
+| I   | ¿Por qué existen los mercados financieros? | Suavizar el consumo, diversificar riesgo, eficiencia del capital, transferir riesgo |
+| II  | ¿Qué es un activo financiero?              | Activo tangible/intangible, activo financiero, emisor, inversionista                |
+| III | Intermediación financiera                  | Unidades superavitarias/deficitarias, por qué existen los intermediarios            |
+| IV  | Dos caminos para el crédito                | Intermediación bancaria (crédito indirecto) vs. mercado bursátil (crédito directo)  |
+| V   | El ciclo de captación-colocación           | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread)  |
+| VI  | El ciclo del crédito directo               | Emisión, negociación y liquidación de un instrumento en el mercado bursátil         |
+| VII | Fuentes y referencias                      | Bibliografía del curso                                                              |
 
 > La práctica de este tema está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
 
@@ -23,9 +24,22 @@ Que el estudiante distinga un activo financiero de otros tipos de activo, y al e
 
 ## Parte I — Teoría
 
-Fundamentos de qué es un activo financiero y por qué existen los intermediarios que lo hacen circular.
+Por qué existen los mercados financieros, qué es un activo financiero, y por qué existen los intermediarios que lo hacen circular.
 
-### 1. ¿Qué es un activo financiero?
+### 1. ¿Por qué existen los mercados financieros?
+
+El propósito de un mercado financiero es canalizar recursos de quienes ahorran hacia quienes los necesitan para invertir o consumir.
+
+- **Suavizar el consumo:** las personas prefieren mantener su consumo relativamente estable en el tiempo (ahorrar en los años buenos, usar esos ahorros en los años malos) y ante eventos inesperados, en vez de que su consumo dependa directamente de cuánto ganan en cada momento.
+- **Diversificar el riesgo individual:** juntar los ahorros de muchas personas permite financiar proyectos productivos grandes y de largo plazo que ningún ahorrador podría costear — ni cuyo riesgo podría asumir — por sí solo.
+- **Eficiencia y crecimiento económico:** hay ganancia para toda la economía cuando quienes tienen proyectos productivos (típicamente empresas y gobierno) piden prestado a quienes ahorran pero no tienen dónde invertir directamente (típicamente los hogares).
+- **Transferencia de riesgo:** los mercados también permiten que quien no quiere asumir un riesgo se cubra o se asegure, transfiriéndoselo a alguien dispuesto a tomarlo a cambio de una prima — por eso no son necesariamente un juego de suma cero.
+
+> Los activos financieros no son la riqueza real de una economía: son títulos sobre el ingreso que generan los activos reales (tierra, maquinaria, tecnología, conocimiento). Por eso qué tan bien o mal asigna el capital el sistema financiero —no solo cuánto se ahorra— determina el crecimiento de un país.
+
+*Fuente: Linton, O. (2019). Financial Econometrics: Models and Methods, Cap. 1 "Introduction and Background", §1.1 "Why Do We Have Financial Markets?", p. 1, Cambridge University Press.*
+
+### 2. ¿Qué es un activo financiero?
 
 **Activo** — recurso con valor económico: cualquier recurso del que se espera obtener beneficios económicos futuros.
 
@@ -41,7 +55,7 @@ Fundamentos de qué es un activo financiero y por qué existen los intermediario
 
 *Fuente: Fabozzi, F. J. y Peterson Drake, P. (2009). Finance: Capital Markets, Financial Management, and Investment Management, Cap. 4, Wiley.*
 
-### 2. Intermediación financiera
+### 3. Intermediación financiera
 
 El mercado financiero canaliza recursos de quienes ahorran hacia quienes los necesitan.
 
@@ -62,7 +76,7 @@ Resuelven un problema concreto: ahorradores y deudores casi nunca pueden negocia
 
 *Fuente: Fabozzi, F. J. y Peterson Drake, P. (2009). Finance: Capital Markets, Financial Management, and Investment Management, Cap. 4 "The Financial System", pp. 114–118, Wiley.*
 
-### 3. Dos caminos para el crédito
+### 4. Dos caminos para el crédito
 
 La intermediación bancaria y el mercado bursátil canalizan el ahorro de formas distintas.
 
@@ -74,7 +88,7 @@ La intermediación bancaria y el mercado bursátil canalizan el ahorro de formas
 
 *Fuente: Mántey de Anguiano, G. (2024). Lecciones de Economía Monetaria, Lección 2, UNAM.*
 
-### 4. El ciclo de captación-colocación
+### 5. El ciclo de captación-colocación
 
 Así es como el banco conecta al ahorrador con el deudor, paso a paso:
 
@@ -86,7 +100,7 @@ Así es como el banco conecta al ahorrador con el deudor, paso a paso:
 > El margen entre tasa activa y pasiva (spread) es la utilidad del banco por intermediar.
 > Fuente: Mántey de Anguiano, G. (2024), Lección 2, UNAM.
 
-### 5. El ciclo del crédito directo
+### 6. El ciclo del crédito directo
 
 El camino directo (mercado bursátil) también tiene su propio ciclo, en espejo del de captación-colocación — pero aquí no hay intermediario que asuma el riesgo entre las dos partes.
 
@@ -102,6 +116,7 @@ El camino directo (mercado bursátil) también tiene su propio ciclo, en espejo 
 
 ## Fuentes y referencias recomendadas
 
+- Linton, O. (2019). *Financial Econometrics: Models and Methods*. Cambridge University Press. — Cap. 1 §1.1: por qué existen los mercados financieros.
 - Fabozzi, F. J. y Peterson Drake, P. (2009). *Finance*. Wiley. — Cap. 4, "The Financial System": qué es un activo financiero y funciones del mercado.
 - Mántey de Anguiano, G. (2024). *Lecciones de Economía Monetaria*. UNAM. — Lección 2: intermediación financiera y los ciclos de crédito indirecto y directo.
 
