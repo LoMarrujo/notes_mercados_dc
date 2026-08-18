@@ -6,7 +6,7 @@ Economía de la Universidad Autónoma de Zacatecas: diapositivas, lecturas y apu
 
 ## Competencia de la materia
 
-Analizar el funcionamiento de los mercados de deuda y de capitales, así como los instrumentos financieros que se negocian en ellos, mediante la aplicación de fundamentos teóricos, el análisis de información financiera, la valuación de instrumentos, la resolución de casos y el desarrollo de ejercicios prácticos, para evaluar alternativas de financiamiento e inversión y sustentar la toma de decisiones financieras en entornos nacionales e internacionales con criterios de rentabilidad, riesgo, ética y cumplimiento normativo.
+Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidir entre alternativas de financiamiento e inversión, con criterios de rentabilidad, riesgo y ética.
 
 ## Temario
 
