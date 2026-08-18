@@ -20,10 +20,10 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
-- Explicar qué es la intermediación financiera y cómo se organiza el Sistema Financiero Mexicano.
-- Identificar a los principales participantes del mercado y qué institución regula, supervisa o protege en cada caso.
-- Calcular el valor de un flujo en el tiempo (valor presente/futuro, tasa nominal vs. efectiva).
-- Describir cómo se emite, negocia y liquida un instrumento financiero.
+- Distinguir un activo financiero de otros tipos de activo, y al emisor del inversionista en una transacción dada.
+- Clasificar un activo financiero según quién lo emite (deuda directa, deuda indirecta o participación de capital) y según su plazo (mercado de dinero o de capitales).
+- Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
+- Calcular el valor de un flujo en el tiempo (valor presente/futuro) y la tasa efectiva a partir de una tasa nominal.
 
 ### 2. Mercado de Deuda [Evaluación al finalizar]
 
@@ -33,6 +33,14 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 - Riesgos del mercado de deuda
 - Estrategias de inversión en renta fija
 - Ejercicio práctico (evaluación)
+
+**Objetivo:** al terminar esta unidad, el alumno podrá:
+
+- Distinguir las características del mercado de deuda (quién emite, a qué plazo y cómo paga) frente a las de otros mercados financieros.
+- Clasificar un instrumento de deuda (CETES, Bonos gubernamentales, UDIBONOS, Bonos corporativos, Papel comercial, Certificados bursátiles) según su emisor y su mecánica de pago.
+- Calcular el precio de un instrumento de deuda a partir de sus flujos de cupón y su valor nominal.
+- Distinguir el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado.
+- Justificar una estrategia de inversión en renta fija para un escenario de tasas o de riesgo dado.
 
 ### 3. Mercado de Capitales [Evaluación al finalizar o Proyecto final]
 
@@ -62,7 +70,8 @@ Analizar el funcionamiento de los mercados de deuda y de capitales, así como lo
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de cada unidad, en su propia carpeta. La Unidad 1 ya tiene dos partes: `notas_unidades/unidad1/sistema_financiero_mexicano.{pptx,md}` (1) y `notas_unidades/unidad1/matematica_financiera_mecanica_mercado.md` (1.1).
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_clasificacion_mercados.md`, `2_estructura_sfm.md` (más el pptx original, `sistema_financiero_mexicano.pptx`) y `3_matematica_financiera_mecanica_mercado.md`.
+- **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 
 ## Cómo usar este material
