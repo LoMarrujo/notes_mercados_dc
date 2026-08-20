@@ -4,7 +4,7 @@
 
 ## Objetivo de la unidad
 
-Que el estudiante pueda calcular el valor de un flujo en el tiempo y entienda cómo se emite, negocia y liquida un instrumento financiero, antes de entrar a la Unidad de Deuda.
+Que el estudiante calcule el valor de un flujo en el tiempo (valor presente/futuro) y la tasa efectiva a partir de una tasa nominal.
 
 ## Contenido
 

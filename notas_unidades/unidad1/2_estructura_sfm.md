@@ -4,7 +4,7 @@
 
 ## Objetivo de la unidad
 
-Que el estudiante ubique qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege en una situación dada (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
+Que el estudiante ubique qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
 
 ## Contenido
 
