@@ -74,6 +74,19 @@ Tres preguntas rápidas de la vida real, sin necesidad de software.
 | B    | Cobro abusivo de comisiones | Una sofom o fintech abusa en el cobro a un cliente. ¿Ante qué organismo se acude?                 | CONDUSEF  |
 | C    | Emisión de deuda bursátil   | Una empresa mexicana quiere emitir certificados de deuda en la bolsa. ¿Quién autoriza la emisión? | CNBV      |
 
+### Ejercicio: equivalencias internacionales
+
+Por cada autoridad del SFM, indica (a) su equivalente funcional en Estados Unidos y (b) si el país donde opera se clasifica como bank-based o market-based.
+
+| Autoridad del SFM | Equivalente en EE. UU. | Modelo del país    |
+|-------------------|------------------------|--------------------|
+| Banxico           | Reserva Federal (Fed)  | México: bank-based |
+| CNBV              | SEC                    | México: bank-based |
+| IPAB              | FDIC                   | México: bank-based |
+| CONDUSEF          | CFPB                   | México: bank-based |
+
+> Nota para el instructor: la columna "Modelo del país" es la misma en las cuatro filas a propósito — el modelo (bank-based/market-based) es una propiedad del país, no de la autoridad. El alumno debe notar que EE. UU., aunque tenga agencias equivalentes a cada una del SFM, es un sistema market-based, mientras que México es bank-based: equivalencia funcional no implica mismo modelo.
+
 ---
 
 ## Matemática Financiera y Mecánica del Mercado
