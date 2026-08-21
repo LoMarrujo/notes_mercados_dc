@@ -25,15 +25,17 @@ Cómo se clasifica un activo financiero, primero según quién lo emite y luego 
 
 ### 1. Clasificación de los activos financieros
 
-El título que recibe la unidad superavitaria a cambio de sus recursos es el activo financiero. Adopta una de tres formas, según quién emite la obligación.
+El título que recibe la unidad superavitaria a cambio de sus recursos es el activo financiero. Adopta una de tres formas, según quién emite la obligación y, en el caso de la deuda, según quién asume frente al inversionista el riesgo de que no se pague.
 
-| Tipo                     | Emisor                 | Descripción                                                                              | Ejemplos                                    | Riesgo   | Liquidez |
-|--------------------------|------------------------|------------------------------------------------------------------------------------------|---------------------------------------------|----------|----------|
-| Deuda directa            | Agente no financiero   | Obligación emitida directamente por empresas o por el gobierno para financiarse.         | Bonos gubernamentales, papel comercial      | Variable | Media    |
-| Deuda indirecta          | Institución financiera | Obligación emitida por un intermediario, que se compromete a recomprarla al cliente.     | Pagarés bancarios, certificados de depósito | Bajo     | Alta     |
-| Participación de capital | Empresa (acciones)     | Título que representa una parte del capital de la empresa y da derecho a sus utilidades. | Acciones ordinarias y preferentes           | Alto     | Baja     |
+| Tipo                      | Emisor                                       | Descripción                                                                                                                                                                            | Ejemplos                                    | Riesgo   | Liquidez |
+|---------------------------|-----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|----------|----------|
+| Deuda directa             | El propio deudor final (empresa o gobierno)  | El deudor que necesita los recursos coloca su propio título directamente con el inversionista, quien asume el riesgo de crédito frente a ese emisor, sin intermediario de por medio. | Bonos gubernamentales, papel comercial      | Variable | Media    |
+| Deuda indirecta           | Institución financiera (intermediario)       | El intermediario capta recursos emitiendo una obligación propia y es él —no el deudor final al que luego presta— quien asume el riesgo de crédito frente al inversionista.           | Pagarés bancarios, certificados de depósito | Bajo     | Alta     |
+| Participación de capital  | Empresa (acciones)                           | Título que representa una parte del capital de la empresa y da derecho a sus utilidades.                                                                                             | Acciones ordinarias y preferentes           | Alto     | Baja     |
 
-*Fuente: Mántey de Anguiano, G. (2024). Lecciones de Economía Monetaria, Lección 2 §2, UNAM.*
+Esta distinción es la misma que separa el **crédito directo** del **crédito indirecto** (intermediación bancaria) vista en [`0_activo_financiero.md`](0_activo_financiero.md#4-dos-caminos-para-el-crédito): lo que define a la deuda como directa o indirecta no es solo quién la emite formalmente, sino si ese emisor es el deudor final o un intermediario que se interpone y absorbe el riesgo por él.
+
+*Fuente: Mántey de Anguiano, G. (2024). Lecciones de Economía Monetaria, Lección 2 §2 y §4, UNAM.*
 
 ### 2. Mercado de dinero y mercado de capitales
 
