@@ -8,23 +8,19 @@ Que el estudiante distinga un activo financiero de otros tipos de activo, y al e
 
 ## Contenido
 
-|      | Tema                                       | Qué cubre                                                                           |
-|------|---------------------------------------------|----------------------------------------------------------------------------------------|
-| I    | ¿Por qué existen los mercados financieros? | Suavizar el consumo, diversificar riesgo [idiosincrático], eficiencia del capital, transferir riesgo [transferible] |
-| II   | ¿Qué es un activo financiero?              | Activo tangible/intangible, activo financiero, emisor, inversionista                |
-| III  | Intermediación financiera                  | Unidades superavitarias/deficitarias, por qué existen los intermediarios            |
-| IV   | Dos caminos para el crédito                | Intermediación bancaria (crédito indirecto) vs. mercado bursátil (crédito directo)  |
-| V    | El ciclo de captación-colocación           | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread)  |
-| VI   | El ciclo del crédito directo               | Emisión, negociación y liquidación de un instrumento en el mercado bursátil         |
+|     | Tema                                       | Qué cubre                                                                                                           |
+|-----|--------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| I   | ¿Por qué existen los mercados financieros? | Suavizar el consumo, diversificar riesgo [idiosincrático], eficiencia del capital, transferir riesgo [transferible] |
+| II  | ¿Qué es un activo financiero?              | Activo tangible/intangible, activo financiero, emisor, inversionista                                                |
+| III | Intermediación financiera                  | Unidades superavitarias/deficitarias, por qué existen los intermediarios                                            |
+| IV  | Dos caminos para el crédito                | Intermediación bancaria (crédito indirecto) vs. mercado bursátil (crédito directo)                                  |
+| V   | El ciclo de captación-colocación           | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread)                                  |
+| VI  | El ciclo del crédito directo               | Emisión, negociación y liquidación de un instrumento en el mercado bursátil                                         |
 
 > La práctica de este tema está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
 > El riesgo de un activo financiero se trata como apéndice, al final de este documento.
 
 ---
-
-## Parte I: Teoría
-
-Por qué existen los mercados financieros, qué es un activo financiero, y por qué existen los intermediarios que lo hacen circular.
 
 ### 1. ¿Por qué existen los mercados financieros?
 
@@ -53,33 +49,33 @@ El propósito de un mercado financiero es canalizar recursos de quienes ahorran 
 
 **Ejemplos de activos financieros.** En cada uno, el emisor es quien promete el pago futuro y el inversionista es quien lo compra esperando recibirlo:
 
-| Activo financiero                                      | Emisor                                  | Inversionista          | ¿Cómo llega el rendimiento?                                                                                                        |
-|-----------------------------------------------------------|--------------------------------------------|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| CETE (Certificado de la Tesorería)                     | Gobierno federal (SHCP)                 | Comprador               | A descuento: se compra por debajo de su valor nominal y se cobra el nominal completo al vencimiento; no paga cupones.              |
-| Bono gubernamental (Bono M, UDIBONO)                   | Gobierno federal                        | Comprador               | Cupones periódicos (interés) durante la vida del bono, más el valor nominal al vencimiento.                                        |
-| Bono corporativo                                       | La empresa que lo coloca                | Comprador               | Igual que el bono gubernamental: cupones periódicos más el principal al vencimiento.                                               |
-| Papel comercial                                        | La empresa que lo emite                 | Comprador               | A descuento, igual que el CETE: la ganancia es la diferencia entre precio de compra y valor nominal, sin cupones.                  |
-| Certificado bursátil                                   | Empresa o gobierno                      | Comprador               | Normalmente cupones periódicos más el principal al vencimiento, según se pacte en la emisión.                                      |
-| Acción común o preferente                              | La empresa que cotiza                   | El accionista           | Dividendos (si la empresa reparte utilidades) más la plusvalía si se vende a un precio mayor al de compra.                         |
-| FIBRA (certificado del fideicomiso)                    | El fideicomiso                          | Dueño del certificado   | Distribuciones periódicas obligatorias (renta de los inmuebles) más la plusvalía del certificado.                                  |
-| CKD (Certificado de Capital de Desarrollo)             | El fideicomiso que agrupa los proyectos | Dueño del certificado   | Distribuciones cuando los proyectos generan flujo o se venden, más la plusvalía del certificado; sin monto ni fecha garantizados. |
-| CERPI (Certificado de Proyectos de Inversión)          | El fideicomiso que agrupa los proyectos | Dueño del certificado   | Igual que el CKD: distribuciones ligadas al desempeño de los proyectos (frecuentemente en el extranjero), sin monto garantizado.   |
-| Certificado bursátil a tasa variable (indexado a TIIE) | Empresa o gobierno                      | Comprador               | Cupones periódicos, pero el monto cambia cada periodo según la tasa de referencia (p. ej. TIIE) vigente en ese momento.            |
-| Pagaré entre particulares                              | Quien firma el pagaré                   | Prestamista             | Pago único al vencimiento: el capital prestado más el interés pactado.                                                             |
-| Cuenta de ahorro / depósito a plazo                    | El banco                                | El ahorrador            | Interés que el banco acredita sobre el saldo, de forma periódica o al final del plazo.                                             |
-| Crédito hipotecario (visto desde el banco)             | Quien pide el préstamo                  | El banco                | Mensualidades: cada pago incluye una parte de capital y una de interés.                                                            |
+| Activo financiero                                      | Emisor                                  | Inversionista         | ¿Cómo llega el rendimiento?                                                                                                       |
+|--------------------------------------------------------|-----------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| CETE (Certificado de la Tesorería)                     | Gobierno federal (SHCP)                 | Comprador             | A descuento: se compra por debajo de su valor nominal y se cobra el nominal completo al vencimiento; no paga cupones.             |
+| Bono gubernamental (Bono M, UDIBONO)                   | Gobierno federal                        | Comprador             | Cupones periódicos (interés) durante la vida del bono, más el valor nominal al vencimiento.                                       |
+| Bono corporativo                                       | La empresa que lo coloca                | Comprador             | Igual que el bono gubernamental: cupones periódicos más el principal al vencimiento.                                              |
+| Papel comercial                                        | La empresa que lo emite                 | Comprador             | A descuento, igual que el CETE: la ganancia es la diferencia entre precio de compra y valor nominal, sin cupones.                 |
+| Certificado bursátil                                   | Empresa o gobierno                      | Comprador             | Normalmente cupones periódicos más el principal al vencimiento, según se pacte en la emisión.                                     |
+| Acción común o preferente                              | La empresa que cotiza                   | El accionista         | Dividendos (si la empresa reparte utilidades) más la plusvalía si se vende a un precio mayor al de compra.                        |
+| FIBRA (certificado del fideicomiso)                    | El fideicomiso                          | Dueño del certificado | Distribuciones periódicas obligatorias (renta de los inmuebles) más la plusvalía del certificado.                                 |
+| CKD (Certificado de Capital de Desarrollo)             | El fideicomiso que agrupa los proyectos | Dueño del certificado | Distribuciones cuando los proyectos generan flujo o se venden, más la plusvalía del certificado; sin monto ni fecha garantizados. |
+| CERPI (Certificado de Proyectos de Inversión)          | El fideicomiso que agrupa los proyectos | Dueño del certificado | Igual que el CKD: distribuciones ligadas al desempeño de los proyectos (frecuentemente en el extranjero), sin monto garantizado.  |
+| Certificado bursátil a tasa variable (indexado a TIIE) | Empresa o gobierno                      | Comprador             | Cupones periódicos, pero el monto cambia cada periodo según la tasa de referencia (p. ej. TIIE) vigente en ese momento.           |
+| Pagaré entre particulares                              | Quien firma el pagaré                   | Prestamista           | Pago único al vencimiento: el capital prestado más el interés pactado.                                                            |
+| Cuenta de ahorro / depósito a plazo                    | El banco                                | El ahorrador          | Interés que el banco acredita sobre el saldo, de forma periódica o al final del plazo.                                            |
+| Crédito hipotecario (visto desde el banco)             | Quien pide el préstamo                  | El banco              | Mensualidades: cada pago incluye una parte de capital y una de interés.                                                           |
 
 > Los instrumentos de deuda (CETES, bonos, papel comercial, certificados bursátiles) y los de capital (acciones, FIBRAS) se estudian a fondo en las unidades 2 y 3. Aquí solo importa reconocer que **todos** son activos financieros: un derecho intangible sobre efectivo futuro, con un emisor y un inversionista identificables.
 
 **Lo que NO es un activo financiero**, aunque tenga valor económico:
 
-| Ejemplo                        | Tipo de activo            | Por qué no es un activo financiero                                                                          |
-|----------------------------------|-----------------------------|-----------------------------------------------------------------------------------------------------------------|
-| La casa donde vives            | Tangible                  | Su valor depende de sus propiedades físicas, no de un derecho contractual de cobro                          |
-| Un coche                       | Tangible                  | Es un bien de uso; nadie te debe un pago futuro por tenerlo                                                 |
-| Maquinaria de una fábrica      | Tangible                  | Bien productivo, no un derecho financiero                                                                   |
-| Oro físico                     | Tangible                  | Su valor es por sus propiedades físicas, aunque se negocie en mercados                                      |
-| Un boleto de avión ya usado    | No aplica                 | Ya no genera ningún beneficio económico futuro                                                              |
+| Ejemplo                        | Tipo de activo            | Por qué no es un activo financiero                                                                         |
+|--------------------------------|---------------------------|------------------------------------------------------------------------------------------------------------|
+| La casa donde vives            | Tangible                  | Su valor depende de sus propiedades físicas, no de un derecho contractual de cobro                         |
+| Un coche                       | Tangible                  | Es un bien de uso; nadie te debe un pago futuro por tenerlo                                                |
+| Maquinaria de una fábrica      | Tangible                  | Bien productivo, no un derecho financiero                                                                  |
+| Oro físico                     | Tangible                  | Su valor es por sus propiedades físicas, aunque se negocie en mercados                                     |
+| Un boleto de avión ya usado    | No aplica                 | Ya no genera ningún beneficio económico futuro                                                             |
 | Una patente o marca registrada | Intangible, no financiero | Da derecho a beneficios futuros, pero no es un derecho de cobro sobre un tercero; es propiedad intelectual |
 
 ### 3. Intermediación financiera
@@ -102,29 +98,29 @@ Resuelven un problema concreto: ahorradores y deudores casi nunca pueden negocia
 
 La intermediación bancaria y el mercado bursátil canalizan el ahorro de formas distintas.
 
-|                    | Intermediación bancaria (crédito indirecto)                                                      | Mercado bursátil (crédito directo)                                                      |
-|----------------------|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| Mecánica           | El banco capta depósitos y emite deudas propias (indirectas): pagarés, certificados de depósito. | Empresas y gobierno emiten deudas propias (directas): bonos, papel comercial, acciones. |
-| Riesgo de crédito  | Lo absorbe el banco: presta directamente a empresas, personas y gobierno.                        | Lo asume el inversionista directamente frente al emisor del título.                     |
-| Ejemplo            | Una persona ahorra en el banco y este otorga un crédito a una empresa.                           | Una empresa coloca certificados de deuda en la bolsa de valores.                        |
+|                   | Intermediación bancaria (crédito indirecto)                                                      | Mercado bursátil (crédito directo)                                                      |
+|-------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| Mecánica          | El banco capta depósitos y emite deudas propias (indirectas): pagarés, certificados de depósito. | Empresas y gobierno emiten deudas propias (directas): bonos, papel comercial, acciones. |
+| Riesgo de crédito | Lo absorbe el banco: presta directamente a empresas, personas y gobierno.                        | Lo asume el inversionista directamente frente al emisor del título.                     |
+| Ejemplo           | Una persona ahorra en el banco y este otorga un crédito a una empresa.                           | Una empresa coloca certificados de deuda en la bolsa de valores.                        |
 
 Retomando los ejemplos de activos financieros de la sección 2, así se clasifican según este criterio, y si su rendimiento es **estocástico** (incierto: no se conoce de antemano) o no (determinístico: se pacta desde el inicio):
 
-| Activo financiero                                      | Tipo                     | ¿Rendimiento estocástico?                                                                                                                    |
-|-----------------------------------------------------------|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| CETE (Certificado de la Tesorería)                     | Crédito directo          | No: se pacta a descuento; el monto a recibir al vencimiento se conoce desde la compra.                                                       |
-| Bono gubernamental (Bono M, UDIBONO)                   | Crédito directo          | No: el cupón se fija desde la emisión.                                                                                                        |
-| Bono corporativo                                       | Crédito directo          | No: el cupón se pacta desde la emisión.                                                                                                       |
-| Papel comercial                                        | Crédito directo          | No: se pacta a descuento, igual que el CETE.                                                                                                  |
-| Certificado bursátil                                   | Crédito directo          | No: el cupón se pacta desde la emisión.                                                                                                       |
-| Acción común o preferente                              | Participación de capital | Sí: ni los dividendos ni el precio de venta futuro se conocen de antemano.                                                                    |
-| FIBRA (certificado del fideicomiso)                    | Participación de capital | Sí: las distribuciones dependen de la renta que generen los inmuebles, y el precio del certificado fluctúa.                                   |
+| Activo financiero                                      | Tipo                     | ¿Rendimiento estocástico?                                                                                                                   |
+|--------------------------------------------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| CETE (Certificado de la Tesorería)                     | Crédito directo          | No: se pacta a descuento; el monto a recibir al vencimiento se conoce desde la compra.                                                      |
+| Bono gubernamental (Bono M, UDIBONO)                   | Crédito directo          | No: el cupón se fija desde la emisión.                                                                                                      |
+| Bono corporativo                                       | Crédito directo          | No: el cupón se pacta desde la emisión.                                                                                                     |
+| Papel comercial                                        | Crédito directo          | No: se pacta a descuento, igual que el CETE.                                                                                                |
+| Certificado bursátil                                   | Crédito directo          | No: el cupón se pacta desde la emisión.                                                                                                     |
+| Acción común o preferente                              | Participación de capital | Sí: ni los dividendos ni el precio de venta futuro se conocen de antemano.                                                                  |
+| FIBRA (certificado del fideicomiso)                    | Participación de capital | Sí: las distribuciones dependen de la renta que generen los inmuebles, y el precio del certificado fluctúa.                                 |
 | CKD (Certificado de Capital de Desarrollo)             | Participación de capital | Sí: depende del desempeño de los proyectos de infraestructura o capital privado que financia; ni el monto ni el momento están garantizados. |
-| CERPI (Certificado de Proyectos de Inversión)          | Participación de capital | Sí: mismo mecanismo que el CKD, típicamente para proyectos en el extranjero.                                                                  |
-| Certificado bursátil a tasa variable (indexado a TIIE) | Crédito directo          | Sí: el capital se debe igual, pero el monto de cada cupón cambia con la tasa de referencia; ver apéndice de riesgo.                            |
-| Pagaré entre particulares                              | Crédito directo          | No: el monto a devolver se pacta desde la firma.                                                                                              |
-| Cuenta de ahorro / depósito a plazo                    | Crédito indirecto        | No: la tasa se pacta desde el depósito.                                                                                                       |
-| Crédito hipotecario (visto desde el banco)             | Crédito indirecto        | No: las mensualidades se pactan desde el crédito.                                                                                             |
+| CERPI (Certificado de Proyectos de Inversión)          | Participación de capital | Sí: mismo mecanismo que el CKD, típicamente para proyectos en el extranjero.                                                                |
+| Certificado bursátil a tasa variable (indexado a TIIE) | Crédito directo          | Sí: el capital se debe igual, pero el monto de cada cupón cambia con la tasa de referencia; ver apéndice de riesgo.                         |
+| Pagaré entre particulares                              | Crédito directo          | No: el monto a devolver se pacta desde la firma.                                                                                            |
+| Cuenta de ahorro / depósito a plazo                    | Crédito indirecto        | No: la tasa se pacta desde el depósito.                                                                                                     |
+| Crédito hipotecario (visto desde el banco)             | Crédito indirecto        | No: las mensualidades se pactan desde el crédito.                                                                                           |
 
 > "No estocástico" se refiere al **monto prometido**, no a que el instrumento esté libre de riesgo [incumplimiento] (ver apéndice). Nota también el patrón: la mayoría de la deuda (crédito directo o indirecto) es **renta fija**, de ahí el nombre del mercado de deuda; la participación de capital es **renta variable**, de ahí que el mercado de capitales también se conozca así. El certificado bursátil a tasa variable es la excepción que confirma la regla: sigue siendo deuda (el capital se debe sin importar qué pase), pero el monto del cupón sí es estocástico porque depende de una tasa de referencia futura. Se retoma en las unidades 2 y 3.
 
