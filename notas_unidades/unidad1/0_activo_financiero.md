@@ -60,8 +60,6 @@ El propósito de un mercado financiero es canalizar recursos de quienes ahorran 
 | Cuenta de ahorro / depósito a plazo                    | El banco                                | El ahorrador          | Interés que el banco acredita sobre el saldo, de forma periódica o al final del plazo.                                            |
 | Crédito hipotecario (visto desde el banco)             | Quien pide el préstamo                  | El banco              | Mensualidades: cada pago incluye una parte de capital y una de interés.                                                           |
 
-> Los instrumentos de deuda (CETES, bonos, papel comercial, certificados bursátiles) y los de capital (acciones, FIBRAS) se estudian a fondo en las unidades 2 y 3. Aquí solo importa reconocer que **todos** son activos financieros: un derecho intangible sobre efectivo futuro, con un emisor y un inversionista identificables.
-
 **Lo que NO es un activo financiero**, aunque tenga valor económico:
 
 | Ejemplo                        | Tipo de activo            | Por qué no es un activo financiero                                                                         |
@@ -72,6 +70,10 @@ El propósito de un mercado financiero es canalizar recursos de quienes ahorran 
 | Oro físico                     | Tangible                  | Su valor es por sus propiedades físicas, aunque se negocie en mercados                                     |
 | Un boleto de avión ya usado    | No aplica                 | Ya no genera ningún beneficio económico futuro                                                             |
 | Una patente o marca registrada | Intangible, no financiero | Da derecho a beneficios futuros, pero no es un derecho de cobro sobre un tercero; es propiedad intelectual |
+
+> Los instrumentos de deuda (CETES, bonos, papel comercial, certificados bursátiles) y los de capital (acciones, FIBRAS) se estudian a fondo en las unidades 2 y 3. Aquí solo importa reconocer que **todos** son activos financieros: un derecho intangible sobre efectivo futuro, con un emisor y un inversionista identificables.
+>
+> La lista de ejemplos no es cerrada: la innovación financiera crea instrumentos nuevos todo el tiempo (fintech, criptoactivos, títulos tokenizados). La prueba para clasificarlos no cambia: si es un derecho intangible sobre efectivo futuro con un emisor y un inversionista identificables, es un activo financiero, sin importar qué tan nuevo sea.
 
 ---
 
