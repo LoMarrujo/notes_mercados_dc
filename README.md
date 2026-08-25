@@ -21,8 +21,9 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
 - Distinguir un activo financiero de otros tipos de activo, y al emisor del inversionista en una transacción dada.
-- Clasificar un activo financiero según quién lo emite (deuda directa, deuda indirecta o participación de capital) y según su plazo (mercado de dinero o de capitales).
-- Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
+- Explicar la intermediación financiera y clasificar un activo financiero según su plazo, en mercado de dinero o de capitales.
+- Clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta o participación de capital.
+- Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF), y distinguir el modelo de sistema financiero (basado en bancos o basado en mercados) de un país dado, ubicando su equivalente funcional a cada autoridad del SFM.
 - Calcular el valor de un flujo en el tiempo (valor presente/futuro) y la tasa efectiva a partir de una tasa nominal.
 
 ### 2. Mercado de Deuda [Evaluación al finalizar]
@@ -61,16 +62,16 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Esquema de evaluación
 
-| Parámetro                      | Porcentaje |
-| ------------------------------ | ---------- |
-| Examen                         | 100%       |
-| Quiz, participación            | +25%       |
+| Parámetro           | Porcentaje |
+| ------------------- | ---------- |
+| Examen              | 100%       |
+| Quiz, participación | +25%       |
 
 > El examen por sí solo vale el 100% de la calificación. Los 25 puntos extra de quiz y participación son, literalmente, un **préstamo de puntos**: se otorgan por adelantado desde el inicio del curso (es decir, el alumno ya los tiene) y cada quiz es un pago que amortiza esa deuda. Faltar a un quiz es como caer en impago de una cuota: se descuentan **25/N puntos** (N = número total de quizzes del semestre). Responder mal no cuenta como impago. El descuento es solo por no presentarse.
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_clasificacion_mercados.md`, `2_estructura_sfm.md` (más el pptx original, `sistema_financiero_mexicano.pptx`) y `3_matematica_financiera_mecanica_mercado.md`.
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_clasificacion_activos.md`, `3_estructura_sfm.md` y `4_matematica_financiera_mecanica_mercado.md` (cada uno con su pptx original del mismo nombre).
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 
