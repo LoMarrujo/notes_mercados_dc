@@ -8,10 +8,10 @@ Que el estudiante calcule el valor de un flujo en el tiempo (valor presente/futu
 
 ## Contenido
 
-| | Tema | Qué cubre |
-| --- | --- | --- |
-| I | Matemática financiera básica | Interés simple/compuesto, valor presente y futuro, tasas nominal/efectiva, anualidades |
-| II | Mecánica operativa del mercado | Mercado primario/secundario, BMV/BIVA, Indeval, calificadoras |
+|     | Tema                           | Qué cubre                                                                              |
+| --- | ------------------------------ | -------------------------------------------------------------------------------------- |
+| I   | Matemática financiera básica   | Interés simple/compuesto, valor presente y futuro, tasas nominal/efectiva, anualidades |
+| II  | Mecánica operativa del mercado | Mercado primario/secundario, BMV/BIVA, Indeval, calificadoras                          |
 
 > La práctica de este tema (ejercicios y taller) está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
 
