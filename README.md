@@ -21,7 +21,8 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
 - Distinguir un activo financiero de otros tipos de activo, y al emisor del inversionista en una transacción dada.
-- Explicar la intermediación financiera y clasificar un activo financiero según su plazo, en mercado de dinero o de capitales.
+- Explicar la intermediación financiera.
+- Clasificar un activo financiero según su plazo, en mercado de dinero o de capitales.
 - Clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta o participación de capital.
 - Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF), y distinguir el modelo de sistema financiero (basado en bancos o basado en mercados) de un país dado, ubicando su equivalente funcional a cada autoridad del SFM.
 - Calcular el valor de un flujo en el tiempo (valor presente/futuro) y la tasa efectiva a partir de una tasa nominal.
@@ -71,7 +72,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_clasificacion_activos.md`, `3_estructura_sfm.md` y `4_matematica_financiera_mecanica_mercado.md` (cada uno con su pptx original del mismo nombre).
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_mercado_dinero_capitales.md`, `3_emisor_activo_financiero.md`, `4_estructura_sfm.md` y `5_matematica_financiera_mecanica_mercado.md` (cada uno con su pptx original del mismo nombre, salvo `2_mercado_dinero_capitales.md`, que comparte el pptx de `1_intermediacion_financiera.md`).
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 

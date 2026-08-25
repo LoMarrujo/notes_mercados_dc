@@ -1,4 +1,4 @@
-# Unidad 1.1 · Matemática Financiera y Mecánica del Mercado
+# Unidad 1 · Matemática Financiera y Mecánica del Mercado
 
 **Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 

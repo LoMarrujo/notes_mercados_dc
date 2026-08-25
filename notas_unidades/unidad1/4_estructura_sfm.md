@@ -76,7 +76,7 @@ graph TD
 
 ### 3. De los activos financieros a sus autoridades
 
-Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md`: cada uno tenía un emisor y un inversionista, pero no se dijo quién vigila al emisor ni qué pasa si algo sale mal. La columna "Mercado" retoma la clasificación por plazo de [`1_intermediacion_financiera.md`](1_intermediacion_financiera.md#5-mercado-de-dinero-y-mercado-de-capitales). Así se reparten entre las autoridades de la sección anterior, y así protegen (o no) al inversionista:
+Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md`: cada uno tenía un emisor y un inversionista, pero no se dijo quién vigila al emisor ni qué pasa si algo sale mal. La columna "Mercado" retoma la clasificación por plazo de [`2_mercado_dinero_capitales.md`](2_mercado_dinero_capitales.md#1-mercado-de-dinero-y-mercado-de-capitales). Así se reparten entre las autoridades de la sección anterior, y así protegen (o no) al inversionista:
 
 | Activo financiero                          | Emisor                   | Mercado                                             | ¿Quién lo regula o supervisa?                                                                                            | ¿Garantía institucional al inversionista?                                               |
 | ------------------------------------------ | ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
@@ -99,7 +99,7 @@ Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md
 
 La sección anterior mostró quién protege (o no) cada instrumento; esta muestra cómo se ejerce esa protección cuando algo sale mal.
 
-**IPAB: reclamar el seguro de depósito.** Si el banco donde tienes tus ahorros quiebra, no tienes que hacer ningún trámite especial: el IPAB paga automáticamente a cada cuenta afectada, hasta un límite de **400,000 UDIs** por persona por institución (unos \$3.5 millones de pesos, según el valor de la UDI). Cubre cuentas de ahorro, depósitos a plazo y otros pasivos bancarios; no cubre inversiones en fondos, acciones o instrumentos bursátiles que el banco solo distribuya como intermediario.
+**IPAB: reclamar el seguro de depósito.** Si el banco donde tienes tus ahorros quiebra, no tienes que hacer ningún trámite especial: el IPAB paga automáticamente a cada cuenta afectada, hasta un límite de **400,000 UDIs** por persona por institución (unos \$3.5 millones de pesos, según el valor de la UDI [2026]). Cubre cuentas de ahorro, depósitos a plazo y otros pasivos bancarios; no cubre inversiones en fondos, acciones o instrumentos bursátiles que el banco solo distribuya como intermediario.
 
 **CONDUSEF: presentar una reclamación formal.** Ante un cobro indebido, una mala práctica o un incumplimiento de un banco, aseguradora, Afore o cualquier entidad que regula el SFM, el usuario puede reclamar directamente ante la institución y, si no hay respuesta satisfactoria, escalar a la CONDUSEF. El proceso general: (1) presentar la queja por escrito ante la propia institución, (2) si no se resuelve, acudir a CONDUSEF con la documentación del caso, (3) CONDUSEF media entre ambas partes y, si no hay acuerdo, puede emitir un dictamen técnico que el usuario puede usar en una demanda judicial.
 

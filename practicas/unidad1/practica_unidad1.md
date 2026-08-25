@@ -2,7 +2,7 @@
 
 **Mercados de Deuda y Capitales** — Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
-Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`0_activo_financiero.md`](../../notas_unidades/unidad1/0_activo_financiero.md), [`1_intermediacion_financiera.md`](../../notas_unidades/unidad1/1_intermediacion_financiera.md), [`2_clasificacion_activos.md`](../../notas_unidades/unidad1/2_clasificacion_activos.md), [`3_estructura_sfm.md`](../../notas_unidades/unidad1/3_estructura_sfm.md) y [`4_matematica_financiera_mecanica_mercado.md`](../../notas_unidades/unidad1/4_matematica_financiera_mecanica_mercado.md).
+Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`0_activo_financiero.md`](../../notas_unidades/unidad1/0_activo_financiero.md), [`1_intermediacion_financiera.md`](../../notas_unidades/unidad1/1_intermediacion_financiera.md), [`2_mercado_dinero_capitales.md`](../../notas_unidades/unidad1/2_mercado_dinero_capitales.md), [`3_emisor_activo_financiero.md`](../../notas_unidades/unidad1/3_emisor_activo_financiero.md), [`4_estructura_sfm.md`](../../notas_unidades/unidad1/4_estructura_sfm.md) y [`5_matematica_financiera_mecanica_mercado.md`](../../notas_unidades/unidad1/5_matematica_financiera_mecanica_mercado.md).
 
 ---
 
@@ -22,7 +22,7 @@ Por cada situación, indica qué concepto aplica.
 
 ---
 
-## Intermediación Financiera y Mercados de Dinero y Capitales
+## Intermediación Financiera
 
 ### Mini-caso: el ciclo de captación-colocación
 
@@ -33,6 +33,10 @@ Identifica en qué paso del ciclo (1. Captación, 2. Colocación, 3. Recuperaci�
 3. La PyME paga puntualmente su crédito mes con mes. → **Paso 3**
 4. El banco le regresa a Juan su dinero más los intereses pactados. → **Paso 4**
 5. ¿De dónde sale la ganancia del banco en esta cadena? → Del **margen financiero (spread)** entre el 15% que cobra y el 6% que paga.
+
+---
+
+## Mercado de Dinero y Mercado de Capitales
 
 ### Ejercicio: clasifica el instrumento por mercado
 
@@ -49,7 +53,7 @@ Por cada instrumento, indica si pertenece al mercado de dinero o al mercado de c
 
 ---
 
-## Clasificación de Activos Financieros
+## Emisor del Activo Financiero
 
 ### Ejercicio: clasifica el instrumento por tipo de emisor
 

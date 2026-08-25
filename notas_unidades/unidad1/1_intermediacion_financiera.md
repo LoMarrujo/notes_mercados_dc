@@ -1,21 +1,19 @@
-# Unidad 1 · Intermediación Financiera y Mercados de Dinero y Capitales
+# Unidad 1 · Intermediación Financiera
 
 **Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
 ## Objetivo de la unidad
 
-Que el estudiante explique la intermediación financiera y clasifique un activo financiero según su plazo, en mercado de dinero o de capitales.
+Que el estudiante explique la intermediación financiera.
 
 ## Contenido
 
-|     | Tema                                          | Qué cubre                                                                          |
-| --- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
-| I   | Intermediación financiera                     | Unidades superavitarias/deficitarias, por qué existen los intermediarios           |
-| II  | Dos caminos para el crédito                   | Intermediación bancaria (crédito indirecto) vs. mercado bursátil (crédito directo) |
-| III | El ciclo de captación-colocación              | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread) |
-| IV  | El ciclo del crédito directo                  | Emisión, negociación y liquidación de un instrumento en el mercado bursátil        |
-| V   | Mercado de dinero y mercado de capitales      | Plazo, función, emisores e instrumentos de cada mercado                            |
-| VI  | Agentes económicos y su acceso a los mercados | Cómo participa cada tipo de agente en el mercado de dinero y de capitales          |
+|     | Tema                             | Qué cubre                                                                          |
+| --- | -------------------------------- | ---------------------------------------------------------------------------------- |
+| I   | Intermediación financiera        | Unidades superavitarias/deficitarias, por qué existen los intermediarios           |
+| II  | Dos caminos para el crédito      | Intermediación bancaria (crédito indirecto) vs. mercado bursátil (crédito directo) |
+| III | El ciclo de captación-colocación | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread) |
+| IV  | El ciclo del crédito directo     | Emisión, negociación y liquidación de un instrumento en el mercado bursátil        |
 
 > La práctica de este tema está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
 > El riesgo de un activo financiero se trata como apéndice, al final de este documento.
@@ -40,13 +38,18 @@ Resuelven un problema concreto: ahorradores y deudores casi nunca pueden negocia
 
 ### 2. Dos caminos para el crédito
 
-La intermediación bancaria y el mercado bursátil canalizan el ahorro de formas distintas.
+Ya vimos que el intermediario capta de un lado y coloca del otro; falta ver qué pasa cuando el deudor final prescinde de ese intermediario y coloca su propio título directamente. La intermediación bancaria y el mercado bursátil canalizan el ahorro de formas distintas.
 
 |                   | Intermediación bancaria (crédito indirecto)                                                      | Mercado bursátil (crédito directo)                                                      |
 | ----------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
 | Mecánica          | El banco capta depósitos y emite deudas propias (indirectas): pagarés, certificados de depósito. | Empresas y gobierno emiten deudas propias (directas): bonos, papel comercial, acciones. |
 | Riesgo de crédito | Lo absorbe el banco: presta directamente a empresas, personas y gobierno.                        | Lo asume el inversionista directamente frente al emisor del título.                     |
 | Ejemplo           | Una persona ahorra en el banco y este otorga un crédito a una empresa.                           | Una empresa coloca certificados de deuda en la bolsa de valores.                        |
+
+> **Ejemplo resuelto.** Distinguir crédito directo de indirecto es preguntar quién asume el riesgo de que el deudor final no pague.
+>
+> - *Una persona deposita \$50,000 en un banco, y el banco presta ese dinero a una PyME.* Si la PyME no paga, el banco absorbe la pérdida: al ahorrador se le devuelve su depósito de todos modos → crédito indirecto.
+> - *Esa misma persona compra directamente un certificado bursátil que emitió la PyME.* Si la PyME no paga, la pérdida es de quien compró el certificado, no hay banco de por medio que la absorba → crédito directo.
 
 Retomando los ejemplos de activos financieros de [`0_activo_financiero.md`](0_activo_financiero.md#2-qué-es-un-activo-financiero), así se clasifican según este criterio, y si su rendimiento es **estocástico** (incierto: no se conoce de antemano) o no (determinístico: se pacta desde el inicio):
 
@@ -70,7 +73,7 @@ Retomando los ejemplos de activos financieros de [`0_activo_financiero.md`](0_ac
 
 ### 3. El ciclo de captación-colocación
 
-Así es como el banco conecta al ahorrador con el deudor, paso a paso:
+Ya vimos que en el crédito indirecto el banco absorbe el riesgo; así es como conecta al ahorrador con el deudor, paso a paso:
 
 1. **Captación de recursos**: el banco capta recursos del ahorrador (depósitos, pagarés, certificados) y se compromete a devolverlos con un rendimiento: la **tasa pasiva**.
 2. **Colocación del crédito**: el banco presta esos recursos a empresas, personas o gobierno cobrando una **tasa activa**, mayor a la pasiva, y asume el riesgo de crédito.
@@ -85,41 +88,7 @@ El camino directo (mercado bursátil) también tiene su propio ciclo, en espejo 
 2. **Negociación**: el inversionista que lo compró puede revenderlo a otro inversionista antes de su vencimiento, en el mercado secundario.
 3. **Liquidación**: al vencimiento, el emisor paga directamente al tenedor final registrado en ese momento.
 
-> El detalle institucional de este ciclo (mercado primario/secundario, BMV, Indeval) se revisa en [`4_matematica_financiera_mecanica_mercado.md`](4_matematica_financiera_mecanica_mercado.md), y se practica en el taller "recorrido institucional de un CETE".
-
-### 5. Mercado de dinero y mercado de capitales
-
-El mercado financiero se divide, por convención, según el plazo de los recursos que canaliza.
-
-|              | Mercado de dinero                                                                                                | Mercado de capitales                                                                                          |
-| ------------ | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Plazo        | Corto plazo: vencimiento ≤ 1 año (la mayoría, menos de 120 días).                                                | Largo plazo                                                                                                   |
-| Función      | Dar liquidez de corto plazo a la economía y servir de canal a la política monetaria.                             | Financiar la inversión productiva de largo plazo y diversificar el riesgo entre ahorradores e inversionistas. |
-| Emisores     | Instituciones monetarias (bancos comerciales) emiten pasivos usables como medios de pago.                        | Instituciones no monetarias (banca de inversión, aseguradoras, bolsa) emiten bonos y acciones.                |
-| Instrumentos | CETES, papel comercial, certificados de depósito, reportos, aceptaciones bancarias, fondeo interbancario (TIIE). | Bonos hipotecarios, acciones ordinarias y preferentes, FIBRAs, certificados bursátiles de largo plazo.        |
-
-> **Ejemplo resuelto.** Clasificar un instrumento por plazo no depende de quién lo emite (ver [`2_clasificacion_activos.md`](2_clasificacion_activos.md)), son dos criterios independientes.
->
-> - *Papel comercial de una empresa a 60 días.* ¿A qué plazo? 60 días, menos de un año → mercado de dinero.
-> - *Certificado bursátil bancario a 10 años.* ¿A qué plazo? 10 años → mercado de capitales. El plazo largo no dice nada sobre si es deuda directa o indirecta, eso depende de quién emite.
-
-- En México, los bancos múltiples integran ambas funciones desde principios de la década de 1970.
-- Los **mercados de derivados** (futuros, opciones, swaps) son un tercer segmento, definido por el instrumento y no por el plazo; se estudian aparte más adelante en el curso.
-- Es, sobre todo, un mercado **mayorista**: operaciones grandes entre bancos, gobierno y empresas, no pensado para el ahorrador individual. En México, CETES es la excepción visible: es accesible al público a través de Cetesdirecto.
-- El banco central lo usa como canal de política monetaria: Banxico compra y vende valores gubernamentales en operaciones de mercado abierto, lo que mueve la **TIIE** (tasa de interés interbancaria de equilibrio), la tasa de referencia de corto plazo de la economía.
-
-### 6. Agentes económicos y su acceso a los mercados
-
-Cada tipo de agente participa en el mercado de dinero y en el de capitales de forma distinta.
-
-| Agente económico               | Mercado de dinero (corto plazo)                                      | Mercado de capitales (largo plazo)                                                      |
-| ------------------------------ | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Gobierno                       | CETES y otros instrumentos de deuda de corto plazo.                  | Bonos M y Udibonos: deuda de largo plazo.                                               |
-| Grandes empresas               | Papel comercial para financiar capital de trabajo.                   | Emisión de obligaciones y colocación de acciones en bolsa.                              |
-| PyMEs                          | Crédito bancario de corto plazo, factoraje y crédito de proveedores. | Acceso muy limitado; recurren a banca de desarrollo (NAFIN) en vez de la bolsa pública. |
-| Bancos e intermediarios        | Captación de depósitos; actúan como creadores de mercado.            | Colocación y garantía de emisiones (banca de inversión).                                |
-| Personas físicas               | Cuentas de ahorro y depósitos a la vista o a plazo.                  | Acceso indirecto vía fondos de inversión, Afores o casas de bolsa.                      |
-| Inversionistas institucionales | Instrumentos líquidos de tesorería de corto plazo.                   | Principal fuente de demanda de largo plazo: bonos y acciones.                           |
+> El detalle institucional de este ciclo (mercado primario/secundario, BMV, Indeval) se revisa en [`5_matematica_financiera_mecanica_mercado.md`](5_matematica_financiera_mecanica_mercado.md), y se practica en el taller "recorrido institucional de un CETE".
 
 ---
 
@@ -143,14 +112,14 @@ Dos sentidos más de "riesgo":
 
 ## Fuentes y referencias recomendadas
 
-- Mántey de Anguiano, G. (2024). *Lecciones de Economía Monetaria*. UNAM. Lección 2: intermediación financiera, ciclos de crédito directo/indirecto y clasificación de mercado de dinero/capitales.
-- Mishkin, F. S. y Eakins, S. G. (2014). *Financial Markets and Institutions* (8ª ed.). Pearson. Cap. 11, "The Money Markets".
+- Mántey de Anguiano, G. (2024). *Lecciones de Economía Monetaria*. UNAM. Lección 2: intermediación financiera y ciclos de crédito directo/indirecto.
+- Mishkin, F. S. y Eakins, S. G. (2014). *Financial Markets and Institutions* (8ª ed.). Pearson. Cap. 2, "An Overview of the Financial System": por qué existen los intermediarios financieros.
 
 ---
 
 ## Cierre de la unidad — Lo esencial para recordar
 
+- Los intermediarios existen porque ahorradores y deudores casi nunca negocian directamente en condiciones favorables: el banco resuelve esto transformando plazos (*maturity intermediation*), el fondo de inversión diversificando el ahorro de muchos.
 - El **crédito indirecto** (intermediación bancaria) sigue el ciclo captación → colocación → recuperación → cierre; el banco asume el riesgo [incumplimiento] y su utilidad es el **margen financiero (spread)**.
 - El **crédito directo** (mercado bursátil) sigue el ciclo emisión → negociación → liquidación; aquí el inversionista asume el riesgo [incumplimiento] directamente frente al emisor, sin intermediario de por medio.
-- El **mercado de dinero** (corto plazo, liquidez) y el **mercado de capitales** (largo plazo, inversión productiva) canalizan el ahorro según el plazo; los derivados son un tercer segmento, definido por el instrumento y no por el plazo.
-- Cada agente económico (gobierno, empresas, PyMEs, bancos, personas físicas, institucionales) accede de forma distinta a ambos mercados, y plazo y tipo de emisor son clasificaciones independientes entre sí.
+- El riesgo de crédito (si el emisor paga) y el riesgo del rendimiento (si el monto se conoce de antemano) son dos dimensiones distintas: un instrumento puede prometer un monto fijo y aun así tener riesgo de crédito alto.
