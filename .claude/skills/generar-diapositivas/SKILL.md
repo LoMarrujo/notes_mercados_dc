@@ -1,0 +1,103 @@
+---
+name: generar-diapositivas
+description: Genera (o regenera) el .pptx y el .pdf de una nota de teoría de unidad a partir de su .md, con fidelidad total al contenido. Úsalo siempre que un .md en notas_unidades/**/*.md cambie y su .pptx/.pdf deba reflejar ese cambio, o para crear el .pptx/.pdf de una nota nueva. No edites un .pptx a mano: los .pptx/.pdf de este repo se consideran generados, no fuente.
+---
+
+# Generar diapositivas desde las notas
+
+## Por qué existe esta skill
+
+Antes, el `.pptx` de cada unidad se editaba a mano después de escribir el
+`.md`, adaptando y resumiendo el contenido a mano en cada diapositiva. Con el
+tiempo eso genera drift: el `.md` cambia, alguien olvida (o interpreta
+distinto) actualizar el `.pptx`, y el `.pdf` que reciben los alumnos deja de
+coincidir con la nota. Esta skill elimina esa categoría de bug: el `.pptx` y
+el `.pdf` se generan por completo a partir del `.md`, siguiendo la estructura
+que ya exige el skill `notas-unidad` (Objetivo, Contenido, secciones `### N.
+...`, Fuentes, Cierre). No hay edición manual intermedia, así que no hay
+drift posible entre lo que dice la nota y lo que muestra la diapositiva.
+
+**Regla dura: nunca edites un `.pptx` de `notas_unidades/` directamente (ni a
+mano en PowerPoint, ni con python-pptx ad-hoc).** Si el contenido de una
+diapositiva está mal, corrige el `.md` y vuelve a correr esta skill. Si el
+*diseño* de las diapositivas necesita cambiar (colores, tipografía, cómo se
+parte una tabla), el cambio va en `scripts/md_to_pptx.py`, no en un `.pptx`
+individual — así el arreglo aplica a todas las unidades a la vez.
+
+## Cuándo usar esta skill
+
+- El usuario edita o pide editar un `.md` de `notas_unidades/unidadN/` y
+  también quiere el `.pptx`/`.pdf` actualizado ("actualiza los pptx",
+  "regenera las diapositivas", "crea el pptx de la unidad X").
+- Se crea una nota de teoría nueva y hace falta su `.pptx`/`.pdf`.
+- Se sospecha drift entre una nota y su diapositiva ("siento que el pptx no
+  dice lo mismo que el md"): regenerar es la forma de eliminarlo, no
+  parchear el pptx existente.
+
+## Cómo usarla
+
+```bash
+python .claude/skills/generar-diapositivas/scripts/md_to_pptx.py <ruta/al/archivo.md>
+```
+
+Esto escribe `<archivo>.pptx` y `<archivo>.pdf` junto al `.md` (mismo
+directorio, mismo nombre base). Requiere Windows con PowerPoint instalado
+(usa automatización COM para exportar el PDF); si solo hace falta el
+`.pptx`, agrega `--no-pdf`.
+
+Para regenerar una unidad completa, corre el script sobre cada archivo de
+teoría de esa unidad (no sobre `practica_unidadN.md`, que no lleva
+diapositivas):
+
+```bash
+for f in notas_unidades/unidad1/[0-9]_*.md; do
+  python .claude/skills/generar-diapositivas/scripts/md_to_pptx.py "$f"
+done
+```
+
+Después de generar, **verifica visualmente el resultado** (no asumas que
+"corrió sin errores" equivale a "se ve bien"): convierte el PDF a imágenes o
+ábrelo página por página y revisa que las tablas, fórmulas y diagramas no se
+corten ni se encimen. El motor pagina automáticamente por altura estimada;
+un bloque inusualmente largo (una tabla de muchas columnas, una nota muy
+extensa) puede necesitar ajuste en el script si algo se ve apretado.
+
+## Qué espera del `.md`
+
+El input debe seguir la convención de `notas-unidad`: un `#` con el título,
+la línea en negritas del curso, `## Objetivo de la unidad`, `## Contenido`
+(tabla con numeral romano/tema/qué cubre), secciones `### 1. ...`, `### 2.
+...` en orden, `## Fuentes y referencias recomendadas`, `## Cierre de la
+unidad`. Un `## Apéndice: ...` opcional entre las secciones numeradas y
+Fuentes también se soporta (se convierte en su propia sección, sin entrada
+en la tabla de contenido, igual que en el `.md`).
+
+Dentro de una sección, el generador entiende: párrafos, listas con `-`,
+listas numeradas `1.`, tablas, `> blockquotes` (incluyendo uno con una lista
+`> - ...` anidada, para los "Ejemplo resuelto"), fórmulas `$inline$` y
+`$$display$$` en LaTeX simple, bloques ` ```mermaid ` con `graph TD`, texto
+en `**negrita**`/`*cursiva*`/`` `code` ``, y enlaces `[texto](url)` (el
+texto se conserva, el URL se descarta porque una diapositiva no es
+clickeable). Una citación de fórmula en su propia línea (`*Fuente: ...*`) se
+distingue de una cita bibliográfica normal y se dibuja como pie de nota.
+
+Todo el contenido de cada sección se dibuja; si no cabe en una diapositiva,
+el motor pagina automáticamente creando una diapositiva "(cont.)" — nunca
+recorta o resume contenido para que quepa.
+
+## Estructura del deck generado
+
+Portada → Objetivo de la unidad → Tabla de contenido (con números de página
+reales, calculados después de generar el contenido) → una o más
+diapositivas por cada sección `### N. ...` (y por el `## Apéndice`, si
+existe) → Cierre de la unidad (una diapositiva por cada ~4-5 puntos de
+cierre) → Fuentes y referencias recomendadas.
+
+## Diseño
+
+La paleta y tipografía (`Cambria` para títulos, `Calibri` para cuerpo, azul
+marino `#1E2761`, dorado `#C9A227`) viven como constantes al inicio de
+`scripts/md_to_pptx.py`. Las fórmulas se renderizan con matplotlib
+(`render_formula_png`) y los diagramas `mermaid` con un layout por capas
+sobre networkx + matplotlib (`render_mermaid_png`) — ninguno de los dos
+depende de un binario externo (no hace falta LaTeX ni Graphviz instalados).
