@@ -5,6 +5,8 @@ README.
 
 Unit 1.
 
+- Section 4.
+    - Mejorar organigrama.
 
 Unit 2.
 - (Pearson Series in Finance) Frederic S. Mishkin, Stanley Eakins - Financial Markets and Institutions (8th Edition)-Pearson (2014) for debt market intro. [c. 11, 12]
