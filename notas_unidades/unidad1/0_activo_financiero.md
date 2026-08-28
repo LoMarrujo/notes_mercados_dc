@@ -13,7 +13,7 @@ Que el estudiante distinga un activo financiero de otros tipos de activo, y al e
 | I   | ¿Por qué existen los mercados financieros? | Suavizar el consumo, diversificar riesgo [idiosincrático], eficiencia del capital, transferir riesgo [transferible] |
 | II  | ¿Qué es un activo financiero?              | Activo tangible/intangible, activo financiero, emisor, inversionista                                                |
 
-> La práctica de este tema está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
+> La práctica de este tema está en [`practica_1_intermediacion.md`](../../practicas/unidad1/practica_1_intermediacion.md).
 
 ---
 

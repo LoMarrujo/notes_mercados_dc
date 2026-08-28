@@ -15,7 +15,7 @@ Que el estudiante explique la intermediación financiera.
 | III | El ciclo de captación-colocación | Captación, colocación, recuperación y cierre del ciclo; margen financiero (spread) |
 | IV  | El ciclo del crédito directo     | Emisión, negociación y liquidación de un instrumento en el mercado bursátil        |
 
-> La práctica de este tema está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
+> La práctica de este tema está en [`practica_1_intermediacion.md`](../../practicas/unidad1/practica_1_intermediacion.md).
 > El riesgo de un activo financiero se trata como apéndice, al final de este documento.
 
 ---

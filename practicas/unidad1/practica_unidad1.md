@@ -2,41 +2,11 @@
 
 **Mercados de Deuda y Capitales** — Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
-Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`0_activo_financiero.md`](../../notas_unidades/unidad1/0_activo_financiero.md), [`1_intermediacion_financiera.md`](../../notas_unidades/unidad1/1_intermediacion_financiera.md), [`2_mercado_dinero_capitales.md`](../../notas_unidades/unidad1/2_mercado_dinero_capitales.md), [`3_emisor_activo_financiero.md`](../../notas_unidades/unidad1/3_emisor_activo_financiero.md), [`4_estructura_sfm.md`](../../notas_unidades/unidad1/4_estructura_sfm.md) y [`5_matematica_financiera_mecanica_mercado.md`](../../notas_unidades/unidad1/5_matematica_financiera_mecanica_mercado.md).
+Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`2_mercado_dinero_capitales.md`](../../notas_unidades/unidad1/2_mercado_dinero_capitales.md), [`3_emisor_activo_financiero.md`](../../notas_unidades/unidad1/3_emisor_activo_financiero.md), [`4_estructura_sfm.md`](../../notas_unidades/unidad1/4_estructura_sfm.md) y [`5_matematica_financiera_mecanica_mercado.md`](../../notas_unidades/unidad1/5_matematica_financiera_mecanica_mercado.md). Los ejercicios de Activo Financiero e Intermediación Financiera están en [`practica_1_intermediacion.md`](practica_1_intermediacion.md).
 
 ---
 
-## Activo Financiero
-
-### Ejercicio: identifica el concepto
-
-Por cada situación, indica qué concepto aplica.
-
-| Situación                                                      | Concepto                                        |
-| -------------------------------------------------------------- | ----------------------------------------------- |
-| Juan compra maquinaria para su fábrica.                        | Activo tangible                                 |
-| Una empresa emite un bono y se compromete a pagar intereses.   | Activo financiero (la empresa es el **emisor**) |
-| Ana deposita sus ahorros en el banco esperando un rendimiento. | Unidad **superavitaria**                        |
-| Una PyME solicita un crédito para comprar inventario.          | Unidad **deficitaria**                          |
-| Un fondo de inversión compra el bono que emitió la empresa.    | El fondo es el **inversionista**                |
-
----
-
-## Intermediación Financiera
-
-### Mini-caso: el ciclo de captación-colocación
-
-Identifica en qué paso del ciclo (1. Captación, 2. Colocación, 3. Recuperación, 4. Cierre del ciclo) está cada situación.
-
-1. Juan abre una cuenta de ahorro y el banco le ofrece 6% anual. → **Paso 1**
-2. El banco usa esos recursos para dar un crédito a una PyME al 15% anual. → **Paso 2**
-3. La PyME paga puntualmente su crédito mes con mes. → **Paso 3**
-4. El banco le regresa a Juan su dinero más los intereses pactados. → **Paso 4**
-5. ¿De dónde sale la ganancia del banco en esta cadena? → Del **margen financiero (spread)** entre el 15% que cobra y el 6% que paga.
-
----
-
-## Mercado de Dinero y Mercado de Capitales
+## Mercado de Dinero y Capitales
 
 ### Ejercicio: clasifica el instrumento por mercado
 
@@ -123,7 +93,7 @@ Por cada autoridad del SFM, indica (a) su equivalente funcional en Estados Unido
 2. ¿Cuál es el valor presente de \$50,000 que recibirás en 4 años, si la tasa de descuento es 10% anual?
    *Respuesta: VP = 50,000 / (1.10)⁴ ≈ \$34,151*
 3. Un instrumento paga \$2,000 anuales durante 3 años. Con una tasa de descuento de 7%, ¿cuál es su valor presente?
-   *Respuesta: VP = 2,000 × [1 − (1.07)⁻³] / 0.07 ≈ \$5,247*
+   *Respuesta: VP = 2,000 × [1 − (1.07)⁻³] / 0.07 ≈ \$5,249*
 
 ### Taller: recorrido institucional de un CETE
 
