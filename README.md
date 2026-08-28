@@ -72,7 +72,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_mercado_dinero_capitales.md`, `3_emisor_activo_financiero.md`, `4_estructura_sfm.md` y `5_matematica_financiera_mecanica_mercado.md` (cada uno con su `.pptx` y `.pdf` del mismo nombre, generados automáticamente desde el `.md` con la skill `generar-diapositivas`; no se editan a mano).
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_mercado_dinero_capitales.md`, `3_emisor_activo_financiero.md`, `4_estructura_sfm.md` y `5_matematica_financiera_mecanica_mercado.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano).
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 
