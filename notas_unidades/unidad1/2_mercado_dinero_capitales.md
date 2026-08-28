@@ -1,4 +1,4 @@
-# Unidad 1 · Mercado de Dinero y Mercado de Capitales
+# Unidad 1 · Mercado de Dinero y Capitales
 
 **Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
