@@ -512,8 +512,11 @@ def render_mermaid_png(code, out_path):
     nodes, order, edges = parse_mermaid_graph(code)
     G = nx.DiGraph()
     G.add_nodes_from(order)
-    solid = [(s, d) for s, d, style, _ in edges if style == "-->"]
-    G.add_edges_from(solid)
+    # Layering usa toda arista con flecha (sólida o punteada): ambas expresan
+    # una dependencia dirigida. Solo "-.-" (coordinación sin flecha) se excluye,
+    # porque no implica que el destino deba quedar en un nivel inferior.
+    directed = [(s, d) for s, d, style, _ in edges if style in ("-->", "-.->")]
+    G.add_edges_from(directed)
     layer = {n: 0 for n in order}
     try:
         topo = list(nx.topological_sort(G))
@@ -729,7 +732,10 @@ def compute_col_widths(rows, total_width):
             cell = row[j] if j < len(row) else ""
             maxlen[j] = max(maxlen[j], len(plain_cell(cell)))
     total = sum(maxlen)
-    widths = [max(int(total_width * ml / total), int(total_width * 0.09)) for ml in maxlen]
+    # Piso de 11%: por debajo de eso, una sola palabra larga en la columna
+    # (p. ej. "Instrumentos" en una tabla comparativa de dos columnas anchas)
+    # no cabe y PowerPoint la corta a media palabra en vez de hacer wrap.
+    widths = [max(int(total_width * ml / total), int(total_width * 0.11)) for ml in maxlen]
     scale = total_width / sum(widths)
     widths = [int(w * scale) for w in widths]
     widths[-1] += total_width - sum(widths)
