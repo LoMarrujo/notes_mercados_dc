@@ -10,7 +10,7 @@ Que el estudiante ubique qué autoridad del Sistema Financiero Mexicano regula, 
 
 |     | Tema                                                 | Qué cubre                                                                                                          |
 | --- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| I   | Estructura del Sistema Financiero Mexicano           | Reguladores, supervisores y organismos de apoyo y protección                                                       |
+| I   | Estructura del Sistema Financiero Mexicano           | Reguladores, supervisores y organismos de apoyo y protección; tipos de institución bajo cada supervisor            |
 | II  | Organigrama del Sistema Financiero Mexicano          | Jerarquía, coordinación y relación funcional entre autoridades                                                     |
 | III | De los activos financieros a sus autoridades         | Qué autoridad vigila cada instrumento de la Unidad 0, en qué mercado opera y qué protección tiene el inversionista |
 | IV  | Protección al usuario financiero en la práctica      | IPAB (seguro de depósito), CONDUSEF (reclamación formal), Buró de Entidades Financieras/SIPRES                     |
@@ -29,6 +29,19 @@ Mapa general de autoridades: tres niveles con funciones complementarias.
 | Reguladores        | Diseñan la política y las reglas del sistema financiero.   | SHCP, Banxico      |
 | Supervisores       | Vigilan a los intermediarios de cada sector especializado. | CNBV, CNSF, Consar |
 | Apoyo y Protección | Respaldan y defienden al ahorrador y al usuario final.     | IPAB, CONDUSEF     |
+
+Dentro del nivel de supervisores, cada autoridad vigila un tipo distinto de institución, según qué tan predecible es lo que le deben pagar a sus clientes: un banco puede sufrir un retiro masivo de depósitos en cualquier momento, mientras que una aseguradora o una Afore saben con más certeza cuándo y cuánto van a pagar.
+
+| Categoría             | Institución en México                                                        | Autoridad |
+| --------------------- | ---------------------------------------------------------------------------- | --------- |
+| Depósito              | Banca múltiple / de desarrollo                                               | CNBV      |
+| Depósito              | SOFIPO, SOCAP (ahorro popular)                                               | CNBV      |
+| Ahorro contractual    | Instituciones de seguros y fianzas                                           | CNSF      |
+| Ahorro contractual    | Afores / Siefores                                                            | Consar    |
+| Inversión             | Casas de bolsa (fondos de inversión, colocación de emisiones, corretaje)     | CNBV      |
+| Auxiliares de crédito | Arrendadoras, factoraje, almacenes de depósito, uniones de crédito, SOFOM ER | CNBV      |
+
+> Las casas de bolsa no son intermediarios financieros en sentido estricto: no emiten deuda propia para captar recursos, solo conectan a quien tiene el dinero con quien lo necesita (administran fondos de inversión, colocan emisiones de empresas, y operan por cuenta de terceros). Aun así, la CNBV las supervisa junto con el resto del sector bursátil.
 
 ### 2. Organigrama del Sistema Financiero Mexicano
 
@@ -76,7 +89,7 @@ graph TD
 
 ### 3. De los activos financieros a sus autoridades
 
-Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md`: cada uno tenía un emisor y un inversionista, pero no se dijo quién vigila al emisor ni qué pasa si algo sale mal. La columna "Mercado" retoma la clasificación por plazo de [`2_mercado_dinero_capitales.md`](2_mercado_dinero_capitales.md#1-mercado-de-dinero-y-mercado-de-capitales). Así se reparten entre las autoridades de la sección anterior, y así protegen (o no) al inversionista:
+Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md`: cada uno tenía un emisor y un inversionista, pero no se dijo quién vigila al emisor ni qué pasa si algo sale mal. La columna "Mercado" retoma la clasificación por plazo de [`0_activo_financiero.md`](0_activo_financiero.md#3-mercado-de-dinero-y-mercado-de-capitales). Así se reparten entre las autoridades de la sección anterior, y así protegen (o no) al inversionista:
 
 | Activo financiero                          | Emisor                   | Mercado                                             | ¿Quién lo regula o supervisa?                                                                                            | ¿Garantía institucional al inversionista?                                               |
 | ------------------------------------------ | ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
@@ -142,12 +155,14 @@ Sobre ese modelo se monta una estructura de autoridades equivalente, aunque con 
 - Portal CONDUSEF (Educación Financiera, Buró de Entidades Financieras, SIPRES): material gráfico, historial de quejas y verificación de registro de instituciones.
 - Portal IPAB: qué es el seguro de depósito, límite de cobertura vigente en UDIs y proceso de reclamación.
 - Mishkin, F. S. y Eakins, S. G. (2024). *Financial Markets and Institutions* (10ª ed.). Pearson: comparación de sistemas financieros bank-based y market-based alrededor del mundo.
+- Mishkin, F. S. (2019). *The Economics of Money, Banking, and Financial Markets* (Business School Edition, 5ª ed.). Pearson. Cap. 2, "An Overview of the Financial System", pp. 38-42: tipos de intermediarios financieros (depósito, ahorro contractual, inversión).
+- Mántey de Anguiano, G. (2024). *Lecciones de Economía Monetaria*. UNAM. Lección 2, §5 "Características de las instituciones financieras": bancos comerciales e hipotecarios, sociedades financieras, banca de desarrollo, seguros y fondos de pensión, casas de bolsa, bolsas de valores, y auxiliares de crédito (arrendadoras, factoraje, almacenes de depósito, uniones de crédito).
 
 ---
 
 ## Cierre de la unidad — Lo esencial para recordar
 
-- El SFM se organiza en tres niveles: **reguladores** (SHCP, Banxico) diseñan la política y coordinan vía el **CESF**; **supervisores** (CNBV, CNSF, Consar) vigilan cada sector, la CNBV con el alcance más amplio (banca, valores, Fintech, ahorro popular); **apoyo y protección** (IPAB, CONDUSEF) respaldan al usuario.
+- El SFM se organiza en tres niveles: **reguladores** (SHCP, Banxico) diseñan la política y coordinan vía el **CESF**; **supervisores** (CNBV, CNSF, Consar) vigilan cada sector, la CNBV con el alcance más amplio (banca, valores, Fintech, ahorro popular); **apoyo y protección** (IPAB, CONDUSEF) respaldan al usuario. Dentro de los supervisores, cada tipo de institución (depósito, ahorro contractual, inversión, auxiliares de crédito) tiene una lógica distinta según qué tan predecible es lo que debe pagar.
 - Regular la emisión no es garantizar el pago: la CNBV vigila casi todos los instrumentos de la Unidad 0, pero solo el depósito bancario tiene garantía explícita (IPAB); en el resto, el riesgo de crédito lo asume el inversionista.
 - Un usuario ejerce esa protección de forma concreta: reclama el seguro de depósito ante el **IPAB**, presenta una reclamación formal ante **CONDUSEF**, y consulta el **Buró de Entidades Financieras** (quejas históricas) o el **SIPRES** (registro legal) antes de contratar.
 - Todo país reparte las mismas tres funciones (regular, supervisar, proteger) bajo un **modelo** distinto (México **bank-based**, EE. UU. **market-based**), y las autoridades del SFM tienen equivalentes funcionales en otros países (Banxico↔Fed↔BCE, CNBV↔SEC, IPAB↔FDIC, CONDUSEF↔CFPB), aunque el reparto exacto de funciones entre agencias no es idéntico.

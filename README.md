@@ -20,11 +20,10 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
-- Distinguir un activo financiero de otros tipos de activo, y al emisor del inversionista en una transacción dada.
-- Explicar la intermediación financiera.
-- Clasificar un activo financiero según su plazo, en mercado de dinero o de capitales.
-- Clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta o participación de capital.
+- Distinguir un activo financiero de otros tipos de activo, al emisor del inversionista en una transacción dada, y clasificarlo según su plazo en mercado de dinero o de capitales.
+- Explicar la intermediación financiera, y clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta o participación de capital.
 - Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
+- Trazar el recorrido institucional de un instrumento en el mercado bursátil mexicano (mercado primario/secundario, custodia en Indeval, intermediación de casas de bolsa, BMV/BIVA), y ubicar el papel de las calificadoras en su riesgo de crédito.
 - Calcular el valor de un flujo en el tiempo (valor presente/futuro) y la tasa efectiva a partir de una tasa nominal.
 
 ### 2. Mercado de Deuda [Evaluación al finalizar]
@@ -72,7 +71,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_mercado_dinero_capitales.md`, `3_emisor_activo_financiero.md`, `4_estructura_sfm.md` y `5_matematica_financiera_mecanica_mercado.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano).
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_matematica_financiera.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano).
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 

@@ -1,6 +1,6 @@
 # Unidad 1 · Práctica: Activo Financiero e Intermediación Financiera
 
-**Mercados de Deuda y Capitales** — Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
+**Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
 Ejercicios y casos aplicando los conceptos de [`0_activo_financiero.md`](../../notas_unidades/unidad1/0_activo_financiero.md) y [`1_intermediacion_financiera.md`](../../notas_unidades/unidad1/1_intermediacion_financiera.md).
 
@@ -21,6 +21,23 @@ Por cada situación, indica qué concepto aplica. Elige entre: **activo tangible
 | Un banco compra el CETE que emitió el gobierno en la subasta primaria.             | Inversionista                   | El banco paga hoy a cambio del derecho a cobrar el valor nominal del CETE al vencimiento.                       |
 | Una empresa registra la marca de su nuevo producto.                                | Activo intangible no financiero | Da derecho a beneficios futuros, pero no es un derecho de cobro sobre un tercero; es propiedad intelectual.     |
 | Lucía tiene un ticket de compra en su cartera, ya recibió el producto.             | No es un activo                 | Ya no genera ningún beneficio económico futuro.                                                                 |
+
+---
+
+## Mercado de Dinero y Capitales
+
+### Ejercicio: clasifica el instrumento por mercado
+
+Por cada instrumento, indica si pertenece al mercado de dinero o al mercado de capitales.
+
+| Instrumento                                         | Mercado   |
+| --------------------------------------------------- | --------- |
+| CETE a 28 días                                      | Dinero    |
+| Papel comercial de una empresa a 90 días            | Dinero    |
+| Certificado de depósito bancario a 6 meses          | Dinero    |
+| Bono M a 10 años                                    | Capitales |
+| Acción común de una empresa que cotiza en la BMV    | Capitales |
+| Bono hipotecario emitido por una banca de inversión | Capitales |
 
 ---
 
@@ -66,3 +83,18 @@ Sofía tiene 23 años y acaba de recibir su primer aguinaldo: \$20,000. No los v
 3. **Matiz 2:** Sofía ya tiene 40 años y es directora de un banco; su aguinaldo fue de \$300,000. ¿Todavía le conviene invertir en una Sofipo?
 
 > No hay una única respuesta correcta. Una buena respuesta distingue crédito directo de indirecto en cada opción, identifica quién absorbe el riesgo, y nota que un rendimiento más alto casi nunca es gratis: viene acompañado de menor protección, menor liquidez, o ambas.
+
+### Ejercicio: clasifica el instrumento por tipo de emisor
+
+Por cada instrumento (los mismos del ejercicio "clasifica el instrumento por mercado", en el mismo orden), indica si es deuda directa, deuda indirecta o participación de capital.
+
+| Instrumento                                         | Tipo                                             |
+| --------------------------------------------------- | ------------------------------------------------ |
+| CETE a 28 días                                      | Deuda directa (emisor: gobierno)                 |
+| Papel comercial de una empresa a 90 días            | Deuda directa (emisor: empresa)                  |
+| Certificado de depósito bancario a 6 meses          | Deuda indirecta (emisor: banco)                  |
+| Bono M a 10 años                                    | Deuda directa (emisor: gobierno)                 |
+| Acción común de una empresa que cotiza en la BMV    | Participación de capital                         |
+| Bono hipotecario emitido por una banca de inversión | Deuda indirecta (emisor: institución financiera) |
+
+> El último renglón es la trampa a propósito: compara con el mercado que le asignaste en el ejercicio "clasifica el instrumento por mercado". Es un instrumento de **largo plazo** (mercado de capitales) que sigue siendo **deuda indirecta**, porque quien lo emite es un intermediario financiero, no el deudor final. Plazo y tipo de emisor son dos clasificaciones independientes.

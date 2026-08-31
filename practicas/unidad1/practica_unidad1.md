@@ -1,44 +1,8 @@
 # Unidad 1 · Práctica
 
-**Mercados de Deuda y Capitales** — Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
+**Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
-Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`2_mercado_dinero_capitales.md`](../../notas_unidades/unidad1/2_mercado_dinero_capitales.md), [`3_emisor_activo_financiero.md`](../../notas_unidades/unidad1/3_emisor_activo_financiero.md), [`4_estructura_sfm.md`](../../notas_unidades/unidad1/4_estructura_sfm.md) y [`5_matematica_financiera_mecanica_mercado.md`](../../notas_unidades/unidad1/5_matematica_financiera_mecanica_mercado.md). Los ejercicios de Activo Financiero e Intermediación Financiera están en [`practica_1_intermediacion.md`](practica_1_intermediacion.md).
-
----
-
-## Mercado de Dinero y Capitales
-
-### Ejercicio: clasifica el instrumento por mercado
-
-Por cada instrumento, indica si pertenece al mercado de dinero o al mercado de capitales.
-
-| Instrumento                                         | Mercado   |
-| --------------------------------------------------- | --------- |
-| CETE a 28 días                                      | Dinero    |
-| Papel comercial de una empresa a 90 días            | Dinero    |
-| Certificado de depósito bancario a 6 meses          | Dinero    |
-| Bono M a 10 años                                    | Capitales |
-| Acción común de una empresa que cotiza en la BMV    | Capitales |
-| Bono hipotecario emitido por una banca de inversión | Capitales |
-
----
-
-## Emisor del Activo Financiero
-
-### Ejercicio: clasifica el instrumento por tipo de emisor
-
-Por cada instrumento (los mismos del ejercicio anterior, en el mismo orden), indica si es deuda directa, deuda indirecta o participación de capital.
-
-| Instrumento                                         | Tipo                                             |
-| --------------------------------------------------- | ------------------------------------------------ |
-| CETE a 28 días                                      | Deuda directa (emisor: gobierno)                 |
-| Papel comercial de una empresa a 90 días            | Deuda directa (emisor: empresa)                  |
-| Certificado de depósito bancario a 6 meses          | Deuda indirecta (emisor: banco)                  |
-| Bono M a 10 años                                    | Deuda directa (emisor: gobierno)                 |
-| Acción común de una empresa que cotiza en la BMV    | Participación de capital                         |
-| Bono hipotecario emitido por una banca de inversión | Deuda indirecta (emisor: institución financiera) |
-
-> El último renglón es la trampa a propósito: compara con el mercado que le asignaste en el ejercicio anterior. Es un instrumento de **largo plazo** (mercado de capitales) que sigue siendo **deuda indirecta**, porque quien lo emite es un intermediario financiero, no el deudor final. Plazo y tipo de emisor son dos clasificaciones independientes.
+Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`2_estructura_sfm.md`](../../notas_unidades/unidad1/2_estructura_sfm.md), [`3_mecanica_mercado.md`](../../notas_unidades/unidad1/3_mecanica_mercado.md) y [`4_matematica_financiera.md`](../../notas_unidades/unidad1/4_matematica_financiera.md). Los ejercicios de Activo Financiero, Mercado de Dinero y Capitales, Intermediación Financiera y Emisor del Activo Financiero están en [`practica_1_intermediacion.md`](practica_1_intermediacion.md).
 
 ---
 
@@ -48,13 +12,13 @@ Por cada instrumento (los mismos del ejercicio anterior, en el mismo orden), ind
 
 Actividad colaborativa para fijar el organigrama del Sistema Financiero Mexicano.
 
-1. **Trazar el organigrama** — en el pizarrón o de forma colaborativa, el grupo reconstruye la estructura completa del SFM visto en la sesión teórica.
-2. **Asignar roles** — cada alumno o equipo asume el papel de una institución: SHCP, Banxico, CNBV, CNSF, Consar, IPAB o CONDUSEF.
-3. **Explicación voluntaria** — se abre el micrófono: los equipos que lo deseen explican brevemente qué supervisa su institución.
-4. **Verificar en el SIPRES** — buscan una institución real en el SIPRES de la CONDUSEF para comprobar si está registrada: la misma consulta que podrán hacer en el futuro antes de contratar un servicio financiero.
+1. **Trazar el organigrama**: en el pizarrón o de forma colaborativa, el grupo reconstruye la estructura completa del SFM visto en la sesión teórica.
+2. **Asignar roles**: cada alumno o equipo asume el papel de una institución: SHCP, Banxico, CNBV, CNSF, Consar, IPAB o CONDUSEF.
+3. **Explicación voluntaria**: se abre el micrófono: los equipos que lo deseen explican brevemente qué supervisa su institución.
+4. **Verificar en el SIPRES**: buscan una institución real en el SIPRES de la CONDUSEF para comprobar si está registrada: la misma consulta que podrán hacer en el futuro antes de contratar un servicio financiero.
 5. **Consultar el Buró de Entidades Financieras**: buscan esa misma institución en el Buró para revisar su historial de quejas, y distinguen esta consulta (quejas históricas) de la del SIPRES (existencia legal).
 
-> SIPRES — Sistema de Registro de Prestadores de Servicios Financieros: webapps.CONDUSEF.gob.mx/SIPRES
+> SIPRES (Sistema de Registro de Prestadores de Servicios Financieros): webapps.CONDUSEF.gob.mx/SIPRES
 
 ### Análisis de casos prácticos
 
@@ -80,11 +44,25 @@ Por cada autoridad del SFM, indica (a) su equivalente funcional en Estados Unido
 | IPAB              | FDIC                   | México: bank-based |
 | CONDUSEF          | CFPB                   | México: bank-based |
 
-> Nota para el instructor: la columna "Modelo del país" es la misma en las cuatro filas a propósito — el modelo (bank-based/market-based) es una propiedad del país, no de la autoridad. El alumno debe notar que EE. UU., aunque tenga agencias equivalentes a cada una del SFM, es un sistema market-based, mientras que México es bank-based: equivalencia funcional no implica mismo modelo.
+> Nota para el instructor: la columna "Modelo del país" es la misma en las cuatro filas a propósito: el modelo (bank-based/market-based) es una propiedad del país, no de la autoridad. El alumno debe notar que EE. UU., aunque tenga agencias equivalentes a cada una del SFM, es un sistema market-based, mientras que México es bank-based: equivalencia funcional no implica mismo modelo.
 
 ---
 
-## Matemática Financiera y Mecánica del Mercado
+## Mecánica Operativa del Mercado
+
+### Taller: recorrido institucional de un CETE
+
+Traza el camino completo de un CETE, identificando qué institución interviene en cada paso:
+
+1. **Subasta primaria**: Banxico subasta el CETE a bancos y casas de bolsa. → *Banxico*
+2. **Colocación con el inversionista final**: una casa de bolsa vende el CETE a un cliente (persona física o institucional). → *Casa de bolsa*
+3. **Custodia y registro**: el título queda registrado electrónicamente a nombre del inversionista. → *Indeval*
+4. **Mercado secundario**: el inversionista decide venderlo antes de su vencimiento a otro inversionista. → *Casa de bolsa (ejecuta la operación) + Indeval (liquida el cambio de dueño)*
+5. **Vencimiento**: Banxico paga el valor nominal al tenedor final registrado en Indeval. → *Banxico*
+
+---
+
+## Matemática Financiera
 
 ### Ejercicio numérico
 
@@ -94,13 +72,3 @@ Por cada autoridad del SFM, indica (a) su equivalente funcional en Estados Unido
    *Respuesta: VP = 50,000 / (1.10)⁴ ≈ \$34,151*
 3. Un instrumento paga \$2,000 anuales durante 3 años. Con una tasa de descuento de 7%, ¿cuál es su valor presente?
    *Respuesta: VP = 2,000 × [1 − (1.07)⁻³] / 0.07 ≈ \$5,249*
-
-### Taller: recorrido institucional de un CETE
-
-Traza el camino completo de un CETE, identificando qué institución interviene en cada paso:
-
-1. **Subasta primaria** — Banxico subasta el CETE a bancos y casas de bolsa. → *Banxico*
-2. **Colocación con el inversionista final** — una casa de bolsa vende el CETE a un cliente (persona física o institucional). → *Casa de bolsa*
-3. **Custodia y registro** — el título queda registrado electrónicamente a nombre del inversionista. → *Indeval*
-4. **Mercado secundario** — el inversionista decide venderlo antes de su vencimiento a otro inversionista. → *Casa de bolsa (ejecuta la operación) + Indeval (liquida el cambio de dueño)*
-5. **Vencimiento** — Banxico paga el valor nominal al tenedor final registrado en Indeval. → *Banxico*
