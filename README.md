@@ -39,7 +39,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 - Distinguir las características del mercado de deuda (quién emite, a qué plazo y cómo paga) frente a las de otros mercados financieros.
 - Clasificar un instrumento de deuda (CETES, Bonos gubernamentales, UDIBONOS, Bonos corporativos, Papel comercial, Certificados bursátiles) según su emisor y su mecánica de pago.
-- Calcular el precio de un instrumento de deuda a partir de sus flujos de cupón y su valor nominal.
+- Calcular el precio de un instrumento de deuda a partir de sus flujos y su valor nominal.
 - Distinguir el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado.
 - Justificar una estrategia de inversión en renta fija para un escenario de tasas o de riesgo dado.
 
