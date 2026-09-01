@@ -5,20 +5,12 @@ README.
 
 Overall:
 - Plantear objetivos como preguntas.
+- Practicas a pdfs tambien.
+- Eliminar palabras de mas en .pdf. -> Skill de buenas practicas de presentaciones.
 
 --
 
 Unit 1.
-
-
-- Section 1.
-    - Eliminar palabras de mas en .pdf.
-
-- Section 2 (estructura_sfm).
-    - Primary and secondary markets included.
-
-- Practica 1 (intermediación).
-    - Verificar tasa vigente de CETE, banco tradicional y Cajita Nu antes de usarla en clase.
 
 Unit 2.
 - (Pearson Series in Finance) Frederic S. Mishkin, Stanley Eakins - Financial Markets and Institutions (8th Edition)-Pearson (2014) for debt market intro. [c. 11, 12]
