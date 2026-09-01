@@ -38,6 +38,9 @@ from PIL import ImageFont
 EMU_PER_PT = 12700
 EMU_PER_IN = 914400
 
+# Marcador que excluye una sección de las diapositivas (queda solo en el .md).
+SKIP_SLIDE_MARKER = "<!-- diapositivas: omitir -->"
+
 SLIDE_W = 12192000
 SLIDE_H = 6858000
 
@@ -130,11 +133,10 @@ def wrap_runs_to_lines(runs, max_width_pt, size_pt):
     return lines
 
 
-def count_wrapped_lines(text, max_width_pt, size_pt, bold=False, italic=False):
+def count_wrapped_lines(text, max_width_pt, size_pt, bold=False, italic=False, font=FONT_BODY):
     if not text:
         return 1
-    n_chars = len(text)
-    w = text_width_px(text, FONT_BODY, bold, italic, size_pt)
+    w = text_width_px(text, font, bold, italic, size_pt)
     if w <= max_width_pt:
         return 1
     return max(1, math.ceil(w / max_width_pt))
@@ -259,7 +261,7 @@ def parse_blockquote(bq_lines):
         if re.match(r"^[-*]\s+", bq_lines[i]):
             items = []
             while i < n and re.match(r"^[-*]\s+", bq_lines[i]):
-                items.append(re.sub(r"^[-*]\s+", "", bq_lines[i]))
+                items.append((re.sub(r"^[-*]\s+", "", bq_lines[i]), 0))
                 i += 1
             blocks.append({"type": "bullets", "items": items})
             continue
@@ -270,6 +272,18 @@ def parse_blockquote(bq_lines):
             i += 1
         blocks.append({"type": "para", "text": " ".join(para)})
     return blocks
+
+
+def consume_skip_marker(lines, i):
+    """Si la próxima línea no vacía es SKIP_SLIDE_MARKER, la consume y
+    devuelve (True, nuevo_i); si no, (False, i sin modificar)."""
+    n = len(lines)
+    j = i
+    while j < n and lines[j].strip() == "":
+        j += 1
+    if j < n and lines[j].strip() == SKIP_SLIDE_MARKER:
+        return True, j + 1
+    return False, i
 
 
 def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
@@ -340,15 +354,21 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
             continue
         if re.match(r"^[-*]\s+", stripped):
             items = []
+            base_indent = None
             while i < n and re.match(r"^[-*]\s+", lines[i].strip()):
-                items.append(re.sub(r"^[-*]\s+", "", lines[i].strip()))
+                raw = lines[i]
+                indent = len(raw) - len(raw.lstrip(" "))
+                if base_indent is None:
+                    base_indent = indent
+                level = max(0, (indent - base_indent) // 2)
+                items.append((re.sub(r"^[-*]\s+", "", raw.strip()), level))
                 i += 1
             blocks.append({"type": "bullets", "items": items})
             continue
         if re.match(r"^\d+\.\s+", stripped):
             items = []
             while i < n and re.match(r"^\d+\.\s+", lines[i].strip()):
-                items.append(re.sub(r"^\d+\.\s+", "", lines[i].strip()))
+                items.append((re.sub(r"^\d+\.\s+", "", lines[i].strip()), 0))
                 i += 1
             blocks.append({"type": "numbered", "items": items})
             continue
@@ -428,8 +448,10 @@ def parse_md(path):
                 continue
             # cualquier otro ## (p.ej. "Apéndice: ...") se trata como sección de contenido
             i += 1
+            skip_slide, i = consume_skip_marker(lines, i)
             blocks, i = parse_blocks_until_heading(lines, i, ("#", "##"))
-            doc["sections"].append({"title": heading, "number": None, "blocks": blocks})
+            doc["sections"].append({"title": heading, "number": None, "blocks": blocks,
+                                     "skip_slide": skip_slide})
             continue
         if line.startswith("### "):
             heading = line[4:].strip()
@@ -437,8 +459,10 @@ def parse_md(path):
             num = int(m.group(1)) if m else None
             title_s = m.group(2) if m else heading
             i += 1
+            skip_slide, i = consume_skip_marker(lines, i)
             blocks, i = parse_blocks_until_heading(lines, i, ("#", "##", "###"))
-            doc["sections"].append({"title": title_s, "number": num, "blocks": blocks})
+            doc["sections"].append({"title": title_s, "number": num, "blocks": blocks,
+                                     "skip_slide": skip_slide})
             continue
         i += 1
     return doc
@@ -639,7 +663,7 @@ def add_eyebrow_title(slide, eyebrow, title, page_num=None, title_size=32):
         set_paragraph_plain(p, eyebrow.upper(), 12, GOLD, bold=True)
         for run in p.runs:
             run.font._rPr.set("spc", "150")
-    lines = count_wrapped_lines(title, emu_to_pt72(CONTENT_W), title_size, bold=True)
+    lines = count_wrapped_lines(title, emu_to_pt72(CONTENT_W), title_size, bold=True, font=FONT_TITLE)
     title_h = max(700000, lines * (title_size * 1.22) * EMU_PER_PT)
     box = add_textbox(slide, MARGIN_L, TITLE_TOP, CONTENT_W, title_h)
     p = box.text_frame.paragraphs[0]
@@ -689,14 +713,21 @@ def draw_para(slide, runs, left, top, width, size_pt=14, color=BODY_COLOR,
 
 
 BULLET_MARKER_W = 260000
+BULLET_INDENT_STEP = 260000
+
+
+def _item_text_level(it):
+    return it if isinstance(it, tuple) else (it, 0)
 
 
 def estimate_bullets_height(items, width_emu, size_pt=13.5):
     total = 0
     for it in items:
-        runs = parse_inline(it)
+        text, level = _item_text_level(it)
+        runs = parse_inline(text)
         plain = "".join(t for t, b, i, c in runs)
-        lines = count_wrapped_lines(plain, emu_to_pt72(width_emu - BULLET_MARKER_W), size_pt)
+        avail = width_emu - BULLET_MARKER_W - level * BULLET_INDENT_STEP
+        lines = count_wrapped_lines(plain, emu_to_pt72(avail), size_pt)
         total += int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
     return total
 
@@ -705,15 +736,18 @@ def draw_bullets(slide, items, left, top, width, size_pt=13.5, numbered=False,
                   color=BODY_COLOR, marker_color=GOLD):
     y = top
     for idx, it in enumerate(items):
-        runs = parse_inline(it)
+        text, level = _item_text_level(it)
+        indent = level * BULLET_INDENT_STEP
+        runs = parse_inline(text)
         plain = "".join(t for t, b, i, c in runs)
-        lines = count_wrapped_lines(plain, emu_to_pt72(width - BULLET_MARKER_W), size_pt)
+        avail = width - BULLET_MARKER_W - indent
+        lines = count_wrapped_lines(plain, emu_to_pt72(avail), size_pt)
         h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
-        mbox = add_textbox(slide, left, y, BULLET_MARKER_W, h)
+        mbox = add_textbox(slide, left + indent, y, BULLET_MARKER_W, h)
         mp = mbox.text_frame.paragraphs[0]
-        marker = f"{idx + 1}." if numbered else "•"
+        marker = f"{idx + 1}." if numbered else ("◦" if level else "•")
         set_paragraph_plain(mp, marker, size_pt, marker_color, bold=True)
-        tbox = add_textbox(slide, left + BULLET_MARKER_W, y, width - BULLET_MARKER_W, h)
+        tbox = add_textbox(slide, left + indent + BULLET_MARKER_W, y, avail, h)
         tp = tbox.text_frame.paragraphs[0]
         set_paragraph_runs(tp, runs, size_pt, color)
         y += h
@@ -1085,7 +1119,7 @@ def add_cover_slide(deck, doc):
     ep = ebox.text_frame.paragraphs[0]
     set_paragraph_plain(ep, "MERCADOS DE DEUDA Y CAPITALES", 13, GOLD, bold=True)
 
-    title_lines = count_wrapped_lines(doc["title"], emu_to_pt72(9200000), 40, bold=True)
+    title_lines = count_wrapped_lines(doc["title"], emu_to_pt72(9200000), 40, bold=True, font=FONT_TITLE)
     tbox = add_textbox(slide, MARGIN_L, 2050000, 9200000, title_lines * 620000)
     tp = tbox.text_frame.paragraphs[0]
     set_paragraph_plain(tp, doc["title"], 40, NAVY, bold=True, font=FONT_TITLE)
@@ -1165,17 +1199,25 @@ def build_deck(doc, out_pptx):
     contenido_rows = doc["contenido"][1:] if doc["contenido"] else []
     entries = []
     for row_idx, row in enumerate(contenido_rows):
+        section = doc["sections"][row_idx] if row_idx < len(doc["sections"]) else None
+        if section is not None and section.get("skip_slide"):
+            continue
         tema = row[1] if len(row) > 1 else ""
         quecubre = row[2] if len(row) > 2 else ""
-        roman = to_roman(row_idx + 1)
-        entries.append([roman, tema, quecubre, None])
+        entries.append([None, tema, quecubre, None])
+    for entry_idx, e in enumerate(entries):
+        e[0] = to_roman(entry_idx + 1)
 
+    entry_cursor = 0
     for row_idx, section in enumerate(doc["sections"]):
+        if section.get("skip_slide"):
+            continue
         eyebrow = doc["title"]
         heading = section["title"]
         first_page = flow_blocks(deck, eyebrow, heading, section["blocks"])
-        if row_idx < len(entries):
-            entries[row_idx][3] = first_page
+        if row_idx < len(contenido_rows) and entry_cursor < len(entries):
+            entries[entry_cursor][3] = first_page
+            entry_cursor += 1
 
     for e in entries:
         if e[3] is None:
@@ -1184,7 +1226,7 @@ def build_deck(doc, out_pptx):
     cierre_items = []
     for blk in doc["cierre"]:
         if blk["type"] == "bullets":
-            cierre_items.extend(blk["items"])
+            cierre_items.extend(text for text, level in blk["items"])
         elif blk["type"] == "para":
             cierre_items.append(blk["text"])
     add_cierre_slides(deck, doc["title"], cierre_items)
@@ -1192,7 +1234,7 @@ def build_deck(doc, out_pptx):
     fuentes_items = []
     for blk in doc["fuentes"]:
         if blk["type"] == "bullets":
-            fuentes_items.extend(blk["items"])
+            fuentes_items.extend(text for text, level in blk["items"])
         elif blk["type"] == "para":
             fuentes_items.append(blk["text"])
     fuentes_page = flow_blocks(deck, "PREPARACIÓN DOCENTE", "Fuentes y referencias recomendadas",
