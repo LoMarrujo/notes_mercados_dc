@@ -42,6 +42,8 @@ Dentro del nivel de supervisores, cada autoridad vigila un tipo distinto de inst
 | Auxiliares de crédito | Arrendadoras, factoraje, almacenes de depósito, uniones de crédito, SOFOM ER | CNBV      |
 
 > Las casas de bolsa no son intermediarios financieros en sentido estricto: no emiten deuda propia para captar recursos, solo conectan a quien tiene el dinero con quien lo necesita (administran fondos de inversión, colocan emisiones de empresas, y operan por cuenta de terceros). Aun así, la CNBV las supervisa junto con el resto del sector bursátil.
+>
+> Estas categorías no son compartimentos aislados en la práctica: un **grupo financiero** (p. ej. Grupo Financiero Banorte, BBVA México, Santander o Inbursa) reúne varias de estas instituciones bajo una controladora común. Banco, casa de bolsa, aseguradora y Afore siguen siendo entidades legales separadas, cada una supervisada por su propia autoridad (CNBV, CNSF, Consar según el caso), aunque compartan marca, accionistas y clientes.
 
 ### 2. Organigrama del Sistema Financiero Mexicano
 
@@ -162,7 +164,7 @@ Sobre ese modelo se monta una estructura de autoridades equivalente, aunque con 
 
 ## Cierre de la unidad — Lo esencial para recordar
 
-- El SFM se organiza en tres niveles: **reguladores** (SHCP, Banxico) diseñan la política y coordinan vía el **CESF**; **supervisores** (CNBV, CNSF, Consar) vigilan cada sector, la CNBV con el alcance más amplio (banca, valores, Fintech, ahorro popular); **apoyo y protección** (IPAB, CONDUSEF) respaldan al usuario. Dentro de los supervisores, cada tipo de institución (depósito, ahorro contractual, inversión, auxiliares de crédito) tiene una lógica distinta según qué tan predecible es lo que debe pagar.
+- El SFM se organiza en tres niveles: **reguladores** (SHCP, Banxico) diseñan la política y coordinan vía el **CESF**; **supervisores** (CNBV, CNSF, Consar) vigilan cada sector, la CNBV con el alcance más amplio (banca, valores, Fintech, ahorro popular); **apoyo y protección** (IPAB, CONDUSEF) respaldan al usuario. Dentro de los supervisores, cada tipo de institución (depósito, ahorro contractual, inversión, auxiliares de crédito) tiene una lógica distinta según qué tan predecible es lo que debe pagar; un **grupo financiero** (Banorte, BBVA, Santander) puede reunir varias bajo una misma marca, pero cada una sigue respondiendo a su propia autoridad.
 - Regular la emisión no es garantizar el pago: la CNBV vigila casi todos los instrumentos de la Unidad 0, pero solo el depósito bancario tiene garantía explícita (IPAB); en el resto, el riesgo de crédito lo asume el inversionista.
 - Un usuario ejerce esa protección de forma concreta: reclama el seguro de depósito ante el **IPAB**, presenta una reclamación formal ante **CONDUSEF**, y consulta el **Buró de Entidades Financieras** (quejas históricas) o el **SIPRES** (registro legal) antes de contratar.
 - Todo país reparte las mismas tres funciones (regular, supervisar, proteger) bajo un **modelo** distinto (México **bank-based**, EE. UU. **market-based**), y las autoridades del SFM tienen equivalentes funcionales en otros países (Banxico↔Fed↔BCE, CNBV↔SEC, IPAB↔FDIC, CONDUSEF↔CFPB), aunque el reparto exacto de funciones entre agencias no es idéntico.
