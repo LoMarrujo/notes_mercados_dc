@@ -27,7 +27,9 @@ Que el estudiante trace el recorrido institucional de un instrumento en el merca
 ### 2. Quién interviene: BMV, BIVA, casas de bolsa, Indeval
 
 - **BMV y BIVA**: las dos bolsas de valores en México, donde se negocian acciones, bonos y otros instrumentos listados.
-- **Casas de bolsa**: intermediarios bursátiles; un inversionista no puede operar directamente en la bolsa, necesita una casa de bolsa que ejecute la orden. Ejemplos en México: GBM, Actinver, Kuspit, Vector y Banorte Casa de Bolsa (esta última, filial de un banco, ilustra que un mismo grupo financiero puede tener banco y casa de bolsa como entidades separadas). Dentro de esa función hay dos papeles distintos: **de corretaje** (conecta comprador y vendedor, cobra comisión, nunca es dueña del título, como un agente inmobiliario) y **de distribuidor** (compra y vende por cuenta propia, gana el diferencial entre precio de compra y venta, como un agente de autos usados). Son también quienes colocan (*underwrite*) una emisión nueva en el mercado primario: le garantizan un precio al emisor y luego revenden el título al público.
+- **Casas de bolsa**: intermediarios bursátiles; un inversionista no puede operar directamente en la bolsa, necesita una casa de bolsa que ejecute la orden. Ejemplos en México: GBM, Actinver, Kuspit, Vector y Banorte Casa de Bolsa. También son quienes colocan (*underwrite*) una emisión nueva en el mercado primario: le garantizan un precio al emisor y luego revenden el título al público. Dentro de esa función hay dos papeles distintos:
+  - **De corretaje**: conecta comprador y vendedor, cobra comisión, nunca es dueña del título, como un agente inmobiliario.
+  - **De distribuidor**: compra y vende por cuenta propia, gana el diferencial entre precio de compra y venta, como un agente de autos usados.
 - **Indeval**: la institución de custodia y liquidación central. Cuando compras un instrumento, no recibes un papel físico: Indeval mantiene el registro electrónico de quién es dueño de qué, y liquida (hace efectiva) cada operación.
 
 > El mercado organizado (bolsa, subasta pública) no es el único canal: también existe el mercado de mostrador (*over the counter*), donde bancos y casas de bolsa negocian entre sí sin publicar sus cotizaciones. De hecho, el mercado de deuda mueve más volumen que el de acciones y opera mayormente en mostrador: la bolsa es más visible, pero no es donde se negocia más.
@@ -42,7 +44,7 @@ Que el estudiante trace el recorrido institucional de un instrumento en el merca
 
 ### 4. El análogo estadounidense
 
-Ya trazado el recorrido en México, conviene ubicar qué institución cumple cada función en el mercado más grande del mundo, el de Estados Unidos.
+Conviene ubicar qué institución cumple cada función en el mercado más grande del mundo, el de Estados Unidos.
 
 | Función                           | México                          | Estados Unidos                                 |
 | --------------------------------- | ------------------------------- | ---------------------------------------------- |

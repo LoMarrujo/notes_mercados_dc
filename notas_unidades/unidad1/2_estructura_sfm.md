@@ -87,11 +87,11 @@ graph TD
 - **IPAB**: garantiza el ahorro bancario; garantiza el seguro de depósito bancario de las instituciones que supervisa la CNBV.
 - **CONDUSEF**: protege al usuario financiero; defiende al usuario ante bancos, aseguradoras, Afores y demás entidades del sistema.
 
-**Glosario de siglas:** SHCP: Secretaría de Hacienda y Crédito Público · Banxico: Banco de México · CNBV: Comisión Nacional Bancaria y de Valores · CNSF: Comisión Nacional de Seguros y Fianzas · Consar: Comisión Nacional del Sistema de Ahorro para el Retiro · IPAB: Instituto para la Protección al Ahorro Bancario · CONDUSEF: Comisión Nacional para la Protección y Defensa de los Usuarios de Servicios Financieros · CESF: Consejo de Estabilidad del Sistema Financiero.
-
 ### 3. De los activos financieros a sus autoridades
 
-Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md`: cada uno tenía un emisor y un inversionista, pero no se dijo quién vigila al emisor ni qué pasa si algo sale mal. La columna "Mercado" retoma la clasificación por plazo de [`0_activo_financiero.md`](0_activo_financiero.md#3-mercado-de-dinero-y-mercado-de-capitales). Así se reparten entre las autoridades de la sección anterior, y así protegen (o no) al inversionista:
+<!-- diapositivas: omitir -->
+
+Retomamos los ejemplos de `0_activo_financiero.md`: cada uno tenía un emisor y un inversionista, pero no se dijo quién vigila al emisor ni qué pasa si algo sale mal. La columna "Mercado" retoma la clasificación por plazo de [`0_activo_financiero.md`](0_activo_financiero.md#3-mercado-de-dinero-y-mercado-de-capitales). Así se reparten entre las autoridades de la sección anterior, y así protegen (o no) al inversionista:
 
 | Activo financiero                          | Emisor                   | Mercado                                             | ¿Quién lo regula o supervisa?                                                                                            | ¿Garantía institucional al inversionista?                                               |
 | ------------------------------------------ | ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
@@ -112,8 +112,6 @@ Con el organigrama ya trazado, retomamos los ejemplos de `0_activo_financiero.md
 
 ### 4. Protección al usuario financiero en la práctica
 
-La sección anterior mostró quién protege (o no) cada instrumento; esta muestra cómo se ejerce esa protección cuando algo sale mal.
-
 **IPAB: reclamar el seguro de depósito.** Si el banco donde tienes tus ahorros quiebra, no tienes que hacer ningún trámite especial: el IPAB paga automáticamente a cada cuenta afectada, hasta un límite de **400,000 UDIs** por persona por institución (unos \$3.5 millones de pesos, según el valor de la UDI [2026]). Cubre cuentas de ahorro, depósitos a plazo y otros pasivos bancarios; no cubre inversiones en fondos, acciones o instrumentos bursátiles que el banco solo distribuya como intermediario.
 
 **CONDUSEF: presentar una reclamación formal.** Ante un cobro indebido, una mala práctica o un incumplimiento de un banco, aseguradora, Afore o cualquier entidad que regula el SFM, el usuario puede reclamar directamente ante la institución y, si no hay respuesta satisfactoria, escalar a la CONDUSEF. El proceso general: (1) presentar la queja por escrito ante la propia institución, (2) si no se resuelve, acudir a CONDUSEF con la documentación del caso, (3) CONDUSEF media entre ambas partes y, si no hay acuerdo, puede emitir un dictamen técnico que el usuario puede usar en una demanda judicial.
@@ -127,7 +125,7 @@ La sección anterior mostró quién protege (o no) cada instrumento; esta muestr
 
 ### 5. Panorama de los sistemas financieros internacionales
 
-Ya ubicado el mapa de autoridades mexicanas, la pregunta natural es si el resto del mundo se organiza igual. La respuesta corta: las mismas tres funciones (regular, supervisar, proteger) aparecen en todos lados, pero el **modelo** que canaliza el ahorro hacia la inversión varía por país.
+Las mismas tres funciones (regular, supervisar, proteger) aparecen en todos lados, pero el **modelo** que canaliza el ahorro hacia la inversión varía por país.
 
 | Modelo                            | Cómo se financian las empresas                                             | Países representativos      |
 | --------------------------------- | -------------------------------------------------------------------------- | --------------------------- |

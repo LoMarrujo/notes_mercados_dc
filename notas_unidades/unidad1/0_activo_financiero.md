@@ -64,11 +64,11 @@ Que el estudiante distinga un activo financiero de otros tipos de activo, al emi
 
 > Los instrumentos de deuda (CETES, bonos, papel comercial, certificados bursátiles) y los de capital (acciones, FIBRAS) se estudian a fondo en las unidades 2 y 3. Aquí solo importa reconocer que **todos** son activos financieros: un derecho intangible sobre efectivo futuro, con un emisor y un inversionista identificables.
 >
-> La lista de ejemplos no es cerrada: la innovación financiera crea instrumentos nuevos todo el tiempo (fintech, criptoactivos, títulos tokenizados). La prueba para clasificarlos no cambia: si es un derecho intangible sobre efectivo futuro con un emisor y un inversionista identificables, es un activo financiero, sin importar qué tan nuevo sea.
+> La lista no es cerrada: la innovación financiera crea instrumentos nuevos todo el tiempo (fintech, criptoactivos, títulos tokenizados), pero la prueba para clasificarlos no cambia, sin importar qué tan nuevo sea el instrumento.
 
 ### 2. ¿Por qué existen los mercados financieros?
 
-Ya sabemos qué es un activo financiero; falta entender por qué existe un mercado donde negociarlo. El propósito de un mercado financiero es canalizar recursos de quienes ahorran hacia quienes los necesitan para invertir o consumir.
+El propósito de un mercado financiero es canalizar recursos de quienes ahorran hacia quienes los necesitan para invertir o consumir.
 
 - **Suavizar el consumo:** las personas prefieren mantener su consumo relativamente estable en el tiempo (ahorrar en los años buenos, usar esos ahorros en los años malos) y ante eventos inesperados, en vez de que su consumo dependa directamente de cuánto ganan en cada momento.
 - **Diversificar el riesgo [idiosincrático] individual:** juntar los ahorros de muchas personas permite financiar proyectos productivos grandes y de largo plazo que ningún ahorrador podría costear (ni cuyo riesgo [idiosincrático] podría asumir) por sí solo.
@@ -79,7 +79,7 @@ Ya sabemos qué es un activo financiero; falta entender por qué existe un merca
 
 ### 3. Mercado de dinero y mercado de capitales
 
-Ya vimos por qué existen los mercados financieros; falta clasificarlos. Se dividen, por convención, según el plazo de los recursos que canalizan; es un criterio distinto de quién emite el instrumento (ver [`1_intermediacion_financiera.md`](1_intermediacion_financiera.md#2-deuda-directa-indirecta-y-capital)).
+Se dividen, por convención, según el plazo de los recursos que canalizan; es un criterio distinto de quién emite el instrumento (ver [`1_intermediacion_financiera.md`](1_intermediacion_financiera.md#2-deuda-directa-indirecta-y-capital)).
 
 |              | Mercado de dinero                                                                                                | Mercado de capitales                                                                                          |
 | ------------ | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -88,7 +88,7 @@ Ya vimos por qué existen los mercados financieros; falta clasificarlos. Se divi
 | Emisores     | Instituciones monetarias (bancos comerciales) emiten pasivos usables como medios de pago.                        | Instituciones no monetarias (banca de inversión, aseguradoras, bolsa) emiten bonos y acciones.                |
 | Instrumentos | CETES, papel comercial, certificados de depósito, reportos, aceptaciones bancarias, fondeo interbancario (TIIE). | Bonos hipotecarios, acciones ordinarias y preferentes, FIBRAs, certificados bursátiles de largo plazo.        |
 
-> **Ejemplo resuelto.** Clasificar un instrumento por plazo no depende de quién lo emite (ver [`1_intermediacion_financiera.md`](1_intermediacion_financiera.md#2-deuda-directa-indirecta-y-capital)), son dos criterios independientes.
+> **Ejemplo resuelto.** Clasificar un instrumento por plazo es independiente de quién lo emite (ver [`1_intermediacion_financiera.md`](1_intermediacion_financiera.md#2-deuda-directa-indirecta-y-capital)).
 >
 > - *Papel comercial de una empresa a 60 días.* ¿A qué plazo? 60 días, menos de un año → mercado de dinero.
 > - *Certificado bursátil bancario a 10 años.* ¿A qué plazo? 10 años → mercado de capitales. El plazo largo no dice nada sobre si es deuda directa o indirecta, eso depende de quién emite.
@@ -100,8 +100,6 @@ Ya vimos por qué existen los mercados financieros; falta clasificarlos. Se divi
 - El banco central lo usa como canal de política monetaria: Banxico compra y vende valores gubernamentales en operaciones de mercado abierto, lo que mueve la **TIIE** (tasa de interés interbancaria de equilibrio), la tasa de referencia de corto plazo de la economía.
 
 ### 4. Agentes económicos y su acceso a los mercados
-
-Ya clasificado el mercado por plazo, falta ver cómo participa cada tipo de agente económico en el mercado de dinero y en el de capitales.
 
 | Agente económico               | Mercado de dinero (corto plazo)                                      | Mercado de capitales (largo plazo)                                                      |
 | ------------------------------ | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |

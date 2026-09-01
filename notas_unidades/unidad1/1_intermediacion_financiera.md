@@ -31,14 +31,14 @@ Entre ambas fluyen **recursos (dinero)** a cambio de un **activo financiero**.
 
 **Por qué existen los intermediarios:**
 
-Resuelven un problema concreto: aun con esas tres funciones, ahorradores y deudores casi nunca pueden negociar directamente en condiciones favorables. Los sistemas financieros resuelven esto con un tipo especial de entidad, el intermediario financiero, que capta fondos de un lado y los coloca del otro, en dos pasos: lo que capta se vuelve su pasivo (o su capital, según el caso); lo que coloca se vuelve su activo.
+Aun con esas tres funciones, ahorradores y deudores casi nunca pueden negociar directamente en condiciones favorables. Los sistemas financieros resuelven esto con un tipo especial de entidad, el intermediario financiero, que capta fondos de un lado y los coloca del otro, en dos pasos: lo que capta se vuelve su pasivo (o su capital, según el caso); lo que coloca se vuelve su activo.
 
 - **Banco comercial**: recibe depósitos de corto plazo y los transforma en créditos de largo plazo (*maturity intermediation*).
 - **Fondo de inversión**: junta el dinero de muchos ahorradores pequeños y arma un portafolio diversificado que ninguno podría comprar solo.
 
 ### 2. Deuda directa, indirecta y capital
 
-Ya vimos que el intermediario capta de un lado y coloca del otro; falta ver qué pasa cuando el deudor final prescinde de ese intermediario y coloca su propio título directamente, y qué pasa cuando lo que se coloca no es deuda sino una parte del capital de la empresa. Esta clasificación depende de quién emite el título: el deudor final, un intermediario, o la empresa que reparte su capital.
+Esta clasificación depende de quién emite el título: el deudor final, un intermediario, o la empresa que reparte su capital.
 
 |                   | Deuda indirecta (intermediación bancaria)                                                        | Deuda directa (mercado bursátil)                                                     | Participación de capital                                                                           |
 | ----------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
@@ -79,7 +79,7 @@ Retomando los ejemplos de activos financieros de [`0_activo_financiero.md`](0_ac
 
 ### 3. El ciclo de captación-colocación
 
-Ya vimos que en el crédito indirecto el banco absorbe el riesgo; así es como conecta al ahorrador con el deudor, paso a paso:
+Así conecta el banco al ahorrador con el deudor, paso a paso:
 
 1. **Captación de recursos**: el banco capta recursos del ahorrador (depósitos, pagarés, certificados) y se compromete a devolverlos con un rendimiento: la **tasa pasiva**.
 2. **Colocación del crédito**: el banco presta esos recursos a empresas, personas o gobierno cobrando una **tasa activa**, mayor a la pasiva, y asume el riesgo de crédito.
