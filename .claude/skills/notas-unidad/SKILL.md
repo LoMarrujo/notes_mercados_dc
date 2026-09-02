@@ -45,19 +45,20 @@ Las fuentes del curso (Fabozzi et al.) usan notación en inglés. En las notas d
 
 | En vez de... | Usar | Significado |
 |---|---|---|
-| `PV` | `VP` | Valor presente |
-| `FV` | `VF` | Valor futuro |
+| `PV` / `FV` | `v_t` | Valor de un flujo en el periodo $t$: $v_0$ es el valor presente, $v_t$ (o $v_N$, el valor en el periodo final) el valor futuro |
 | `i` | `r` | Tasa de interés por periodo |
 | `APR` | `TNA` | Tasa nominal anual |
 | `EAR` | `TEA` | Tasa efectiva anual |
-| `CF` | `FC` | Flujo (pago) constante |
+| `CF` | `c` | Flujo (pago) constante que se repite cada periodo |
+| `CF_t` | `c_t` | Flujo de efectivo en el periodo $t$, cuando puede variar periodo a periodo |
 | "principal" | "capital" | Monto invertido o prestado |
 
 Reglas adicionales:
 
-- **Toda fórmula nueva lleva, antes de presentarse, un bloque "¿De dónde sale la fórmula?"** que la derive a partir de una fórmula ya vista antes en la misma unidad — nunca postularla sin mostrar de dónde sale. Encadena la derivación con lo inmediato anterior (ej. la TEA se deriva aplicando la fórmula de VF a un periodo con tasa `r = TNA/n`; la anualidad se deriva como suma de flujos únicos descontados con la fórmula de VP de la sección anterior).
+- **Toda fórmula nueva lleva, antes de presentarse, un bloque "¿De dónde sale la fórmula?"** que la derive a partir de una fórmula ya vista antes en la misma unidad — nunca postularla sin mostrar de dónde sale. Encadena la derivación con lo inmediato anterior (ej. la TEA se deriva aplicando la fórmula de $V_t$ a un periodo con tasa `r = TNA/n`; la anualidad se deriva como suma de flujos únicos descontados con la fórmula de $V_t$ de la sección anterior).
 - **Anota restricciones de dominio explícitas en la fórmula misma** cuando existan (ej. `r ≠ 0` al dividir entre `r`), no solo en el texto que la rodea.
-- **Conserva las citas del libro de texto original** (autor, capítulo, número de ecuación en inglés) aunque el símbolo en el cuerpo del texto esté en español — la cita apunta a la fuente tal cual está publicada.
+- **Cita el libro completo en formato APA, no por capítulo.** Las referencias van por libro (Autor, A. A. (Año). *Título*. Editorial), sin capítulo, sección ni número de ecuación específico. Si hace falta apuntar a un lugar preciso del libro, va a pie de página, nunca como un paréntesis `(sección #)` dentro de la prosa.
+- **Mayúscula solo para variables aleatorias (inciertas); todo lo demás en minúscula.** Para símbolos algebraicos de una letra (o una letra con subíndice): si el símbolo es determinista, cierto, aunque sea el resultado que calcula la fórmula (un dato de entrada como $r$, $t$, $n$, $c$, $c_t$, o un valor calculado a partir de ellos como $v_t$, con $v_0$ el valor presente y $v_N$ el valor futuro), va en minúscula. Solo lo genuinamente incierto, un flujo estocástico que hoy es una variable aleatoria (ej. $C_t$, el valor futuro de una acción), va en mayúscula. "Se calculó con una fórmula" no es lo mismo que "es incierto": $v_t$ se calcula pero es determinista dados $r$, $t$, $n$, así que va en minúscula igual que sus insumos. Las siglas multiletra ya establecidas (TNA, TEA, TIR, VPN) siempre van en mayúscula, sea dato, resultado o variable aleatoria. Esta regla aplica donde ya hay notación algebraica (fórmulas, definiciones formales); no fuerces un símbolo en una sección puramente intuitiva o de motivación que solo usa palabras y números.
 
 ## Estilo de prosa
 
@@ -65,7 +66,8 @@ Aplica a toda prosa nueva o editada en `notas_unidades/**/*.md` (y a `practicas/
 
 - **Sin em dashes ("—").** Nunca los uses para unir cláusulas. Según el caso: aposición breve → coma o paréntesis; explicación o consecuencia → dos puntos; dos oraciones relacionadas → punto y coma o punto separado. Excepción: el encabezado de plantilla ya establecido en los archivos de teoría de esta unidad (`## Cierre de la unidad — Lo esencial para recordar`) se mantiene tal cual por consistencia entre archivos; si se cambia, se cambia en todos los archivos de la unidad a la vez, no en uno solo.
 - **Sin encabezado "Parte I" vestigial.** No agrupes las secciones de teoría bajo un `## Parte I: Teoría` (o `— Teoría`). No hay una "Parte II" en el mismo archivo con la que contrastarlo (la práctica vive en `practica_unidadN.md`), así que ese encabezado no distingue nada. Las secciones `### 1. ...` van directamente después del separador de la tabla de Contenido.
-- **Fuentes consolidadas, no repartidas.** No pongas una línea `*Fuente: ...*` después de cada subsección. Todas las citas bibliográficas de un archivo de teoría van juntas en `## Fuentes y referencias recomendadas`, al final, y esa sección **no** aparece como fila en la tabla `## Contenido` (no es un tema de la unidad, es material de referencia). Esto no aplica a la cita puntual de una fórmula (ver "Notación matemática" arriba), que sí se mantiene junto a la fórmula misma.
+- **Fuentes consolidadas, no repartidas.** No pongas una línea `*Fuente: ...*` después de cada subsección o fórmula: sin excepción, todas las citas bibliográficas de un archivo de teoría van juntas en `## Fuentes y referencias recomendadas`, al final, como cita de libro completo en formato APA (ver "Notación matemática" arriba). Esa sección **no** aparece como fila en la tabla `## Contenido` (no es un tema de la unidad, es material de referencia).
+- **Término en español primero, inglés entre paréntesis.** Cuando se menciona el nombre en inglés de un concepto (porque así aparece en la fuente citada, o porque el acrónimo en inglés es de uso común), el término en español va primero y el inglés (con su sigla, si la tiene) va entre paréntesis después: "fijación de precio (pricing)", "rendimiento al vencimiento (YTM)", "valor presente (present value, PV)". Nunca al revés (nunca "esto es lo que en inglés se llama *present value*" sin dar antes el término en español).
 - **Sin verbosidad de LLM.** Evita frases de relleno ("cabe destacar que", "es importante notar que", "conviene mencionar antes de continuar") y evita repetir con otras palabras algo que la oración anterior ya dijo, incluida una cita textual con atribución que no aporta nada nuevo. Si una oración se puede borrar sin perder información, bórrala.
 - **El archivo debe pasar markdown lint sin errores.** Reglas por defecto de `markdownlint` (encabezados con salto de nivel correcto y una línea en blanco antes/después, listas rodeadas de línea en blanco, sin tabs, sin espacios al final de línea, el archivo termina en un solo salto de línea), excepto `MD013` (longitud de línea), desactivada porque las tablas y los párrafos largos son parte del estilo de estas notas. Si el proyecto no tiene `markdownlint`/`prettier` instalados, revisa estas reglas a mano.
 - **Las tablas van "prettified".** Columnas alineadas: cada columna tiene el ancho de su celda más larga, con al menos un espacio de margen a cada lado del texto y los `|` alineados verticalmente entre filas, igual que produce un formateador de Markdown (p. ej. Prettier) al guardar. No dejes una tabla con columnas sin alinear.
