@@ -200,7 +200,26 @@ def convert_inline_math(text):
     return text
 
 
+LEADING_BOLD_MATH_RE = re.compile(r"^\*\*\$([^$]+)\$\*\*(.*)$", re.S)
+UPPER_SUBSCRIPT_RE = re.compile(r"_\{?([A-Za-z0-9]*[A-Z][A-Za-z0-9]*)\}?")
+
+
+def bullet_leading_symbol(text):
+    """Si el item de bullet empieza con un símbolo en negritas ($...$) cuyo
+    subíndice tiene una mayúscula (sin glifo Unicode disponible, ver
+    SUB_MAP), devuelve (latex, resto_del_texto) para rasterizarlo como
+    imagen en vez de texto. Si no aplica, devuelve None."""
+    m = LEADING_BOLD_MATH_RE.match(text)
+    if not m:
+        return None
+    latex, rest = m.group(1), m.group(2)
+    if not UPPER_SUBSCRIPT_RE.search(latex):
+        return None
+    return latex, rest
+
+
 LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+IMAGE_RE = re.compile(r"^!\[([^\]]*)\]\(([^)]+)\)$")
 
 
 def strip_links(text):
@@ -334,6 +353,11 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
                 math_lines.append(lines[i].split("$$")[0])
                 i += 1
             blocks.append({"type": "displaymath", "tex": "\n".join(math_lines).strip()})
+            continue
+        m = IMAGE_RE.match(stripped)
+        if m:
+            blocks.append({"type": "image", "alt": m.group(1), "src": m.group(2)})
+            i += 1
             continue
         if stripped.startswith("|"):
             table_lines = []
@@ -472,19 +496,20 @@ def parse_md(path):
 # Renderizado de fórmulas (matplotlib mathtext) y diagramas mermaid
 # --------------------------------------------------------------------------
 
-def render_formula_png(tex, out_path, fontsize=24):
+def render_formula_png(tex, out_path, fontsize=24, color="#1E2761",
+                        pad_in=(0.15, 0.12), dpi=220):
     tex = tex.replace(r"\dfrac", r"\frac")
     fig = plt.figure(figsize=(0.1, 0.1))
     txt = fig.text(0, 0, f"${tex}$", fontsize=fontsize)
     fig.canvas.draw()
     bbox = txt.get_window_extent()
-    w_in = bbox.width / fig.dpi + 0.15
-    h_in = bbox.height / fig.dpi + 0.12
+    w_in = bbox.width / fig.dpi + pad_in[0]
+    h_in = bbox.height / fig.dpi + pad_in[1]
     plt.close(fig)
     fig = plt.figure(figsize=(w_in, h_in))
     fig.text(0.5, 0.5, f"${tex}$", fontsize=fontsize, ha="center", va="center",
-              color="#1E2761")
-    fig.savefig(out_path, dpi=220, transparent=True)
+              color=color)
+    fig.savefig(out_path, dpi=dpi, transparent=True)
     plt.close(fig)
     return w_in, h_in
 
@@ -720,32 +745,66 @@ def _item_text_level(it):
     return it if isinstance(it, tuple) else (it, 0)
 
 
-def estimate_bullets_height(items, width_emu, size_pt=13.5):
+SYMBOL_IMG_GAP = 60000
+
+
+def estimate_bullets_height(items, width_emu, size_pt=13.5, img_items=None):
+    img_items = img_items or {}
     total = 0
-    for it in items:
+    for idx, it in enumerate(items):
         text, level = _item_text_level(it)
+        avail = width_emu - BULLET_MARKER_W - level * BULLET_INDENT_STEP
+        if idx in img_items:
+            info = img_items[idx]
+            rest_plain = plain_text_of(info["rest"])
+            text_avail = max(avail - info["img_w_emu"] - SYMBOL_IMG_GAP, avail * 0.3)
+            lines = count_wrapped_lines(rest_plain, emu_to_pt72(text_avail), size_pt)
+            text_h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
+            total += max(text_h, int(info["img_h_emu"]) + 55000)
+            continue
         runs = parse_inline(text)
         plain = "".join(t for t, b, i, c in runs)
-        avail = width_emu - BULLET_MARKER_W - level * BULLET_INDENT_STEP
         lines = count_wrapped_lines(plain, emu_to_pt72(avail), size_pt)
         total += int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
     return total
 
 
 def draw_bullets(slide, items, left, top, width, size_pt=13.5, numbered=False,
-                  color=BODY_COLOR, marker_color=GOLD):
+                  color=BODY_COLOR, marker_color=GOLD, img_items=None):
+    img_items = img_items or {}
     y = top
     for idx, it in enumerate(items):
         text, level = _item_text_level(it)
         indent = level * BULLET_INDENT_STEP
+        avail = width - BULLET_MARKER_W - indent
+        marker = f"{idx + 1}." if numbered else ("◦" if level else "•")
+        if idx in img_items:
+            info = img_items[idx]
+            rest_runs = parse_inline(info["rest"])
+            rest_plain = "".join(t for t, b, i, c in rest_runs)
+            text_avail = max(avail - info["img_w_emu"] - SYMBOL_IMG_GAP, avail * 0.3)
+            lines = count_wrapped_lines(rest_plain, emu_to_pt72(text_avail), size_pt)
+            text_h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
+            h = max(text_h, int(info["img_h_emu"]) + 55000)
+            mbox = add_textbox(slide, left + indent, y, BULLET_MARKER_W, h)
+            mp = mbox.text_frame.paragraphs[0]
+            set_paragraph_plain(mp, marker, size_pt, marker_color, bold=True)
+            img_x = left + indent + BULLET_MARKER_W
+            img_y = y + 6000
+            slide.shapes.add_picture(info["img_path"], Emu(int(img_x)), Emu(int(img_y)),
+                                      Emu(int(info["img_w_emu"])), Emu(int(info["img_h_emu"])))
+            text_x = img_x + info["img_w_emu"] + SYMBOL_IMG_GAP
+            tbox = add_textbox(slide, text_x, y, text_avail, h)
+            tp = tbox.text_frame.paragraphs[0]
+            set_paragraph_runs(tp, rest_runs, size_pt, color)
+            y += h
+            continue
         runs = parse_inline(text)
         plain = "".join(t for t, b, i, c in runs)
-        avail = width - BULLET_MARKER_W - indent
         lines = count_wrapped_lines(plain, emu_to_pt72(avail), size_pt)
         h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
         mbox = add_textbox(slide, left + indent, y, BULLET_MARKER_W, h)
         mp = mbox.text_frame.paragraphs[0]
-        marker = f"{idx + 1}." if numbered else ("◦" if level else "•")
         set_paragraph_plain(mp, marker, size_pt, marker_color, bold=True)
         tbox = add_textbox(slide, left + indent + BULLET_MARKER_W, y, avail, h)
         tp = tbox.text_frame.paragraphs[0]
@@ -885,7 +944,8 @@ def estimate_blockquote_height(bq_blocks, width_emu):
         if b["type"] == "para":
             h += estimate_para_height(b["text"], inner_w, 13) + 40000
         elif b["type"] == "bullets":
-            h += estimate_bullets_height(b["items"], inner_w, 13) + 40000
+            h += estimate_bullets_height(b["items"], inner_w, 13,
+                                          img_items=b.get("_img_items")) + 40000
     return h
 
 
@@ -917,7 +977,7 @@ def draw_blockquote(slide, bq_blocks, left, top, width):
             y += hh + 40000
         elif b["type"] == "bullets":
             hh = draw_bullets(slide, b["items"], left + inner_pad, y, inner_w, size_pt=13,
-                               color=NAVY, marker_color=GOLD)
+                               color=NAVY, marker_color=GOLD, img_items=b.get("_img_items"))
             y += hh + 40000
     return h
 
@@ -936,7 +996,8 @@ def estimate_block_height(b, width_emu):
     if t == "para":
         return estimate_para_height(b["text"], width_emu, 14) + GAP
     if t in ("bullets", "numbered"):
-        return estimate_bullets_height(b["items"], width_emu, 13.5) + GAP
+        return estimate_bullets_height(b["items"], width_emu, 13.5,
+                                        img_items=b.get("_img_items")) + GAP
     if t == "table":
         col_widths = compute_col_widths(b["rows"], width_emu)
         size_pt = table_font_size(b["rows"])
@@ -945,7 +1006,7 @@ def estimate_block_height(b, width_emu):
         return estimate_blockquote_height(b["blocks"], width_emu) + GAP
     if t == "citation":
         return estimate_para_height(b["text"], width_emu, 10.5, bold=False) + GAP
-    if t in ("mermaid", "displaymath"):
+    if t in ("mermaid", "displaymath", "image"):
         return b.get("img_h_emu", 1500000) + GAP
     if t == "code":
         n_lines = len(b["code"].split("\n"))
@@ -960,7 +1021,7 @@ def draw_block(slide, b, left, top, width_emu):
         return draw_para(slide, runs, left, top, width_emu, size_pt=14, color=BODY_COLOR)
     if t in ("bullets", "numbered"):
         return draw_bullets(slide, b["items"], left, top, width_emu, size_pt=13.5,
-                             numbered=(t == "numbered"))
+                             numbered=(t == "numbered"), img_items=b.get("_img_items"))
     if t == "table":
         col_widths = compute_col_widths(b["rows"], width_emu)
         size_pt = table_font_size(b["rows"])
@@ -970,7 +1031,7 @@ def draw_block(slide, b, left, top, width_emu):
     if t == "citation":
         return draw_para(slide, [(b["text"], False, True, False)], left, top, width_emu,
                           size_pt=10.5, color=GRAY)
-    if t in ("mermaid", "displaymath"):
+    if t in ("mermaid", "displaymath", "image"):
         return draw_image_block(slide, b["img_path"], b["img_w_emu"], b["img_h_emu"],
                                  left, top, width_emu)
     if t == "code":
@@ -988,9 +1049,21 @@ def draw_block(slide, b, left, top, width_emu):
 # Preprocesamiento: renderiza mermaid / display-math a PNG una sola vez
 # --------------------------------------------------------------------------
 
-def prepare_media(blocks, tmpdir, prefix):
+def prepare_media(blocks, tmpdir, prefix, md_dir="."):
     for k, b in enumerate(blocks):
-        if b["type"] == "mermaid":
+        if b["type"] == "image":
+            from PIL import Image
+            src = b["src"]
+            path = src if os.path.isabs(src) else os.path.normpath(os.path.join(md_dir, src))
+            with Image.open(path) as im:
+                w_px, h_px = im.size
+            max_w = CONTENT_W
+            max_h = 2900000
+            scale = min(max_w / w_px, max_h / h_px)
+            b["img_path"] = path
+            b["img_w_emu"] = w_px * scale
+            b["img_h_emu"] = h_px * scale
+        elif b["type"] == "mermaid":
             out = os.path.join(tmpdir, f"{prefix}_mermaid_{k}.png")
             w_px, h_px = render_mermaid_png(b["code"], out)
             max_w = CONTENT_W
@@ -1013,7 +1086,24 @@ def prepare_media(blocks, tmpdir, prefix):
             b["img_w_emu"] = w_emu
             b["img_h_emu"] = h_emu
         elif b["type"] == "blockquote":
-            prepare_media(b["blocks"], tmpdir, prefix + f"_bq{k}")
+            prepare_media(b["blocks"], tmpdir, prefix + f"_bq{k}", md_dir)
+        elif b["type"] in ("bullets", "numbered"):
+            img_items = {}
+            for ii, it in enumerate(b["items"]):
+                text, _level = _item_text_level(it)
+                sym = bullet_leading_symbol(text)
+                if not sym:
+                    continue
+                latex, rest = sym
+                out = os.path.join(tmpdir, f"{prefix}_bsym_{k}_{ii}.png")
+                size_pt = 13.5
+                w_in, h_in = render_formula_png(
+                    latex, out, fontsize=size_pt,
+                    color="#27314D", pad_in=(0.01, 0.01), dpi=300)
+                img_items[ii] = {"img_path": out, "img_w_emu": w_in * EMU_PER_IN,
+                                  "img_h_emu": h_in * EMU_PER_IN, "rest": rest}
+            if img_items:
+                b["_img_items"] = img_items
 
 
 # --------------------------------------------------------------------------
@@ -1182,10 +1272,10 @@ def add_cierre_slides(deck, title, items):
     return
 
 
-def build_deck(doc, out_pptx):
+def build_deck(doc, out_pptx, md_dir="."):
     tmpdir = tempfile.mkdtemp(prefix="mdpptx_")
     for s in doc["sections"]:
-        prepare_media(s["blocks"], tmpdir, f"sec{s['title'][:10]}")
+        prepare_media(s["blocks"], tmpdir, f"sec{s['title'][:10]}", md_dir)
 
     deck = Deck()
     add_cover_slide(deck, doc)
@@ -1296,7 +1386,8 @@ def main():
     md_path = sys.argv[1]
     out_pptx = sys.argv[2] if len(sys.argv) > 2 else os.path.splitext(md_path)[0] + ".pptx"
     doc = parse_md(md_path)
-    build_deck(doc, out_pptx)
+    md_dir = os.path.dirname(os.path.abspath(md_path))
+    build_deck(doc, out_pptx, md_dir)
     print(f"pptx generado: {out_pptx}")
     if "--no-pdf" not in sys.argv:
         pdf_path = os.path.splitext(out_pptx)[0] + ".pdf"

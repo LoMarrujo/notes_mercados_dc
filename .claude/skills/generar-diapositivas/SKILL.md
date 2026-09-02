@@ -81,9 +81,33 @@ texto se conserva, el URL se descarta porque una diapositiva no es
 clickeable). Una citación de fórmula en su propia línea (`*Fuente: ...*`) se
 distingue de una cita bibliográfica normal y se dibuja como pie de nota.
 
+También entiende una imagen en su propia línea, `![alt](ruta/relativa.png)`:
+inserta el archivo tal cual (PNG/JPG), escalado para llenar el ancho de
+contenido sin deformarse. La ruta es relativa al `.md`. A diferencia de
+`mermaid` (que se genera desde texto en cada corrida), la imagen es un
+archivo real que debe existir y versionarse junto al `.md`; si se generó con
+un script (p. ej. una figura de matplotlib/seaborn), ese script también se
+versiona junto a la imagen para que sea reproducible, no un PNG suelto sin
+origen.
+
 Todo el contenido de cada sección se dibuja; si no cabe en una diapositiva,
 el motor pagina automáticamente creando una diapositiva "(cont.)" — nunca
 recorta o resume contenido para que quepa.
+
+**Límite conocido del math inline (`$...$`) y su excepción.** El math en
+línea no es LaTeX real: convierte sub/superíndices a caracteres Unicode
+(`SUB_MAP`/`SUPER_MAP` en `md_to_pptx.py`). Unicode no tiene ningún carácter
+de subíndice para letras mayúsculas (solo dígitos y un puñado de minúsculas
+como t, n), así que `$v_N$` en texto corrido siempre pierde el subíndice
+("vN"), sin importar la notación elegida. **Excepción:** en un bullet que
+empieza con un símbolo así, `- **$v_N$**: definición...`, el generador
+detecta el subíndice mayúscula y rasteriza *solo ese símbolo* como una
+imagen (vía `render_formula_png`), preservando el subíndice real; el resto
+del texto del bullet sigue siendo texto normal. Esto no aplica dentro de
+prosa corrida (Definición, Justificación): ahí PowerPoint no soporta
+imágenes ancladas dentro de un párrafo que hace wrap, así que el símbolo se
+queda como "vN" sin subíndice — limitación aceptada, no un bug a repetir
+arreglando cada vez que aparezca.
 
 ## Estructura del deck generado
 
