@@ -16,7 +16,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Estructura de los mercados financieros
 - Participantes del mercado
 - Organización y marco regulatorio del mercado financiero
-- Matemática financiera y mecánica del mercado
+- Ciencia de la inversión y mecánica del mercado
 
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
@@ -24,7 +24,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Explicar la intermediación financiera, y clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta o participación de capital.
 - Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
 - Trazar el recorrido institucional de un instrumento en el mercado bursátil mexicano (mercado primario/secundario, custodia en Indeval, intermediación de casas de bolsa, BMV/BIVA), y ubicar el papel de las calificadoras en su riesgo de crédito.
-- Calcular el valor de un flujo en el tiempo (valor presente/futuro) y la tasa efectiva a partir de una tasa nominal.
+- Calcular el valor de un flujo en el tiempo (valor presente/futuro), la tasa efectiva a partir de una tasa nominal, y la tasa interna de retorno de una inversión para decidir si conviene realizarla frente a otras alternativas.
 
 ### 2. Mercado de Deuda [Evaluación al finalizar]
 
@@ -71,7 +71,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_matematica_financiera.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano).
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_ciencia_inversion.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano).
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 
@@ -89,6 +89,7 @@ No necesitas saber usar Git. Simplemente:
 - Fabozzi, F. J., & Fabozzi, F. A. (2021). *Bond Markets, Analysis, and Strategies* (10th ed.). MIT Press.
 - Fabozzi, F. J., Modigliani, F., & Jones, F. J. (2010). *Foundations of Financial Markets and Institutions* (4th ed.). Pearson.
 - Mishkin, F. S., & Eakins, S. G. (2024). *Financial Markets and Institutions* (10th ed.). Pearson.
+- Luenberger, D. G. (1998). *Investment Science*. Oxford University Press.
 - Hull, J. C. (2022). *Options, Futures, and Other Derivatives* (11th ed.). Pearson.
 - Linton, O. (2019). *Financial Econometrics: Models and Methods*. Cambridge University Press.
 - ...
