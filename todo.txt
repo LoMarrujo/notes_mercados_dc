@@ -17,4 +17,7 @@ Unit 1.
 
 Unit 2.
 
-- (Pearson Series in Finance) Frederic S. Mishkin, Stanley Eakins - Financial Markets and Institutions (8th Edition)-Pearson (2014) for debt market intro. [c. 11, 12]
+- Done: split into 0_caracteristicas (institutional/functional intro + vocab), 1_instrumentos_deuda,
+    2_valuacion_instrumentos_deuda (vector-form formulas + real 2026 market data) and 3_riesgos_mercado_deuda
+    (Mishkin c. 11-12 for the debt market intro, Luenberger c. 3 "Quality Ratings" pp. 53-54 for calificaciones crediticias).
+- practica_unidad2.md still doesn't exist (linked from all four theory files but never written)

@@ -98,6 +98,7 @@ Se dividen, por convención, según el plazo de los recursos que canalizan; es u
 - Los **mercados de derivados** (futuros, opciones, swaps) son un tercer segmento, definido por el instrumento y no por el plazo; se estudian aparte más adelante en el curso.
 - Es, sobre todo, un mercado **mayorista**: operaciones grandes entre bancos, gobierno y empresas, no pensado para el ahorrador individual. En México, CETES es la excepción visible: es accesible al público a través de Cetesdirecto.
 - El banco central lo usa como canal de política monetaria: Banxico compra y vende valores gubernamentales en operaciones de mercado abierto, lo que mueve la **TIIE** (tasa de interés interbancaria de equilibrio), la tasa de referencia de corto plazo de la economía.
+- La Unidad 3 de este curso se llama "Mercado de Capitales", pero usa un criterio distinto (instrumentos de participación: acciones, FIBRAs, CKD, CERPIs), no el de plazo de aquí; ver la distinción completa en [`0_caracteristicas_mercado_deuda.md`](../unidad2/0_caracteristicas_mercado_deuda.md#2-el-mercado-de-deuda-frente-a-otros-mercados-financieros).
 
 ### 4. Agentes económicos y su acceso a los mercados
 
