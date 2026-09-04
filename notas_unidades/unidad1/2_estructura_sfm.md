@@ -16,7 +16,7 @@ Que el estudiante ubique qué autoridad del Sistema Financiero Mexicano regula, 
 | IV  | Protección al usuario financiero en la práctica      | IPAB (seguro de depósito), CONDUSEF (reclamación formal), Buró de Entidades Financieras/SIPRES                     |
 | V   | Panorama de los sistemas financieros internacionales | Modelos bank-based/market-based y equivalencias funcionales al SFM                                                 |
 
-> La práctica de este tema está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
+> La práctica de este tema está en [`practica_2_estructura_mecanica.md`](../../practicas/unidad1/practica_2_estructura_mecanica.md).
 
 ---
 

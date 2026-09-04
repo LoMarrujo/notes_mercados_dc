@@ -2,63 +2,7 @@
 
 **Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
-Ejercicios, talleres y casos de la Unidad 1, aplicando los conceptos de [`2_estructura_sfm.md`](../../notas_unidades/unidad1/2_estructura_sfm.md), [`3_mecanica_mercado.md`](../../notas_unidades/unidad1/3_mecanica_mercado.md) y [`4_ciencia_inversion.md`](../../notas_unidades/unidad1/4_ciencia_inversion.md). Los ejercicios de Activo Financiero, Mercado de Dinero y Capitales, Intermediación Financiera y Emisor del Activo Financiero están en [`practica_1_intermediacion.md`](practica_1_intermediacion.md).
-
----
-
-## Estructura del Sistema Financiero Mexicano
-
-### Dinámica grupal: mapeo de entidades
-
-Actividad colaborativa para fijar el organigrama del Sistema Financiero Mexicano.
-
-1. **Trazar el organigrama**: en el pizarrón o de forma colaborativa, el grupo reconstruye la estructura completa del SFM visto en la sesión teórica.
-2. **Asignar roles**: cada alumno o equipo asume el papel de una institución: SHCP, Banxico, CNBV, CNSF, Consar, IPAB o CONDUSEF.
-3. **Explicación voluntaria**: se abre el micrófono: los equipos que lo deseen explican brevemente qué supervisa su institución.
-4. **Verificar en el SIPRES**: buscan una institución real en el SIPRES de la CONDUSEF para comprobar si está registrada: la misma consulta que podrán hacer en el futuro antes de contratar un servicio financiero.
-5. **Consultar el Buró de Entidades Financieras**: buscan esa misma institución en el Buró para revisar su historial de quejas, y distinguen esta consulta (quejas históricas) de la del SIPRES (existencia legal).
-
-> SIPRES (Sistema de Registro de Prestadores de Servicios Financieros): webapps.CONDUSEF.gob.mx/SIPRES
-
-### Análisis de casos prácticos
-
-Tres preguntas rápidas de la vida real, sin necesidad de software.
-
-| Caso | Situación                   | Pregunta                                                                                          | Respuesta |
-| ---- | --------------------------- | ------------------------------------------------------------------------------------------------- | --------- |
-| A    | Un banco comercial quiebra  | Una persona tiene sus ahorros ahí. ¿Quién protege su dinero y hasta qué monto?                    | IPAB      |
-| B    | Cobro abusivo de comisiones | Una sofom o fintech abusa en el cobro a un cliente. ¿Ante qué organismo se acude?                 | CONDUSEF  |
-| C    | Emisión de deuda bursátil   | Una empresa mexicana quiere emitir certificados de deuda en la bolsa. ¿Quién autoriza la emisión? | CNBV      |
-
-- **Seguimiento al caso A:** ¿qué debe hacer la persona para reclamar el seguro de depósito, y hasta qué monto la cubre el IPAB? → No requiere ningún trámite especial: el IPAB paga automáticamente, hasta 400,000 UDIs por persona por institución.
-- **Seguimiento al caso B:** ¿cuáles son los pasos generales para presentar una reclamación formal ante CONDUSEF? → (1) queja por escrito ante la propia institución, (2) si no se resuelve, acudir a CONDUSEF con la documentación del caso, (3) CONDUSEF media y, si no hay acuerdo, puede emitir un dictamen técnico.
-
-### Ejercicio: equivalencias internacionales
-
-Por cada autoridad del SFM, indica (a) su equivalente funcional en Estados Unidos y (b) si el país donde opera se clasifica como bank-based o market-based.
-
-| Autoridad del SFM | Equivalente en EE. UU. | Modelo del país    |
-| ----------------- | ---------------------- | ------------------ |
-| Banxico           | Reserva Federal (Fed)  | México: bank-based |
-| CNBV              | SEC                    | México: bank-based |
-| IPAB              | FDIC                   | México: bank-based |
-| CONDUSEF          | CFPB                   | México: bank-based |
-
-> Nota para el instructor: la columna "Modelo del país" es la misma en las cuatro filas a propósito: el modelo (bank-based/market-based) es una propiedad del país, no de la autoridad. El alumno debe notar que EE. UU., aunque tenga agencias equivalentes a cada una del SFM, es un sistema market-based, mientras que México es bank-based: equivalencia funcional no implica mismo modelo.
-
----
-
-## Mecánica Operativa del Mercado
-
-### Taller: recorrido institucional de un CETE
-
-Traza el camino completo de un CETE, identificando qué institución interviene en cada paso:
-
-1. **Subasta primaria**: Banxico subasta el CETE a bancos y casas de bolsa. → *Banxico*
-2. **Colocación con el inversionista final**: una casa de bolsa vende el CETE a un cliente (persona física o institucional). → *Casa de bolsa*
-3. **Custodia y registro**: el título queda registrado electrónicamente a nombre del inversionista. → *Indeval*
-4. **Mercado secundario**: el inversionista decide venderlo antes de su vencimiento a otro inversionista. → *Casa de bolsa (ejecuta la operación) + Indeval (liquida el cambio de dueño)*
-5. **Vencimiento**: Banxico paga el valor nominal al tenedor final registrado en Indeval. → *Banxico*
+Ejercicios de la Unidad 1, aplicando los conceptos de [`4_ciencia_inversion.md`](../../notas_unidades/unidad1/4_ciencia_inversion.md). Los ejercicios de Activo Financiero, Mercado de Dinero y Capitales, Intermediación Financiera y Emisor del Activo Financiero están en [`practica_1_intermediacion.md`](practica_1_intermediacion.md); los de Estructura del SFM y Mecánica de Mercado están en [`practica_2_estructura_mecanica.md`](practica_2_estructura_mecanica.md).
 
 ---
 

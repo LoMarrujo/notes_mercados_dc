@@ -15,7 +15,7 @@ Que el estudiante trace el recorrido institucional de un instrumento en el merca
 | III | Calificadoras y riesgo de crédito                    | S&P, Moody's, HR Ratings, Fitch; a qué instrumentos aplica |
 | IV  | El análogo estadounidense                            | Equivalente funcional de cada institución en EE. UU.       |
 
-> La práctica de este tema (taller) está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
+> La práctica de este tema (taller) está en [`practica_2_estructura_mecanica.md`](../../practicas/unidad1/practica_2_estructura_mecanica.md).
 
 ---
 
