@@ -160,29 +160,43 @@ def to_roman(n):
 # Conversión de LaTeX simple a texto unicode (para matemática en línea)
 # --------------------------------------------------------------------------
 
-SUPER_MAP = {"0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵",
-             "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹", "+": "⁺", "-": "⁻",
-             "N": "ᴺ", "n": "ⁿ", "t": "ᵗ", "r": "ʳ", "i": "ⁱ"}
-SUB_MAP = {"0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅",
-           "6": "₆", "7": "₇", "8": "₈", "9": "₉", "t": "ₜ", "n": "ₙ"}
+GREEK_MAP = {r"\Delta": "Δ", r"\delta": "δ", r"\alpha": "α", r"\beta": "β",
+             r"\gamma": "γ", r"\sigma": "σ", r"\mu": "μ", r"\pi": "π",
+             r"\lambda": "λ", r"\theta": "θ", r"\Sigma": "Σ", r"\Pi": "Π"}
+
+# Un subíndice inline ($x_{ab}$) no se aproxima con caracteres Unicode:
+# varias letras (b, c, d, f, g, q, w, y, z) no tienen glifo de subíndice en
+# ningún bloque Unicode, así que un subíndice como "efe" o "N" siempre
+# quedaría a medias. En vez de eso, el texto del subíndice se envuelve en
+# estos marcadores invisibles; parse_inline los detecta y separa ese tramo
+# en su propio run con formato de subíndice real (baseline negativo +
+# tamaño reducido), igual que el botón de subíndice de PowerPoint/Word.
+SUB_OPEN, SUB_CLOSE = "", ""
+
+
+SUP_OPEN, SUP_CLOSE = chr(0xE012), chr(0xE013)
 
 
 def _latex_frag_to_text(s):
     s = re.sub(r"\\d?frac\{([^{}]+)\}\{([^{}]+)\}", r"(\1)/(\2)", s)
     s = s.replace(r"\times", "×").replace(r"\neq", "≠").replace(r"\cdot", "·")
+    s = s.replace(r"\to", "→").replace(r"\rightarrow", "→").replace(r"\longrightarrow", "→")
+    s = s.replace(r"\infty", "∞")
     s = s.replace(r"\dots", "…").replace(r"\ldots", "…")
     s = s.replace(r"\qquad", "   ").replace(r"\quad", " ")
     s = s.replace(r"\approx", "≈").replace(r"\leq", "≤").replace(r"\geq", "≥")
+    for latex, glyph in GREEK_MAP.items():
+        s = s.replace(latex + " ", glyph).replace(latex, glyph)
 
     def sup_repl(m):
         body = m.group(1) if m.group(1) is not None else m.group(2)
-        return "".join(SUPER_MAP.get(c, c) for c in body)
+        return SUP_OPEN + body + SUP_CLOSE
 
     s = re.sub(r"\^\{([^{}]+)\}|\^(\S)", sup_repl, s)
 
     def sub_repl(m):
         body = m.group(1) if m.group(1) is not None else m.group(2)
-        return "".join(SUB_MAP.get(c, c) for c in body)
+        return SUB_OPEN + body + SUB_CLOSE
 
     s = re.sub(r"_\{([^{}]+)\}|_(\S)", sub_repl, s)
     s = s.replace("\\", "")
@@ -229,30 +243,59 @@ def strip_links(text):
 INLINE_TOKEN_RE = re.compile(r"(\*\*.+?\*\*|`[^`]+?`|\*[^*\n]+?\*)")
 
 
+def _split_subscript(s, bold, italic, code):
+    """Divide s en tramos (text,bold,italic,code,script) usando los
+    marcadores SUB_OPEN/SUB_CLOSE y SUP_OPEN/SUP_CLOSE que
+    _latex_frag_to_text pone alrededor de un sub/superíndice, para que ese
+    tramo se dibuje con formato real (baseline negativo/positivo), no como
+    texto normal. `script` es None, "sub" o "sup"."""
+    out = []
+    pos = 0
+    while True:
+        i_sub = s.find(SUB_OPEN, pos)
+        i_sup = s.find(SUP_OPEN, pos)
+        candidates = [(i, kind) for i, kind in ((i_sub, "sub"), (i_sup, "sup")) if i != -1]
+        if not candidates:
+            if pos < len(s):
+                out.append((s[pos:], bold, italic, code, None))
+            break
+        i, kind = min(candidates, key=lambda x: x[0])
+        close = SUB_CLOSE if kind == "sub" else SUP_CLOSE
+        if i > pos:
+            out.append((s[pos:i], bold, italic, code, None))
+        j = s.find(close, i + 1)
+        if j == -1:
+            out.append((s[i + 1:], bold, italic, code, None))
+            break
+        out.append((s[i + 1:j], bold, italic, code, kind))
+        pos = j + 1
+    return out
+
+
 def parse_inline(text):
-    """Devuelve lista de runs (text,bold,italic,code)."""
+    """Devuelve lista de runs (text,bold,italic,code,sub)."""
     text = convert_inline_math(text)
     text = strip_links(text)
     tokens = []
     pos = 0
     for m in INLINE_TOKEN_RE.finditer(text):
         if m.start() > pos:
-            tokens.append((text[pos:m.start()], False, False, False))
+            tokens.extend(_split_subscript(text[pos:m.start()], False, False, False))
         s = m.group(0)
         if s.startswith("**"):
-            tokens.append((s[2:-2], True, False, False))
+            tokens.extend(_split_subscript(s[2:-2], True, False, False))
         elif s.startswith("`"):
-            tokens.append((s[1:-1], False, False, True))
+            tokens.extend(_split_subscript(s[1:-1], False, False, True))
         else:
-            tokens.append((s[1:-1], False, True, False))
+            tokens.extend(_split_subscript(s[1:-1], False, True, False))
         pos = m.end()
     if pos < len(text):
-        tokens.append((text[pos:], False, False, False))
+        tokens.extend(_split_subscript(text[pos:], False, False, False))
     return [t for t in tokens if t[0] != ""]
 
 
 def plain_text_of(text):
-    return "".join(t for t, b, i, c in parse_inline(text))
+    return "".join(t for t, b, i, c, sub in parse_inline(text))
 
 
 # --------------------------------------------------------------------------
@@ -284,9 +327,26 @@ def parse_blockquote(bq_lines):
                 i += 1
             blocks.append({"type": "bullets", "items": items})
             continue
+        if bq_lines[i].startswith("$$"):
+            line = bq_lines[i]
+            if line.endswith("$$") and len(line) > 4:
+                blocks.append({"type": "displaymath", "tex": line[2:-2]})
+                i += 1
+                continue
+            math_lines = [line[2:]]
+            i += 1
+            while i < n and "$$" not in bq_lines[i]:
+                math_lines.append(bq_lines[i])
+                i += 1
+            if i < n:
+                math_lines.append(bq_lines[i].split("$$")[0])
+                i += 1
+            blocks.append({"type": "displaymath", "tex": "\n".join(math_lines).strip()})
+            continue
         para = [bq_lines[i]]
         i += 1
-        while i < n and bq_lines[i] != "" and not re.match(r"^[-*]\s+", bq_lines[i]):
+        while i < n and bq_lines[i] != "" and not re.match(r"^[-*]\s+", bq_lines[i]) \
+                and not bq_lines[i].startswith("$$"):
             para.append(bq_lines[i])
             i += 1
         blocks.append({"type": "para", "text": " ".join(para)})
@@ -385,8 +445,31 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
                 if base_indent is None:
                     base_indent = indent
                 level = max(0, (indent - base_indent) // 2)
-                items.append((re.sub(r"^[-*]\s+", "", raw.strip()), level))
+                item_text = re.sub(r"^[-*]\s+", "", raw.strip())
                 i += 1
+                extra_paragraphs = []
+                # Párrafo(s) de continuación del mismo item: línea(s) en blanco
+                # seguidas de texto indentado más que el marcador (sintaxis
+                # estándar de Markdown para un list item con varios párrafos).
+                while i < n and lines[i].strip() == "":
+                    j = i
+                    while j < n and lines[j].strip() == "":
+                        j += 1
+                    if j >= n:
+                        break
+                    nxt = lines[j]
+                    nxt_indent = len(nxt) - len(nxt.lstrip(" "))
+                    nxt_stripped = nxt.strip()
+                    if nxt_indent > base_indent and not re.match(r"^[-*]\s+", nxt_stripped):
+                        para_lines = []
+                        while j < n and lines[j].strip() != "" and not re.match(r"^[-*]\s+", lines[j].strip()):
+                            para_lines.append(lines[j].strip())
+                            j += 1
+                        extra_paragraphs.append(" ".join(para_lines))
+                        i = j
+                    else:
+                        break
+                items.append((item_text, level, extra_paragraphs))
             blocks.append({"type": "bullets", "items": items})
             continue
         if re.match(r"^\d+\.\s+", stripped):
@@ -640,13 +723,17 @@ def render_mermaid_png(code, out_path):
 # Helpers de bajo nivel para construir shapes de texto
 # --------------------------------------------------------------------------
 
-def _apply_run(run, text, bold, italic, code, size_pt, color, font=FONT_BODY):
+def _apply_run(run, text, bold, italic, code, size_pt, color, font=FONT_BODY, script=None):
     run.text = text
-    run.font.size = Pt(size_pt)
+    run.font.size = Pt(size_pt * 0.7) if script else Pt(size_pt)
     run.font.bold = bool(bold)
     run.font.italic = bool(italic)
     run.font.name = FONT_CODE if code else font
     run.font.color.rgb = color
+    if script == "sub":
+        run.font._rPr.set("baseline", "-25000")
+    elif script == "sup":
+        run.font._rPr.set("baseline", "30000")
 
 
 def add_textbox(slide, left, top, width, height, size_pt=14, color=BODY_COLOR,
@@ -675,10 +762,10 @@ def set_paragraph_runs(paragraph, runs, size_pt, color, align=PP_ALIGN.LEFT,
     if bullet_prefix:
         r = paragraph.add_run()
         _apply_run(r, bullet_prefix, True, False, False, size_pt, NAVY)
-    for (t, b, i, c) in runs:
+    for (t, b, i, c, script) in runs:
         r = paragraph.add_run()
         rc = bold_color if (b and bold_color) else color
-        _apply_run(r, t, b, i, c, size_pt, rc)
+        _apply_run(r, t, b, i, c, size_pt, rc, script=script)
 
 
 def add_eyebrow_title(slide, eyebrow, title, page_num=None, title_size=32):
@@ -719,14 +806,14 @@ def estimate_para_height(text_or_runs, width_emu, size_pt=14, bold=False):
     if isinstance(text_or_runs, str):
         plain = text_or_runs
     else:
-        plain = "".join(t for t, b, i, c in text_or_runs)
+        plain = "".join(t for t, b, i, c, sub in text_or_runs)
     lines = count_wrapped_lines(plain, emu_to_pt72(width_emu), size_pt, bold=bold)
     return int(lines * size_pt * LINE_SP * EMU_PER_PT + 30000)
 
 
 def draw_para(slide, runs, left, top, width, size_pt=14, color=BODY_COLOR,
               align=PP_ALIGN.LEFT, font=FONT_BODY):
-    plain = "".join(t for t, b, i, c in runs)
+    plain = "".join(t for t, b, i, c, sub in runs)
     lines = count_wrapped_lines(plain, emu_to_pt72(width), size_pt)
     h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 30000)
     box = add_textbox(slide, left, top, width, h)
@@ -742,7 +829,18 @@ BULLET_INDENT_STEP = 260000
 
 
 def _item_text_level(it):
-    return it if isinstance(it, tuple) else (it, 0)
+    if isinstance(it, tuple):
+        return it[0], it[1]
+    return it, 0
+
+
+def _item_extra_paragraphs(it):
+    if isinstance(it, tuple) and len(it) > 2:
+        return it[2]
+    return []
+
+
+PARA_GAP = 40000
 
 
 SYMBOL_IMG_GAP = 60000
@@ -763,9 +861,14 @@ def estimate_bullets_height(items, width_emu, size_pt=13.5, img_items=None):
             total += max(text_h, int(info["img_h_emu"]) + 55000)
             continue
         runs = parse_inline(text)
-        plain = "".join(t for t, b, i, c in runs)
+        plain = "".join(t for t, b, i, c, sub in runs)
         lines = count_wrapped_lines(plain, emu_to_pt72(avail), size_pt)
-        total += int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
+        item_h = lines * size_pt * LINE_SP * EMU_PER_PT
+        for extra in _item_extra_paragraphs(it):
+            extra_plain = "".join(t for t, b, i, c, sub in parse_inline(extra))
+            extra_lines = count_wrapped_lines(extra_plain, emu_to_pt72(avail), size_pt)
+            item_h += PARA_GAP + extra_lines * size_pt * LINE_SP * EMU_PER_PT
+        total += int(item_h + 55000)
     return total
 
 
@@ -781,7 +884,7 @@ def draw_bullets(slide, items, left, top, width, size_pt=13.5, numbered=False,
         if idx in img_items:
             info = img_items[idx]
             rest_runs = parse_inline(info["rest"])
-            rest_plain = "".join(t for t, b, i, c in rest_runs)
+            rest_plain = "".join(t for t, b, i, c, sub in rest_runs)
             text_avail = max(avail - info["img_w_emu"] - SYMBOL_IMG_GAP, avail * 0.3)
             lines = count_wrapped_lines(rest_plain, emu_to_pt72(text_avail), size_pt)
             text_h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
@@ -800,15 +903,26 @@ def draw_bullets(slide, items, left, top, width, size_pt=13.5, numbered=False,
             y += h
             continue
         runs = parse_inline(text)
-        plain = "".join(t for t, b, i, c in runs)
+        plain = "".join(t for t, b, i, c, sub in runs)
         lines = count_wrapped_lines(plain, emu_to_pt72(avail), size_pt)
-        h = int(lines * size_pt * LINE_SP * EMU_PER_PT + 55000)
+        extras = _item_extra_paragraphs(it)
+        extra_runs_list = [parse_inline(extra) for extra in extras]
+        h = lines * size_pt * LINE_SP * EMU_PER_PT
+        for extra_runs in extra_runs_list:
+            extra_plain = "".join(t for t, b, i, c, sub in extra_runs)
+            extra_lines = count_wrapped_lines(extra_plain, emu_to_pt72(avail), size_pt)
+            h += PARA_GAP + extra_lines * size_pt * LINE_SP * EMU_PER_PT
+        h = int(h + 55000)
         mbox = add_textbox(slide, left + indent, y, BULLET_MARKER_W, h)
         mp = mbox.text_frame.paragraphs[0]
         set_paragraph_plain(mp, marker, size_pt, marker_color, bold=True)
         tbox = add_textbox(slide, left + indent + BULLET_MARKER_W, y, avail, h)
         tp = tbox.text_frame.paragraphs[0]
         set_paragraph_runs(tp, runs, size_pt, color)
+        for extra_runs in extra_runs_list:
+            ep = tbox.text_frame.add_paragraph()
+            ep.space_before = Emu(PARA_GAP)
+            set_paragraph_runs(ep, extra_runs, size_pt, color)
         y += h
     return y - top
 
@@ -946,6 +1060,8 @@ def estimate_blockquote_height(bq_blocks, width_emu):
         elif b["type"] == "bullets":
             h += estimate_bullets_height(b["items"], inner_w, 13,
                                           img_items=b.get("_img_items")) + 40000
+        elif b["type"] == "displaymath":
+            h += b.get("img_h_emu", 900000) + 40000
     return h
 
 
@@ -978,6 +1094,10 @@ def draw_blockquote(slide, bq_blocks, left, top, width):
         elif b["type"] == "bullets":
             hh = draw_bullets(slide, b["items"], left + inner_pad, y, inner_w, size_pt=13,
                                color=NAVY, marker_color=GOLD, img_items=b.get("_img_items"))
+            y += hh + 40000
+        elif b["type"] == "displaymath":
+            hh = draw_image_block(slide, b["img_path"], b["img_w_emu"], b["img_h_emu"],
+                                   left + inner_pad, y, inner_w)
             y += hh + 40000
     return h
 
@@ -1164,6 +1284,11 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
                 nxt_h = estimate_block_height(blocks[idx + 1], CONTENT_W)
                 if h + nxt_h > avail:
                     break
+            if b["type"] == "image" and idx + 1 < len(blocks) and placed_any and \
+                    blocks[idx + 1]["type"] == "blockquote":
+                nxt_h = estimate_block_height(blocks[idx + 1], CONTENT_W)
+                if h + nxt_h > avail:
+                    break
             if h > avail and placed_any:
                 break
             if h > avail and b["type"] == "table":
@@ -1258,7 +1383,7 @@ def add_cierre_slides(deck, title, items):
         placed = 0
         while idx < len(blocks):
             runs = parse_inline(blocks[idx]["text"])
-            plain = "".join(t for t, b, i, c in runs)
+            plain = "".join(t for t, b, i, c, sub in runs)
             lines = count_wrapped_lines(plain, emu_to_pt72(10332720), 16)
             h = int(lines * 16 * 1.35 * EMU_PER_PT + 60000)
             if y + h > BODY_BOTTOM_MAX and placed > 0:
@@ -1316,7 +1441,7 @@ def build_deck(doc, out_pptx, md_dir="."):
     cierre_items = []
     for blk in doc["cierre"]:
         if blk["type"] == "bullets":
-            cierre_items.extend(text for text, level in blk["items"])
+            cierre_items.extend(_item_text_level(it)[0] for it in blk["items"])
         elif blk["type"] == "para":
             cierre_items.append(blk["text"])
     add_cierre_slides(deck, doc["title"], cierre_items)
@@ -1324,7 +1449,7 @@ def build_deck(doc, out_pptx, md_dir="."):
     fuentes_items = []
     for blk in doc["fuentes"]:
         if blk["type"] == "bullets":
-            fuentes_items.extend(text for text, level in blk["items"])
+            fuentes_items.extend(_item_text_level(it)[0] for it in blk["items"])
         elif blk["type"] == "para":
             fuentes_items.append(blk["text"])
     fuentes_page = flow_blocks(deck, "PREPARACIÓN DOCENTE", "Fuentes y referencias recomendadas",
