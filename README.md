@@ -21,9 +21,9 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
 - Distinguir un activo financiero de otros tipos de activo, al emisor del inversionista en una transacción dada, y clasificarlo según su plazo en mercado de dinero o de capitales.
-- Explicar la intermediación financiera, y clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta o participación de capital.
+- Explicar la intermediación financiera, y clasificar un activo financiero según quién lo emite: deuda directa, deuda indirecta, o participación de capital.
 - Ubicar qué autoridad del Sistema Financiero Mexicano regula, supervisa o protege (SHCP, Banxico, CNBV, CNSF, Consar, IPAB, CONDUSEF).
-- Trazar el recorrido institucional de un instrumento en el mercado bursátil mexicano (mercado primario/secundario, custodia en Indeval, intermediación de casas de bolsa, BMV/BIVA), y ubicar el papel de las calificadoras en su riesgo de crédito.
+- Trazar el recorrido de un instrumento en el mercado bursátil mexicano (mercado primario/secundario).
 - Calcular el valor de un flujo en el tiempo (valor presente/futuro), la tasa efectiva a partir de una tasa nominal, y la tasa interna de retorno de una inversión para decidir si conviene realizarla frente a otras alternativas.
 
 ### 2. Mercado de Deuda [Evaluación al finalizar]

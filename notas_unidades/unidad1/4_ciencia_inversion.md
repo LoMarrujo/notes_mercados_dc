@@ -21,7 +21,7 @@ Que el estudiante calcule el valor de un flujo en el tiempo (valor presente/futu
 | IX   | Criterios de evaluación: VPN vs. TIR              | Cuándo coinciden, cuándo no, y cuál usar para decidir entre alternativas                                                    |
 | X    | Tasa nominal (TNA) vs. tasa efectiva (TEA)        | Convención de cotización de tasas: por qué la efectiva siempre es mayor o igual, hasta el límite de capitalización continua |
 
-> La práctica de este tema (ejercicios) está en [`practica_unidad1.md`](../../practicas/unidad1/practica_unidad1.md).
+> La práctica de este tema (ejercicios) está en [`practica_3_ciencia_inversion.md`](../../practicas/unidad1/practica_3_ciencia_inversion.md).
 
 ---
 
