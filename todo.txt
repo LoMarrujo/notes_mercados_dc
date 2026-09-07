@@ -5,6 +5,7 @@ README.
 
 Overall:
 - Plantear objetivos como preguntas.
+- "Mas mejores" ejemplos
 - Practicas a pdfs tambien.
 - Eliminar palabras de mas en .pdf. -> Skill de buenas practicas de presentaciones.
 
@@ -21,3 +22,7 @@ Unit 2.
     2_valuacion_instrumentos_deuda (vector-form formulas + real 2026 market data) and 3_riesgos_mercado_deuda
     (Mishkin c. 11-12 for the debt market intro, Luenberger c. 3 "Quality Ratings" pp. 53-54 for calificaciones crediticias).
 - practica_unidad2.md still doesn't exist (linked from all four theory files but never written)
+
+
+Misc:
+    - Errata: FIBRA es Fideicomisos de Inversión en Bienes Raíces.
