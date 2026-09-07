@@ -28,6 +28,7 @@ IMG_DIR = os.path.dirname(os.path.abspath(__file__))
 OUT_INTERES = os.path.join(IMG_DIR, "interes_simple_vs_compuesto.png")
 OUT_TNA_TEA = os.path.join(IMG_DIR, "tna_vs_tea_continua.png")
 OUT_DETERMINISTICO = os.path.join(IMG_DIR, "flujo_deterministico.png")
+OUT_PRESTAMO = os.path.join(IMG_DIR, "flujo_prestamo.png")
 OUT_BINOMIAL = os.path.join(IMG_DIR, "arbol_binomial.png")
 OUT_LATTICE = os.path.join(IMG_DIR, "red_binomial.png")
 OUT_TRINOMIAL = os.path.join(IMG_DIR, "arbol_multinomial.png")
@@ -180,25 +181,21 @@ def fig_tna_vs_tea_continua():
     print(f"figura generada: {OUT_TNA_TEA}")
 
 
-def fig_flujo_deterministico():
+def fig_flujo_efectivo(periods, flows, out_path, titulo):
     """Diagrama de flujo de efectivo determinístico: linea de tiempo con
     una barra vertical por flujo, hacia arriba si es entrada y hacia abajo
     si es salida. La altura usa una escala de raiz cuadrada (monotónica,
-    preserva el orden) en vez de lineal: con -1,000/+100/+100/+1,100
-    lineales, los flujos de $100 quedan casi invisibles junto a los de
-    ~$1,000; la raiz cuadrada los mantiene legibles sin dejar de mostrar
-    que los flujos grandes son mayores."""
-    periods = [0, 1, 2, 3]
-    flows = [-1000, 100, 100, 1100]
-
+    preserva el orden) en vez de lineal, para que los flujos chicos no
+    queden invisibles junto a los grandes."""
     def scale(f):
         return np.sign(f) * np.sqrt(abs(f))
 
     fig, ax = plt.subplots(figsize=(7.5, 3.4))
     ax.axhline(0, color=LGRAY, lw=1.4, zorder=1)
-    ax.annotate("", xy=(3.55, 0), xytext=(-0.35, 0),
+    t_min, t_max = min(periods), max(periods)
+    ax.annotate("", xy=(t_max + 0.55, 0), xytext=(t_min - 0.35, 0),
                 arrowprops={"arrowstyle": "-|>", "color": LGRAY, "lw": 1.4})
-    ax.text(3.6, 0, "tiempo", va="center", fontsize=10, color=GRAY)
+    ax.text(t_max + 0.6, 0, "tiempo", va="center", fontsize=10, color=GRAY)
 
     for t, f in zip(periods, flows):
         y = scale(f)
@@ -213,26 +210,27 @@ def fig_flujo_deterministico():
                     textcoords="offset points", ha="center",
                     va="bottom" if f < 0 else "top", fontsize=10, color=GRAY)
 
-    ax.set_xlim(-0.6, 4.3)
-    ax.set_ylim(-40, 44)
+    y_max = max(abs(scale(f)) for f in flows) * 1.335
+    ax.set_xlim(t_min - 0.6, t_max + 1.3)
+    ax.set_ylim(-y_max, y_max)
     ax.axis("off")
-    ax.set_title("Flujo de efectivo determinístico", fontsize=12.5, color=NAVY,
+    ax.set_title(titulo, fontsize=12.5, color=NAVY,
                   fontweight="bold", loc="left", pad=10)
     fig.tight_layout()
-    fig.savefig(OUT_DETERMINISTICO, dpi=200, facecolor="white")
-    print(f"figura generada: {OUT_DETERMINISTICO}")
+    fig.savefig(out_path, dpi=200, facecolor="white")
+    print(f"figura generada: {out_path}")
 
 
 def fig_arbol_binomial():
-    """Arbol binomial de un periodo: comprar hoy en $100, subir a $130 o
-    bajar a $80 en un año, cada rama con probabilidad 0.5."""
+    """Arbol binomial de un periodo: comprar hoy en $100, subir a $130
+    (p = 0.2) o bajar a $80 (p = 0.8) en un año."""
     fig, ax = plt.subplots(figsize=(6, 3.2))
 
     ax.annotate("", xy=(0, 0), xytext=(0, -1),
                 arrowprops={"arrowstyle": "-|>", "color": GOLD, "lw": 2.6, "mutation_scale": 16})
     ax.text(0, -1.18, "$100", ha="center", va="top", fontsize=11, color=BODY, fontweight="bold")
 
-    ramas = [("$130", 1, "p = 0.5", NAVY), ("$80", -1, "p = 0.5", NAVY)]
+    ramas = [("$130", 1, "p = 0.2", NAVY), ("$80", -1, "p = 0.8", NAVY)]
     for label, y, prob, color in ramas:
         ax.plot([0, 1], [0, y], color=LGRAY, lw=1.6, zorder=1)
         ax.scatter([1], [y], s=100, color=color, zorder=3, edgecolor="white", linewidth=1)
@@ -263,7 +261,10 @@ def _standalone(panel_fn, out_path, figsize=(6.5, 3.2)):
 def main():
     fig_interes_simple_vs_compuesto()
     fig_tna_vs_tea_continua()
-    fig_flujo_deterministico()
+    fig_flujo_efectivo([0, 1, 2, 3], [-1000, 80, 80, 1080],
+                        OUT_DETERMINISTICO, "Flujo de efectivo de un Bono M")
+    fig_flujo_efectivo([0, 1, 2, 3], [5000, -2000, -2000, -2000],
+                        OUT_PRESTAMO, "Flujo de efectivo de un crédito bancario")
     fig_arbol_binomial()
     _standalone(panel_lattice, OUT_LATTICE)
     _standalone(panel_trinomial, OUT_TRINOMIAL)
