@@ -22,28 +22,28 @@ Que el estudiante calcule el precio de un instrumento de deuda a partir de sus f
 
 ### 1. Valuación a descuento
 
-Un instrumento a descuento (CETE, papel comercial) tiene un solo flujo distinto de cero, el valor nominal al vencimiento: $(c_0, c_1, \ldots, c_N) = (-v_0,\ 0,\ \ldots,\ 0,\ v_N)$. Su precio es exactamente la fórmula de valor presente de un flujo único de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#5-valor-futuro-y-valor-presente-de-un-flujo-único), sección 5, con un solo periodo ($N=1$):
+Un instrumento a descuento (CETE, papel comercial) tiene un solo flujo distinto de cero, el valor nominal al vencimiento: $(c_0, c_1, \ldots, c_N) = (-v_0,\ 0,\ \ldots,\ 0,\ v_N)$. Su precio es exactamente la fórmula de valor presente de un flujo único de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#6-valor-futuro-y-valor-presente-de-un-flujo-único), sección 6, con un solo periodo ($N=1$):
 
-$$v_0 = v_N \cdot (1+r)^{-1}$$
+$$v_0 = v_N(1+r)^{-1}$$
 
 El mercado mexicano de dinero no cotiza $r$ como una tasa por periodo cualquiera: cotiza una tasa de rendimiento anual $i$ y prorratea el año usando la convención día/360 (el estándar del mercado de dinero, no de calendario). Sustituyendo $r$ por esa tasa prorrateada:
 
-$$v_0 = \dfrac{v_N}{1+i \cdot \frac{n}{360}}$$
+$$v_0 = \dfrac{v_N}{1+i\frac{n}{360}}$$
 
 - **$i$**: tasa de rendimiento anual cotizada en la subasta o el mercado secundario.
 - **$n$**: número de días por vencer.
 - **$v_N$**: valor nominal (\$10 en un CETE, el monto del pagaré en papel comercial).
 
 > **Ejemplo resuelto.** Un CETE a 28 días, valor nominal \$10, se subastó el 1 de septiembre de 2026 a una tasa de rendimiento de 6.49% anual.
-> $v_0 = 10 / (1+0.0649 \times \frac{28}{360}) = 10/1.005049 \approx \$9.9498$
+> $v_0 = 10 / (1+0.0649\frac{28}{360}) = 10/1.005049 \approx \$9.9498$
 >
 > La ganancia del inversionista que lo conserva a vencimiento es $10 - 9.9498 = \$0.0502$ por cada CETE de \$10, exactamente el descuento que fija la tasa de la subasta.
 
 ### 2. Valuación con cupón fijo
 
-Un instrumento con cupón fijo (Bono M, UDIBONO, bono corporativo a tasa fija) paga el mismo cupón $c$ cada periodo más el valor nominal al vencimiento: $(c_0, c_1, \ldots, c_N) = (-v_0,\ c,\ c,\ \ldots,\ c,\ c+v_N)$. Ese vector es la suma de dos flujos superpuestos: una anualidad de $c$ por periodo ([`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#7-valor-presente-de-una-serie-de-flujos-anualidad), sección 7) y un flujo único de $v_N$ al final (sección 5, arriba). El valor presente de una suma de flujos es la suma de sus valores presentes:
+Un instrumento con cupón fijo (Bono M, UDIBONO, bono corporativo a tasa fija) paga el mismo cupón $c$ cada periodo más el valor nominal al vencimiento: $(c_0, c_1, \ldots, c_N) = (-v_0,\ c,\ c,\ \ldots,\ c,\ c+v_N)$. Ese vector es la suma de dos flujos superpuestos: una anualidad de $c$ por periodo ([`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#7-valor-presente-de-una-serie-de-flujos-anualidad), sección 7) y un flujo único de $v_N$ al final (sección 6, arriba). El valor presente de una suma de flujos es la suma de sus valores presentes:
 
-$$v_0 = c \cdot \dfrac{1-(1+r)^{-N}}{r} + v_N \cdot (1+r)^{-N} \qquad (r \neq 0)$$
+$$v_0 = c\dfrac{1-(1+r)^{-N}}{r} + v_N(1+r)^{-N} \qquad (r \neq 0)$$
 
 - **$c$**: cupón fijo por periodo.
 - **$r$**: tasa de descuento (rendimiento de mercado) por periodo.
@@ -53,7 +53,7 @@ $$v_0 = c \cdot \dfrac{1-(1+r)^{-N}}{r} + v_N \cdot (1+r)^{-N} \qquad (r \neq 0)
 Tres casos se siguen directamente de comparar $c$ contra $r$: si $c = r$, $v_0 = v_N$ (el bono se valúa exactamente **a la par**); si $c < r$, $v_0 < v_N$ (**a descuento**, el mercado exige más de lo que paga el cupón); si $c > r$, $v_0 > v_N$ (**con premio**, sobre par).
 
 > **Ejemplo resuelto.** Un Bono M con cupón fijo de 8% anual (simplificando a un solo pago anual en vez de los dos pagos semestrales reales, para no complicar el ejemplo), valor nominal \$100 y 10 años por vencer, se descuenta hoy a la tasa de mercado vigente en 2026 para ese plazo, aproximadamente 9%.
-> $v_0 = 8 \cdot \dfrac{1-(1.09)^{-10}}{0.09} + 100 \cdot (1.09)^{-10} \approx 8(6.4177) + 100(0.42241) \approx 51.34 + 42.24 = \$93.58$
+> $v_0 = 8\dfrac{1-(1.09)^{-10}}{0.09} + 100(1.09)^{-10} \approx 8(6.4177) + 100(0.42241) \approx 51.34 + 42.24 = \$93.58$
 >
 > Como el cupón (8%) es menor que la tasa de mercado (9%), el bono se valúa a descuento: por debajo de su valor nominal de \$100.
 
@@ -75,17 +75,17 @@ donde $k_t$ es el abono a capital del periodo $t$, con $\sum_{t=1}^{N} k_t = v_0
 
 **Sistema francés (pago total constante):** cada pago $c$ es igual, resultado de aplicar la misma fórmula de anualidad de la sección 2 (con $v_N = 0$, porque no hay valor nominal residual al final: todo el capital ya se pagó en abonos):
 
-$$c = v_0 \cdot \dfrac{r}{1-(1+r)^{-N}} \qquad (r \neq 0)$$
+$$c = v_0\dfrac{r}{1-(1+r)^{-N}} \qquad (r \neq 0)$$
 
-El abono a capital de cada periodo se obtiene restando el interés del periodo ($r \cdot s_{t-1}$) al pago total: $k_t = c - r \cdot s_{t-1}$. Como el saldo insoluto baja con el tiempo, el interés baja y el abono implícito sube, aunque el pago total se mantenga fijo.
+El abono a capital de cada periodo se obtiene restando el interés del periodo ($rs_{t-1}$) al pago total: $k_t = c - rs_{t-1}$. Como el saldo insoluto baja con el tiempo, el interés baja y el abono implícito sube, aunque el pago total se mantenga fijo.
 
 > **Ejemplo resuelto.** Un crédito hipotecario de \$500,000 a 20 años, tasa fija de 10% anual, sistema francés.
-> $c = 500{,}000 \cdot \dfrac{0.10}{1-(1.10)^{-20}} \approx 500{,}000 \times 0.117459 \approx \$58{,}730$ cada año.
+> $c = 500{,}000\dfrac{0.10}{1-(1.10)^{-20}} \approx 500{,}000 \times 0.117459 \approx \$58{,}730$ cada año.
 > Primer año: interés $= 0.10 \times 500{,}000 = \$50{,}000$; abono a capital $k_1 = 58{,}730 - 50{,}000 = \$8{,}730$; saldo insoluto $s_1 = 500{,}000-8{,}730=\$491{,}270$.
 
 **Sistema alemán (abono a capital constante):** el abono $k_t = v_0/N$ es igual cada periodo, así que el pago total decrece porque el interés se cobra sobre un saldo insoluto cada vez menor:
 
-$$\text{pago}_t = \dfrac{v_0}{N} + r \cdot s_{t-1}$$
+$$\text{pago}_t = \dfrac{v_0}{N} + rs_{t-1}$$
 
 > **Ejemplo resuelto.** Mismo crédito (\$500,000, 20 años, 10% anual), sistema alemán.
 > $k = 500{,}000/20 = \$25{,}000$ cada año.
@@ -93,7 +93,7 @@ $$\text{pago}_t = \dfrac{v_0}{N} + r \cdot s_{t-1}$$
 
 **Fondo de amortización (sinking fund):** el emisor retira una fracción $k_t$ de la emisión cada periodo según un calendario pactado, no necesariamente uniforme (a diferencia del sistema alemán, donde $k_t$ sí es constante), y paga cupón solo sobre el saldo insoluto restante. La fórmula de precio es la misma idea que las dos anteriores, sumando cada pago descontado a su propio periodo:
 
-$$v_0 = \sum_{t=1}^{N} \big(k_t + r \cdot s_{t-1}\big) \cdot (1+r)^{-t}$$
+$$v_0 = \sum_{t=1}^{N} \big(k_t + rs_{t-1}\big)(1+r)^{-t}$$
 
 Es el mecanismo típico de una emisión corporativa que retira, por ejemplo, 10% del principal cada año durante los primeros años y el resto al vencimiento, en vez de repartirlo en partes exactamente iguales como el sistema alemán.
 
