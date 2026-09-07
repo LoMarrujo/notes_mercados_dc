@@ -316,7 +316,30 @@ donde $t$ esta en una escala de anios.
 
 > Ningún banco capitaliza literalmente en cada instante, pero la capitalización continua sí se usa en la práctica: en la valuación de derivados, porque $e^{rt}$ evita fijar una frecuencia de capitalización arbitraria. Su uso teórico es más profundo: es la base de los modelos de tiempo continuo (movimiento browniano, procesos de Wiener) que describen cómo se mueve el precio de un activo, así que la tasa de descuento tiene que ser continua para ser consistente con el resto de esas matemáticas. Ambos se estudian en la Unidad de Mercado de Capitales.
 
-> [Explicar brevemente diferencia entre tasa nominal y tasa efectiva, y tasa efectiva real y tasa efectiva real predicha]
+Todavía falta una distinción más. TNA y TEA solo separan la frecuencia de capitalización dentro de un mismo año, pero ambas están expresadas en pesos nominales, sin descontar que esos mismos pesos compran menos conforme sube la inflación. La **tasa efectiva real** corrige la TEA por ese efecto.
+
+El factor de crecimiento nominal de un año, $(1+TEA)$, multiplica el capital en pesos; si los precios subieron una tasa de inflación $r_{inf}$ en el mismo año, cada peso de ese capital ahora compra $(1+r_{inf})$ veces menos, así que dividir el factor nominal entre el factor de inflación aísla el crecimiento en poder de compra, una relación conocida como la ecuación de Fisher:
+
+$$1 + r_{real} = \dfrac{1+TEA}{1+r_{inf}} \qquad r_{real} = \dfrac{1+TEA}{1+r_{inf}} - 1$$
+
+- **$r_{real}$**: la tasa efectiva real, el rendimiento en poder de compra.
+- **TEA**: la tasa efectiva anual.
+- **$r_{inf}$**: la tasa de inflación del periodo.
+
+La $r_{inf}$ de esta fórmula toma dos valores distintos según qué tan cierta sea al momento de usarla:
+
+- **Tasa efectiva real** ($r_{real}$): usa la inflación ya observada al final del periodo, $r_{inf}$; solo se puede calcular después de que el periodo terminó, y responde cuánto realmente se ganó en poder de compra.
+- **Tasa efectiva real predicha** ($\hat{r}_{real}$): usa la inflación esperada al inicio del periodo, $\hat{r}_{inf}$, en vez de la realizada; es la que un inversionista usa para decidir si invertir, porque al momento de decidir la inflación futura todavía es incierta.
+
+$$\hat{r}_{real} = \dfrac{1+TEA}{1+\hat{r}_{inf}} - 1$$
+
+> **Ejemplo:** un CETE a un año ofrece una TEA de 10.5%. Al momento de decidir la inversión, la inflación esperada para ese año es 3.8% ($\hat{r}_{inf}$); un año después, la inflación observada resultó 4.3% ($r_{inf}$).
+>
+> Tasa efectiva real predicha (la que se usó para decidir): $\hat{r}_{real}$ = 1.105/1.038 − 1 ≈ **6.45%**.
+>
+> Tasa efectiva real (la que en realidad se ganó, calculada en retrospectiva): $r_{real}$ = 1.105/1.043 − 1 ≈ **5.94%**.
+>
+> La diferencia entre 6.45% y 5.94% es el costo de que la inflación resultara más alta de lo esperado: el inversionista ganó menos poder de compra del que había anticipado al decidir.
 
 ---
 
@@ -333,4 +356,4 @@ donde $t$ esta en una escala de anios.
 - **El valor presente y el valor futuro son la misma fórmula vista desde los dos lados**: descontar hacia el presente o proyectar hacia el futuro. Toda la valuación de deuda de la siguiente unidad se construye sobre esto.
 - Una **anualidad** (serie de flujos constantes) es exactamente lo que es el flujo de cupones de un bono: por eso esta fórmula reaparece al valuar deuda.
 - La **TIR** es la tasa implícita en un flujo, sin referencia externa; el **criterio de comparación** (aceptar si la TIR supera la tasa de mercado, o si el VPN a esa tasa es positivo) es cómo se decide entre alternativas, aunque VPN y TIR no siempre estén de acuerdo.
-- La **tasa efectiva** es la que de verdad ganas o pagas en un año; la **nominal** es solo la etiqueta. Entre más frecuente la capitalización, más se separan.
+- La **tasa efectiva** es la que de verdad ganas o pagas en un año; la **nominal** es solo la etiqueta. Entre más frecuente la capitalización, más se separan. La **tasa efectiva real** va un paso más allá: descuenta la inflación de la TEA para medir el rendimiento en poder de compra, con dos versiones (predicha, con inflación esperada; real, con inflación ya observada) según qué tan cierta sea esa inflación al momento de usarla.

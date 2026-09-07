@@ -178,6 +178,8 @@ SUP_OPEN, SUP_CLOSE = chr(0xE012), chr(0xE013)
 
 
 def _latex_frag_to_text(s):
+    s = re.sub(r"\\hat\{([^{}]+)\}", lambda m: m.group(1) + "\u0302", s)
+    s = re.sub(r"\\hat\s+(\S)", lambda m: m.group(1) + "\u0302", s)
     s = re.sub(r"\\d?frac\{([^{}]+)\}\{([^{}]+)\}", r"(\1)/(\2)", s)
     s = s.replace(r"\times", "×").replace(r"\neq", "≠").replace(r"\cdot", "·")
     s = s.replace(r"\to", "→").replace(r"\rightarrow", "→").replace(r"\longrightarrow", "→")
