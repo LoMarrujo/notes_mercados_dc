@@ -275,44 +275,44 @@ Restando el capital original para quedarse solo con el rendimiento neto del año
 
 $$TEA = \left(1+\dfrac{TNA}{n}\right)^n - 1 $$
 
-Esta formula requiere varios calculos algebraicos, pero podemos simplificar el trabajo mecanico/electronico si usamos la idea intuitiva de la capitalización es instantánea, es decir, cuando $n \to \infty$ (equivalentemente, $\Delta t \to 0$). A esa tasa límite se le llama **capitalización continua**:
+Esta fórmula requiere varios cálculos algebraicos, pero podemos simplificar el trabajo mecánico/electrónico si usamos la idea intuitiva de que la capitalización es instantánea, es decir, cuando $n \to \infty$ (equivalentemente, $\Delta t \to 0$). A esa tasa límite se le llama **capitalización continua**:
 
 $$r_{cont} = \lim_{n \to \infty} \left[\left(1+\dfrac{TNA}{n}\right)^n - 1\right] = e^{TNA} - 1, $$
 
 donde $e$ es la base de la función exponencial y los logaritmos naturales, y $r_{nom}$ es la TNA cuando $t$ se mide en años.
 
-Por lo general, $t$ suele medirse en años, así que $r_{nom}$ es la TNA y $r_{per}$ es la tasa periódica que se aplica en cada sub-periodo de capitalización (e.g. dia, semana, mes, trimestre, ... .).
+Por lo general, $t$ suele medirse en años, así que $r_{nom}$ es la TNA y $r_{per}$ es la tasa periódica que se aplica en cada sub-periodo de capitalización (e.g. día, semana, mes, trimestre, ... .).
 
 > **Ejemplo:** un banco ofrece un producto financiero con tasa anual de 12%, capitalizable mensualmente.
 >
-> Primero, traduzcamos a nuestra notacion matematica:
+> Primero, traduzcamos a nuestra notación matemática:
 >
-> - La tasa nominal es de 12%, esto significa $r_{nom} = 0.1$.
+> - La tasa nominal es de 12%, esto significa $r_{nom} = 0.12$.
 > - La periodicidad es mensual, 12 sub-periodos, entonces $r_{per} = r_{nom}/n = 0.01$.
 >
-> Entonces, enchufando los valores en al formula de la $TEA$, vemos que
+> Entonces, enchufando los valores en la fórmula de la $TEA$, vemos que
 >
 > $$ TEA = (1+r_{per})^{12} - 1 = 0.126825... ≈ 12.682\%.$$
 >
 > La TEA siempre es mayor o igual a la TNA cuando hay más de una capitalización al año: la diferencia es "el interés que gana el interés".
 >
-> Por otro lado, utilizando la formula de la capitalizacion continua tenemos que
+> Por otro lado, utilizando la fórmula de la capitalización continua tenemos que
 > $$r_{cont} = e^{0.12} - 1 \approx 12.749\%, $$
 > muy cerca del $12.682\%$ mensual, sin necesitar calcular $n$ ni $r_{per}$.
-> El error de approximacion es de 0.00067, que puede ser negligible en montos chicos.
+> El error de aproximación es de 0.00067, que puede ser despreciable en montos chicos.
 
-> **Ejemplo de capitalizacion mas instantanea [**se recomienda al lector hacer los calculos intermedios en una hoja de papel**]:**
+> **Ejemplo de capitalización más instantánea [**se recomienda al lector hacer los cálculos intermedios en una hoja de papel**]:**
 >
 > Ahora, un banco ofrece un producto financiero con tasa anual de 12%, capitalizable **diario**. Entonces,
 >
 > $$ TEA = (1+r_{per})^{365} - 1 ≈ 12.747\%.$$
 >
-> Notese que la misma tasa nominal con capitalizacion mas rapida da mayor rendimiento.  Ahora, el error de approximacion es de 0.00002.
+> Nótese que la misma tasa nominal con capitalización más rápida da mayor rendimiento. Ahora, el error de aproximación es de 0.00002.
 
 Para finalizar, unimos el concepto de valor presente y futuro con la tasa nominal anual:
 
-$$v_t = v_0 e^{TNA \times t} \qquad r_{cont} = e^{TNA} - 1,$$
-donde $t$ esta en una escala de anios.
+$$v_t = v_0 e^{TNA \times t},$$
+donde $t$ está en una escala de años.
 
 > Ningún banco capitaliza literalmente en cada instante, pero la capitalización continua sí se usa en la práctica: en la valuación de derivados, porque $e^{rt}$ evita fijar una frecuencia de capitalización arbitraria. Su uso teórico es más profundo: es la base de los modelos de tiempo continuo (movimiento browniano, procesos de Wiener) que describen cómo se mueve el precio de un activo, así que la tasa de descuento tiene que ser continua para ser consistente con el resto de esas matemáticas. Ambos se estudian en la Unidad de Mercado de Capitales.
 
