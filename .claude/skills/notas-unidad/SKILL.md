@@ -65,7 +65,7 @@ Reglas adicionales:
 
 ## Vocabulario ambiguo entre unidades
 
-- **"Mercado de capitales" sin calificar siempre usa el criterio de plazo** (Unidad 1: mercado de dinero ≤ 1 año / mercado de capitales > 1 año), nunca el de instrumentos de participación, aunque la Unidad 3 del temario oficial se llame también "Mercado de Capitales" con ese segundo criterio (ver [`unidad2/0_caracteristicas_mercado_deuda.md`](../../../notas_unidades/unidad2/0_caracteristicas_mercado_deuda.md#2-el-mercado-de-deuda-frente-a-otros-mercados-financieros)).
+- **"Mercado de capitales" sin calificar siempre usa el criterio de plazo** (Unidad 1: mercado de dinero ≤ 1 año / mercado de capitales > 1 año), nunca el de instrumentos de participación, aunque la Unidad 3 del temario oficial se llame también "Mercado de Capitales" con ese segundo criterio (ver [`unidad2/0_caracteristicas_mercado_deuda.md`](../../../notas_unidades/unidad2/0_caracteristicas_mercado_deuda.md#1-desfase-ahorro-proyecto-deuda-o-participación-de-capital)).
 - El criterio de instrumentos de participación (acciones, FIBRAs, CKD, CERPIs; el nombre oficial de la Unidad 3) se llama en estas notas **mercado de participación** o **mercado accionario**, precisamente para no chocar con el nombre de la Unidad 3.
 - Al redactar la Unidad 3, el primer archivo de teoría debe incluir la misma aclaración (mismo patrón que el callout "Cuidado con el nombre" de `unidad2/0_caracteristicas_mercado_deuda.md`), para que el hilo quede cerrado en las tres unidades.
 

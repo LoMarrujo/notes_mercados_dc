@@ -22,15 +22,17 @@ Que el estudiante calcule el precio de un instrumento de deuda a partir de sus f
 
 ### 1. Valuación a descuento
 
-Un instrumento a descuento (CETE, papel comercial) tiene un solo flujo distinto de cero, el valor nominal al vencimiento: $(c_0, c_1, \ldots, c_N) = (-v_0,\ 0,\ \ldots,\ 0,\ v_N)$. Su precio es exactamente la fórmula de valor presente de un flujo único de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#6-valor-futuro-y-valor-presente-de-un-flujo-único), sección 6, con un solo periodo ($N=1$):
+El CETE a 28 días de la nota anterior rindió 6.49% el 1 de septiembre de 2026; ese mismo día, el Bono M a 10 años cotizaba entre 8.5% y 9.3%. Hablar de "la" tasa de interés como si fuera un solo número deja de tener sentido en cuanto se pregunta a qué plazo: cada plazo trae su propio precio, y esta nota calcula ese precio a partir de la tasa que le corresponde a cada instrumento, empezando por el más simple.
+
+Un instrumento a descuento (CETE, papel comercial) tiene un solo flujo distinto de cero, el valor nominal al vencimiento: el vector $(c_0, c_1, \ldots, c_N) = (-v_0,\ 0,\ \ldots,\ 0,\ v_N)$ ya construido y dibujado en [`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#4-las-mecánicas-de-pago-como-vector-de-flujos). Su precio es exactamente la fórmula de valor presente de un flujo único de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#6-valor-futuro-y-valor-presente-de-un-flujo-único), sección 6, con un solo periodo ($N=1$):
 
 $$v_0 = v_N(1+r)^{-1}$$
 
-El mercado mexicano de dinero no cotiza $r$ como una tasa por periodo cualquiera: cotiza una tasa de rendimiento anual $i$ y prorratea el año usando la convención día/360 (el estándar del mercado de dinero, no de calendario). Sustituyendo $r$ por esa tasa prorrateada:
+El mercado mexicano de dinero no cotiza $r$ como una tasa por periodo cualquiera: cotiza una tasa nominal anual $r_{nom}$ y la prorratea al plazo exacto del instrumento con la convención día/360 (el estándar del mercado de dinero, no de calendario). Es la misma idea de $r_{per} = r_{nom}\times \Delta t$ de la sección 10 de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#10-tasa-nominal-y-tasa-efectiva), aquí con $\Delta t = n/360$ ($n$ días de vida sobre 360, en vez de un subperiodo de capitalización) en el lugar de $\Delta t$. Sustituyendo $r$ por esa tasa periódica prorrateada, $r_{per}=r_{nom}\frac{n}{360}$:
 
-$$v_0 = \dfrac{v_N}{1+i\frac{n}{360}}$$
+$$v_0 = \dfrac{v_N}{1+r_{nom}\frac{n}{360}}$$
 
-- **$i$**: tasa de rendimiento anual cotizada en la subasta o el mercado secundario.
+- **$r_{nom}$**: tasa de rendimiento anual cotizada en la subasta o el mercado secundario.
 - **$n$**: número de días por vencer.
 - **$v_N$**: valor nominal (\$10 en un CETE, el monto del pagaré en papel comercial).
 
@@ -67,7 +69,7 @@ Sí se puede afirmar algo del precio sin proyectar cada flujo. El cupón se reca
 
 ### 4. Amortización de capital
 
-Ningún instrumento mexicano de esta unidad amortiza capital antes del vencimiento (todos son bullet, sección 2 de [`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#2-qué-es-un-instrumento-de-deuda)), pero un crédito hipotecario, un préstamo de auto o una emisión corporativa con retiro programado sí lo hacen, y Fabozzi documenta las tres formas como otra característica más de los bonos. Todas comparten la misma estructura de saldo insoluto:
+Ningún instrumento mexicano de esta unidad amortiza capital antes del vencimiento (todos son bullet, sección 3 de [`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#3-qué-es-un-instrumento-de-deuda)), pero un crédito hipotecario, un préstamo de auto o una emisión corporativa con retiro programado sí lo hacen, y Fabozzi documenta las tres formas como otra característica más de los bonos. Todas comparten la misma estructura de saldo insoluto:
 
 $$s_t = v_0 - \sum_{i=1}^{t} k_i \qquad (s_0 = v_0)$$
 
@@ -101,11 +103,11 @@ Es el mecanismo típico de una emisión corporativa que retira, por ejemplo, 10%
 
 ### 5. Ejemplo integrador con datos de mercado
 
-Con las fórmulas de las secciones 1 y 2, y las tasas reales citadas en [`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#1-introducción-institucional-y-funcional-al-mercado-de-deuda) y [`1_instrumentos_deuda.md`](1_instrumentos_deuda.md#1-instrumentos-gubernamentales-cetes-bono-m-y-udibono), se valúan los tres instrumentos gubernamentales a inicios de septiembre de 2026:
+Con las fórmulas de las secciones 1 y 2, y las tasas reales citadas en [`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda) y [`1_instrumentos_deuda.md`](1_instrumentos_deuda.md#1-instrumentos-gubernamentales-cetes-bono-m-y-udibono), se valúan los tres instrumentos gubernamentales a inicios de septiembre de 2026:
 
 | Instrumento     | Fórmula que aplica                                            | Datos                                                         | Precio                          |
 | --------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------- |
-| CETE 28 días    | Sección 1 (descuento)                                         | $v_N =$ \$10, $i = 6.49\%$, $n = 28$                          | ≈ \$9.9498                      |
+| CETE 28 días    | Sección 1 (descuento)                                         | $v_N =$ \$10, $r_{nom} = 6.49\%$, $n = 28$                    | ≈ \$9.9498                      |
 | Bono M 10 años  | Sección 2 (cupón fijo), simplificado a un pago anual          | $c =$ \$8, $v_N =$ \$100, $r \approx 9\%$, $N = 10$           | ≈ \$93.58 (a descuento)         |
 | UDIBONO 10 años | Sección 2 (cupón fijo), en UDIs, simplificado a un pago anual | $c = r = 4.60\%$ (a la par en UDIs), $v_N = 100$ UDIs, $N=10$ | 100 UDIs × \$8.81 ≈ \$881 pesos |
 
@@ -129,5 +131,6 @@ El UDIBONO del ejemplo se valuó exactamente a la par (100 UDIs) porque su cupó
 - Un instrumento con **cupón variable** no tiene fórmula cerrada de precio (cada flujo es estocástico), pero como el cupón se reajusta a la tasa de mercado en cada reseteo, su precio se mantiene cerca de la par por esa razón, aunque sí puede desviarse por riesgo de crédito o cambios en la sobretasa.
 - La **amortización de capital** (sistema francés, sistema alemán, sinking fund) reparte el capital antes del vencimiento en vez de pagarlo todo de golpe (bullet); ninguno de los seis instrumentos mexicanos de esta unidad la usa, pero es la mecánica de un crédito hipotecario o de auto.
 - Con tasas reales de mercado, un CETE a 28 días (6.49%) valúa cerca de su valor nominal (descuento pequeño, por el plazo corto); un Bono M a 10 años con cupón menor a la tasa de mercado valúa por debajo de la par; un UDIBONO a la par en UDIs todavía necesita convertirse a pesos con el valor del día de la UDI.
+- Cada precio de esta nota se calculó con la tasa de un solo plazo a la vez, como si fuera un dato aislado. No lo es: la tasa del CETE a 28 días, la del Bono M a 10 años y la de cualquier otro plazo intermedio son puntos de una misma curva.
 
-**Próxima sesión:** los riesgos a los que queda expuesto quien compra un instrumento de deuda (tasa de interés, crédito, inflación, liquidez), más allá del precio que se calculó aquí.
+**Próxima sesión:** esa curva de rendimientos, cómo se lee, cómo se mueve, y cómo se construye a partir de los propios instrumentos de esta unidad.

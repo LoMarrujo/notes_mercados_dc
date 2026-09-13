@@ -40,8 +40,9 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Distinguir las características del mercado de deuda (quién emite, a qué plazo y cómo paga) frente a las de otros mercados financieros.
 - Clasificar un instrumento de deuda (CETES, Bonos gubernamentales, UDIBONOS, Bonos corporativos, Papel comercial, Certificados bursátiles) según su emisor y su mecánica de pago.
 - Calcular el precio de un instrumento de deuda a partir de sus flujos y su valor nominal.
-- Distinguir el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado.
+- Distinguir el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado, y calcular la duración y la convexidad de un bono para cuantificar su sensibilidad a cambios en la tasa.
 - Justificar una estrategia de inversión en renta fija para un escenario de tasas o de riesgo dado.
+- Construir la curva de rendimientos cupón cero mediante bootstrapping a partir de Cetes y Bonos M, y estimarla con el modelo paramétrico de Nelson-Siegel.
 
 ### 3. Mercado de Capitales (mercado de participación) [Evaluación al finalizar o Proyecto final]
 
@@ -71,7 +72,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_ciencia_inversion.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano). La Unidad 2 tiene, por ahora: `0_caracteristicas_mercado_deuda.md`, `1_instrumentos_deuda.md`, `2_valuacion_instrumentos_deuda.md` y `3_riesgos_mercado_deuda.md` (todavía sin su `.pdf`/`.pptx`).
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_ciencia_inversion.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano). La Unidad 2 tiene, por ahora: `0_caracteristicas_mercado_deuda.md`, `1_instrumentos_deuda.md`, `2_valuacion_instrumentos_deuda.md`, `3_riesgos_mercado_deuda.md` y `4_curva_de_rendimientos.md` (todavía sin su `.pdf`/`.pptx`).
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 
