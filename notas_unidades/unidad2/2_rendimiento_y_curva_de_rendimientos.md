@@ -1,0 +1,197 @@
+# Unidad 2 · Rendimiento y Curva de Rendimientos
+
+**Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
+
+## Objetivo de la unidad
+
+Que el estudiante calcule el rendimiento al vencimiento (YTM) de un bono a partir de su precio de mercado y sus flujos, y lo ubique en la curva de rendimientos para compararlo con bonos de otros plazos.
+
+## Contenido
+
+|     | Tema                                      | Qué cubre                                                                                                   |
+| --- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| I   | Del precio al rendimiento (YTM)           | La tasa que iguala el valor presente de los flujos con el precio pagado, y cómo se resuelve                 |
+| II  | Precio y rendimiento en sentido contrario | La curva precio-rendimiento: por qué baja, por qué se curva y por qué los plazos largos se mueven más       |
+| III | Qué mide y qué no mide el rendimiento     | Las tres fuentes de retorno, los dos supuestos del YTM y el rendimiento corriente                           |
+| IV  | La curva de rendimientos: ubicar un bono  | Graficar el YTM contra el plazo, leer su forma y sus movimientos, y ver dónde cae un bono frente al mercado |
+
+> La práctica de este tema está en [`practica_unidad2.md`](../../practicas/unidad2/practica_unidad2.md).
+
+---
+
+### 1. Del precio al rendimiento (YTM)
+
+[`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md) calculó el precio de un instrumento a partir de la tasa. En el mercado, en cambio, el precio es lo que se observa y se cotiza; lo que hay que averiguar es la tasa que gana quien compra a ese precio.
+
+**Definición:** el **rendimiento al vencimiento** (*yield to maturity*, YTM) de un bono es la tasa $r$ que iguala el valor presente de sus flujos con el precio pagado, $v_0(r)=a$. Es la TIR de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#8-tasa-interna-de-retorno-tir) aplicada al vector de flujos del bono, $(-a,\ c,\ \ldots,\ c,\ c+v_N)$. Para un bono con cupón fijo:
+
+$$a = c\dfrac{1-(1+r)^{-N}}{r} + v_N(1+r)^{-N} \qquad (r \neq 0)$$
+
+¿De dónde sale la fórmula? Es la fórmula de precio de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#2-valuación-con-cupón-fijo) con los papeles invertidos: allí $r$ era el dato y $v_0$ el resultado; aquí $v_0$ se iguala al precio observado $a$ y la incógnita es $r$. Es lo mismo que la TIR: el valor presente neto del vector es $-a+v_0(r)$, y la TIR es la tasa que lo hace cero.
+
+Salvo casos muy simples, la ecuación no se despeja a mano: se resuelve por iteración. Se prueba una tasa, se compara su valor presente con el precio y se ajusta hasta que coinciden. La hoja de cálculo (la función TIR sobre el vector de flujos, o Solver) y las calculadoras financieras hacen esas iteraciones, y el YTM se cotiza siempre como tasa anual.
+
+> **Ejemplo resuelto.** Un Bono M hipotético a 10 años, con cupón de 8% (un pago anual, como en la sección 2 de valuación) y valor nominal de \$100, se compra en \$93.58. Se prueba una tasa y se compara su valor presente con ese precio:
+
+| Tasa de prueba | Valor presente $v_0(r)$ | Frente al precio de \$93.58         |
+| -------------- | ----------------------- | ----------------------------------- |
+| 8%             | \$100.00                | Demasiado alto: falta subir la tasa |
+| 10%            | \$87.71                 | Demasiado bajo: falta bajar la tasa |
+| 9%             | \$93.58                 | Coincide: el YTM es 9%              |
+
+Es el mismo bono y la misma tasa del ejemplo de valuación: allí el 9% daba el precio de \$93.58; aquí el precio da el 9%.
+
+Un instrumento a descuento sí se despeja a mano, porque tiene un solo flujo:
+
+$$r_{nom} = \left(\dfrac{v_N}{a}-1\right)\dfrac{360}{n} \qquad (a>0,\ n>0)$$
+
+¿De dónde sale la fórmula? Es la de la sección 1 de valuación, $v_0 = v_N/(1+r_{nom}\,n/360)$, con $v_0=a$: se multiplica por el denominador, se resta 1 y se multiplica por $360/n$. Para el CETE de \$10 comprado en \$9.9516 a 28 días, $(10/9.9516-1)(360/28) \approx 6.25\%$, la tasa de la subasta del 15 de septiembre de 2026.
+
+### 2. Precio y rendimiento en sentido contrario
+
+El YTM permite preguntar lo contrario: si el rendimiento que exige el mercado cambia, ¿qué pasa con el precio? Graficar el valor presente $v_0(r)$ de un bono contra $r$ lo responde. La figura muestra un bono con cupón de 8% y valor nominal de \$100 a tres plazos.
+
+![Curvas de precio contra rendimiento de un bono con cupón de 8% a 3, 10 y 30 años: las tres bajan al subir el rendimiento, se curvan hacia el origen y cruzan el precio 100 en el rendimiento de 8%, con más pendiente mientras más largo el plazo](img/precio_rendimiento.png)
+
+- **Pendiente negativa.** Si el rendimiento sube, el precio baja: para ganar más por el mismo flujo fijo hay que pagar menos. Cuando se dice que "el mercado de bonos cayó", se quiere decir que las tasas subieron.
+- **A la par cuando $r=c$.** Las tres curvas cruzan \$100 en 8%, el caso $c=r$ de la sección 2 de valuación.
+- **Extremos.** Con $r=0$ no hay descuento y el precio es la suma de todos los pagos (a 10 años, $8 \times 10 + 100 =$ \$180); cuando $r$ crece mucho, el precio tiende a cero, porque hasta el primer cupón se descuenta casi por completo.
+- **Convexa, no recta.** La curva se dobla hacia el origen: el precio sube más cuando el rendimiento baja que lo que cae cuando sube el mismo monto. A 10 años, un punto porcentual más de rendimiento resta \$6.42 al precio y uno menos suma \$7.02.
+- **Más plazo, más empinada.** Las curvas pivotan sobre el punto de la par: mientras más largo el plazo, más se mueve el precio ante el mismo cambio de rendimiento.
+
+| Plazo   | $r=0$    | 6%       | 8%       | 9%      | 10%     | 12%     |
+| ------- | -------- | -------- | -------- | ------- | ------- | ------- |
+| 3 años  | \$124.00 | \$105.35 | \$100.00 | \$97.47 | \$95.03 | \$90.39 |
+| 10 años | \$180.00 | \$114.72 | \$100.00 | \$93.58 | \$87.71 | \$77.40 |
+| 30 años | \$340.00 | \$127.53 | \$100.00 | \$89.73 | \$81.15 | \$67.78 |
+
+Al pasar del 8% al 9%, el precio cae 2.53% a 3 años, 6.42% a 10 años y 10.27% a 30 años. Esa pendiente, cuánto se mueve el precio por cada punto de rendimiento, es el riesgo de tasa de interés de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés), y [`4_duracion_convexidad.md`](4_duracion_convexidad.md) la convierte en un número.
+
+### 3. Qué mide y qué no mide el rendimiento
+
+El YTM se calcula al comprar el bono. ¿Es lo que el inversionista terminará ganando?
+
+El retorno de un bono viene de tres fuentes: los cupones, la ganancia o pérdida de precio (al vencer, al venderlo o si el emisor lo rescata) y lo que rinde reinvertir los cupones conforme se cobran. Una buena medida de rendimiento debería contar las tres, y el YTM lo hace, pero solo bajo dos supuestos:
+
+1. Los cupones se reinvierten a la misma tasa del YTM.
+2. El bono se conserva hasta el vencimiento.
+
+Si no se cumple el primero, aparece el riesgo de reinversión; si no se cumple el segundo, el riesgo de tasa de interés (ambos en [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés)).
+
+> **Ejemplo resuelto.** Un bono a la par a 10 años, con cupón de 7% (un pago anual), tiene YTM de 7%. Para ganar 7% anual, los \$100 deben convertirse en $100(1.07)^{10} \approx$ \$196.72, un retorno total de \$96.72. Los cupones aportan $7 \times 10 =$ \$70; los \$26.72 restantes (28% del total) solo aparecen si cada cupón se reinvierte al 7%. No hay ganancia de precio, porque el bono se compró a la par. Si las tasas bajaran y los cupones se reinvirtieran al 4%, la riqueza final sería \$184.04 y el rendimiento efectivo, 6.29% en vez de 7%.
+
+Otra medida, más simple, es el **rendimiento corriente** (*current yield*, CY): el cupón anual entre el precio.
+
+$$CY = \dfrac{c}{a} \qquad (a>0)$$
+
+¿De dónde sale la fórmula? Es el YTM de un bono que pagara su cupón para siempre. En la fórmula de anualidad de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#7-valor-presente-de-una-serie-de-flujos-anualidad), con $N\to\infty$, $(1+r)^{-N}\to 0$ y queda $v_0=c/r$; al igualar $v_0=a$ resulta $r=c/a$. Por eso ignora la ganancia de precio y la reinversión. Entre la tasa cupón, el rendimiento corriente y el YTM se cumple:
+
+| El bono se vende | Relación                                 |
+| ---------------- | ---------------------------------------- |
+| A la par         | tasa cupón = rendimiento corriente = YTM |
+| A descuento      | tasa cupón < rendimiento corriente < YTM |
+| Con premio       | tasa cupón > rendimiento corriente > YTM |
+
+Un bono con cupón de 8% que cuesta \$88 a 10 años tiene $CY = 8/88 \approx 9.09\%$ y YTM de 9.95%: a descuento, con el rendimiento corriente entre el cupón y el YTM. Otras dos variantes usan el mismo método de la TIR con un supuesto distinto: el **rendimiento a la opción de compra** (*yield to call*, YTC) supone que el emisor rescata el bono en la fecha más temprana posible, y el **rendimiento al peor caso** (*yield to worst*) toma el más bajo de todos los rendimientos posibles.
+
+Por último, el YTM es lo que se promete al comprar; el retorno efectivamente obtenido depende también del precio al que se venda y de lo que rinda reinvertir.
+
+### 4. La curva de rendimientos: ubicar un bono
+
+El YTM es la TIR de un solo bono, con su propio plazo. [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#1-valuación-a-descuento) calculó el precio de un CETE a 28 días con su propia tasa, y el de un Bono M a 10 años con la suya, como si fueran dos problemas sueltos. No lo son: graficar el YTM de cada instrumento contra su plazo (Cetes a 28, 91, 182 y 364 días; Bono M a 3, 5, 10, 20 y 30 años, todos el mismo día) traza una sola curva, la **curva de rendimientos**.
+
+> **Ejemplo resuelto.** El 21 de septiembre de 2026, la curva de rendimientos según cetesdirecto fue: CETE 28 días, 6.25%; CETE 91 días, 6.66%; CETE 182 días, 6.90%; CETE 364 días, 7.24%; Bono M 3 años, 8.24%; Bono M 5 años, 9.00%; Bono M 10 años, 9.16%; Bono M 20 años, 9.64%; Bono M 30 años, 9.87%. Graficada, sube con el plazo (pendiente positiva), de 6.25% a 9.87%, y la mayor parte del ascenso ocurre antes de los 5 años.
+
+![Curva de rendimientos del 21 de septiembre de 2026, ascendente de 6.25% a 28 días a 9.87% a 30 años, con un Bono M a 10 años sobre la curva (precio 96.40, YTM 9.16%) y un bono corporativo a 10 años por encima (precio 88, YTM 9.95%)](img/curva_ubicar_bono.png)
+
+Su forma más común es ascendente ("normal"): los bonos largos rinden más que los cortos, en parte porque son más sensibles a la tasa (sección 2). La curva se invierte, en parte o en todo su recorrido, cuando las tasas cortas suben rápido y los inversionistas creen que el alza es temporal, de modo que las largas casi no se mueven.
+
+La misma gráfica repetida para varias fechas (por ejemplo, un corte mensual durante 2026) deja ver tres movimientos de la curva completa:
+
+- **Nivel:** la curva entera sube o baja de forma más o menos pareja en todos los plazos, típicamente cuando Banxico mueve su tasa de referencia o cambian las expectativas de inflación de largo plazo.
+- **Pendiente:** la diferencia entre el extremo largo y el corto se abre o se cierra; una curva más empinada suele reflejar más incertidumbre o más expectativa de alza futura en el corto plazo.
+- **Curvatura:** el tramo intermedio (2 a 5 años, aproximadamente) se aparta hacia arriba o hacia abajo de la línea recta que unen el corto y el largo plazo.
+
+**Ubicar un bono en la curva.** Al estudiar un bono conviene calcular su YTM y su plazo, y ubicarlo como un punto frente a la curva de referencia: da una idea de cómo está valuado frente al mercado. Si cae lejos de la curva, hay una razón: el riesgo de crédito del emisor, su liquidez o alguna cláusula del contrato, como que sea rescatable.
+
+> **Ejemplo resuelto.** El Bono M a 10 años que cotizaba cetesdirecto el 21 de septiembre de 2026 valía \$96.40 con un YTM de 9.16%, justo sobre la curva a 10 años (es ese mismo punto): el mercado lo valúa en línea con los demás bonos gubernamentales. Un bono corporativo a 10 años (ejemplo ilustrativo), también con cupón de 8%, cotiza en \$88 y tiene un YTM de 9.95%, casi ocho décimas de punto porcentual (0.79 pp) sobre la curva. Esa diferencia es la **sobretasa** (*spread*): lo que el mercado exige de más por el riesgo de crédito ([`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#2-riesgo-de-crédito-y-calificaciones)) y la menor liquidez ([`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#4-riesgo-de-liquidez)) del emisor corporativo.
+
+**Un cuidado.** Esta curva de YTM todavía no es la que hace falta para descontar cualquier flujo futuro con precisión: cada punto es la tasa interna de retorno de un instrumento completo, no la tasa que le corresponde a un solo peso pagadero en una fecha exacta. Para el CETE (cupón cero) las dos cosas coinciden, porque solo hay un flujo; los cuatro puntos de Cetes sí son puntos de la curva cupón cero. Para el Bono M no: su YTM a 10 años ya mezcla el descuento de los cupones que paga antes del año 10 (a las tasas, más bajas, de esos plazos intermedios) con el descuento del pago final. Dos bonos del mismo plazo pero con cupón distinto pueden cotizar un YTM ligeramente distinto aunque el mercado esté valuando el mismo dinero de la misma forma; a esa distorsión se le llama **efecto cupón**, y es la razón por la que una curva de YTM y una curva cupón cero (o **curva spot**) no son la misma curva, aunque a menudo se confundan. El apéndice muestra cómo pasar de una a otra.
+
+---
+
+## Apéndice: De la curva de YTM a la curva spot
+
+Esta sección amplía el núcleo; no forma parte del objetivo ni se evalúa. Muestra cómo se corrige el efecto cupón y qué más se hace con la curva.
+
+**Tasas spot y factores de descuento.** La **tasa spot** $r_t$ es la tasa de un solo pago a plazo $t$, la que paga un instrumento sin cupones. Su **factor de descuento** es $(1+r_t)^{-t}$, el de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#6-valor-futuro-y-valor-presente-de-un-flujo-único) con la tasa de ese plazo, y el valor presente de cualquier flujo es la suma de cada pago multiplicado por su factor de descuento. Si hubiera un cupón cero en cada plazo, la curva spot se leería directo; como no los hay, se calcula a partir de bonos con cupón.
+
+**Por qué los Cetes regalan la curva spot hasta un año.** Un CETE no paga cupón: su tasa de rendimiento cotizada, convertida de la convención día/360 de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#1-valuación-a-descuento) a una tasa efectiva anual (el mismo tipo de conversión de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md)), es exactamente la tasa spot $r_t$ de ese plazo: no hay ningún cupón intermedio que mezclarle. Con los cuatro Cetes (28, 91, 182 y 364 días) ya se tienen cuatro puntos de la curva spot sin resolver ninguna ecuación.
+
+**Por qué el Bono M no regala nada, hay que despejarlo.** Un Bono M sí paga cupón, así que su precio observado $a$ es igual a la suma de cada cupón descontado a la tasa spot de *su propio* plazo, más el principal descontado a la tasa spot del plazo final:
+
+$$a = \sum_{i=1}^{N-1} c(1+r_{t_i})^{-t_i} + (c+v_N)(1+r_{t_N})^{-t_N}$$
+
+¿De dónde sale la fórmula? Es la misma suma de valor presente de un flujo único de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#6-valor-futuro-y-valor-presente-de-un-flujo-único) aplicada cupón por cupón, con una sola diferencia frente a la fórmula de precio de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#2-valuación-con-cupón-fijo): ahí se usaba una sola tasa $r$ para descontar todos los flujos; aquí cada flujo se descuenta con la tasa spot que le corresponde a su propio plazo $t_i$, porque es justamente esa curva la que todavía no se conoce.
+
+De esa ecuación, todas las tasas spot $r_{t_i}$ con $t_i < t_N$ ya se conocen (son plazos más cortos, ya bootstrapeados con un Bono M o un CETE anterior); la única incógnita es $r_{t_N}$, la tasa spot del plazo más largo que se está agregando. Se despeja de forma recursiva: primero el Bono M más corto (usando solo tasas Cete ya conocidas), luego el siguiente (usando las tasas Cete y la spot recién despejada), y así hasta el plazo más largo disponible. Este método, de resolver la curva un plazo a la vez a partir de instrumentos cada vez más largos, se llama **bootstrapping**. Otra ruta arma un cupón cero sintético: dos bonos del mismo plazo y distinto cupón, combinados en proporciones que cancelen los cupones, dejan un solo flujo final cuyo precio da directo la tasa spot de ese plazo.
+
+Con la curva spot completa, se puede despejar la **tasa forward**: la tasa que el mercado ya trae implícita hoy para un periodo futuro. Entre los plazos $t_1$ y $t_2$ ($t_1<t_2$):
+
+$$(1+r_{t_2})^{t_2} = (1+r_{t_1})^{t_1}(1+f_{t_1,t_2})^{t_2-t_1}$$
+
+¿De dónde sale la fórmula? Invertir \$1 hoy a la tasa spot $r_{t_2}$ durante $t_2$ años debe dar el mismo resultado que invertirlo a $r_{t_1}$ durante $t_1$ años y luego reinvertir lo obtenido durante el periodo restante $(t_2-t_1)$ a la tasa $f_{t_1,t_2}$ que se amarra hoy para ese futuro; si no fuera así, habría una forma de ganar dinero sin riesgo solo cambiando de estrategia, algo que el propio mercado corrige de inmediato.
+
+> **La pregunta que más rinde.** ¿La tasa forward es un pronóstico del mercado sobre la tasa que va a haber en ese periodo futuro, o es simplemente el precio al que hoy se puede amarrar una tasa para entonces, sin decir nada sobre qué va a pasar? Las dos lecturas conviven: la fórmula solo garantiza que $f_{t_1,t_2}$ es el precio de no-arbitraje de amarrar hoy esa tasa futura; que además sea un buen pronóstico depende de si el mercado, en promedio, acierta al anticipar hacia dónde se mueven las tasas, algo que no se puede resolver solo con álgebra.
+
+**Por qué la curva tiene esa forma.** Hay tres explicaciones clásicas de por qué la curva casi nunca es plana, y cada una tiene algo de cierto:
+
+- **Expectativas:** la curva asciende porque el mercado espera que las tasas suban, y la tasa forward sería la tasa spot esperada. Su debilidad: como la curva casi siempre asciende, el mercado esperaría alzas casi siempre, y las tasas no suben tanto.
+- **Preferencia por la liquidez:** los inversionistas prefieren plazos cortos, porque el precio de los bonos largos es más sensible a la tasa (sección 2); para atraerlos a plazos largos hay que ofrecerles más rendimiento.
+- **Segmentación de mercado:** cada plazo tiene sus propios compradores (quien tiene pasivos de largo plazo compra deuda de largo plazo, como en la sección 7 de [`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#7-tres-preguntas-y-los-seis-instrumentos-lado-a-lado)), así que las tasas de plazos distintos se mueven con cierta independencia.
+
+La explicación más citada combina las dos primeras: expectativas, corregidas por la prima que exige la preferencia por la liquidez.
+
+**Ajuste paramétrico: Nelson-Siegel.** La curva spot bootstrapeada trae un punto por instrumento disponible, con huecos entre plazos (por ejemplo, nada entre 1 y 3 años si no hay un Bono M ahí) y algo de ruido propio de cada subasta. El modelo de **Nelson-Siegel** ajusta una curva continua y suave sobre esos puntos:
+
+$$\hat{r}(t) = \beta_0 + \beta_1\left(\dfrac{1-e^{-t/\tau}}{t/\tau}\right) + \beta_2\left(\dfrac{1-e^{-t/\tau}}{t/\tau}-e^{-t/\tau}\right) \qquad (t>0,\ \tau>0)$$
+
+¿De dónde sale la fórmula? No se deriva de una fórmula anterior de esta unidad, es una forma funcional propuesta directamente por Nelson y Siegel para que tres parámetros solamente ($\beta_0$, $\beta_1$, $\beta_2$) reproduzcan las formas de curva más comunes en la práctica; lo que sí se deriva es su interpretación, a partir de los tres movimientos vistos a simple vista en la sección 4: cuando $t\to\infty$, $\hat{r}(t)\to\beta_0$ (el **nivel** de largo plazo); cuando $t\to0$, $\hat{r}(t)\to\beta_0+\beta_1$ (el nivel de corto plazo, así que $\beta_1$ es la **pendiente**, la diferencia corto menos largo); y el término que multiplica a $\beta_2$ crece y luego decae con $t$, la forma de joroba que produce la **curvatura** del tramo intermedio.
+
+$\tau$ fija a qué plazo ocurre esa joroba y normalmente se fija primero por prueba (o con un valor típico del mercado que se estudia), dejando a $\beta_0$, $\beta_1$ y $\beta_2$ como los únicos parámetros libres. Se ajustan minimizando la suma de errores de valuación al cuadrado entre el precio observado de cada instrumento y el precio que resultaría de descontar sus flujos con $\hat{r}(t)$, un problema de optimización numérica (con Solver en la hoja de cálculo, el mismo tipo de herramienta que ya resolvió la TIR de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md)) en vez de una fórmula cerrada.
+
+> No es un ejercicio de salón: los bancos centrales, incluido Banxico, publican su curva cupón cero ajustada con esta familia de modelos o con su extensión de cuatro parámetros (Svensson, que agrega una segunda joroba), precisamente porque tres o cuatro números bastan para resumir y comparar la forma completa de la curva de un día a otro.
+
+**Extra: la curva real y la inflación implícita.** El bootstrapping y el ajuste de este apéndice se repiten, sin cambiar ninguna fórmula, con UDIBONOS en vez de Bono M: el resultado es una curva spot **real**, no nominal, porque el UDIBONO ya paga en unidades que se ajustan con la inflación (ver [`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#6-los-seis-instrumentos)).
+
+Con las dos curvas (nominal, de Cetes y Bono M; real, de UDIBONOS) al mismo plazo, la diferencia entre ambas es la **inflación implícita** (o *breakeven inflation*) que el mercado está poniendo con dinero de verdad a ese horizonte:
+
+$$\hat{r}_{inf} \approx r_{nom} - r_{real}$$
+
+¿De dónde sale la fórmula? Es la misma ecuación de Fisher usada en [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md), aplicada punto por punto a lo largo de la curva en vez de a una sola tasa: si la tasa nominal es, aproximadamente, la tasa real más la inflación esperada, despejar la inflación esperada dado ambos rendimientos de mercado es una resta.
+
+> **Por qué engancha.** Esta $\hat{r}_{inf}$ no sale de una encuesta ni de una opinión, sale de lo que miles de inversionistas pagaron hoy por protegerse o no de la inflación futura. Comparar esta curva de inflación implícita, plazo por plazo, contra la Encuesta de Expectativas de Banxico (que sí es una encuesta de opinión a especialistas) y explicar la brecha entre ambas es, con datos reales, la pregunta que cierra el laboratorio.
+
+---
+
+## Fuentes y referencias recomendadas
+
+- Luenberger, D. G. (2013). *Investment Science* (2ª ed.). Oxford University Press: rendimiento al vencimiento, curva precio-rendimiento, rendimiento corriente y a la opción de compra; curva de rendimientos, tasas spot y forward, y las tres explicaciones de la estructura de plazos.
+- Fabozzi, F. J., y Mann, S. V. (2010). *Introduction to Fixed Income Analytics: Relative Value Analysis, Risk Measures, and Valuation* (2ª ed.). Wiley: fuentes de retorno de un bono, supuestos del rendimiento al vencimiento, rendimiento corriente, a la opción de compra y al peor caso; tasas spot (bootstrapping) y forward.
+- Fabozzi, F. J., & Fabozzi, F. A. (2021). *Bond Markets, Analysis, and Strategies* (10ª ed.). MIT Press: curva de rendimiento a vencimiento frente a curva spot, efecto cupón, bootstrapping y tasas forward.
+- Mishkin, F. S. (2019). *The Economics of Money, Banking, and Financial Markets* (Business School Edition, 5ª ed.). Pearson: rendimiento al vencimiento en distintos tipos de instrumento de crédito, diferencia entre tasa de interés y retorno, y teorías de la estructura de plazos.
+- Nelson, C. R., & Siegel, A. F. (1987). *Parsimonious Modeling of Yield Curves*. Journal of Business, 60(4), 473-489: la forma funcional de tres parámetros y su interpretación como nivel, pendiente y curvatura.
+- Banco de México: metodología de estimación de la curva de rendimientos cupón cero (familia Nelson-Siegel/Svensson) y Sistema de Información Económica (SIE) para series históricas de Cetes, Bonos M y UDIBONOS; Encuesta de Expectativas de los Especialistas en Economía del Sector Privado, para el pronóstico de inflación con el que se compara la inflación implícita de la curva.
+- Cetesdirecto: tablas de CETES y Bonos del 21 de septiembre de 2026 (precio y tasa por plazo), con las que se dibuja la curva del ejemplo de la sección 4.
+
+---
+
+## Cierre de la unidad — Lo esencial para recordar
+
+- El **rendimiento al vencimiento (YTM)** es la tasa $r$ que resuelve $v_0(r)=a$: la TIR del bono al precio pagado. Se resuelve por iteración (TIR o Solver en la hoja de cálculo); en un instrumento a descuento se despeja a mano.
+- Precio y rendimiento se mueven en sentido contrario, con una curva convexa que cruza la par cuando $r=c$ y que es más empinada mientras más largo el plazo: esa sensibilidad es el riesgo de tasa de interés.
+- El YTM se realiza solo si los cupones se reinvierten a esa tasa y el bono se conserva hasta el vencimiento. El **rendimiento corriente** ($c/a$) es la versión que ignora la ganancia de precio y la reinversión.
+- La **curva de rendimientos** grafica el YTM contra el plazo: es normal o invertida y se mueve en nivel, pendiente y curvatura. Ubicar un bono frente a ella muestra cómo está valuado; la diferencia es la **sobretasa**. Ojo: la curva de YTM no es la curva spot.
+- Fuera del objetivo, el apéndice muestra cómo se corrige el efecto cupón (**bootstrapping**), la **tasa forward**, las tres teorías de la estructura de plazos, **Nelson-Siegel** y la curva real.
+
+**Próxima sesión:** los riesgos a los que queda expuesto quien compra un instrumento de deuda, y por qué la duración (una idea que ya rondó esta nota, al ver cómo se mueve la curva) es la forma de medir uno de ellos.

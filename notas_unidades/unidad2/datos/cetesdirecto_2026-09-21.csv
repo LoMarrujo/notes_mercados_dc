@@ -1,0 +1,12 @@
+fecha,instrumento,plazo,tasa_pct,precio,moneda_precio,fuente
+2026-09-21,CETES,1 mes,6.25,9.95,MXN,cetesdirecto.com/tablas/valores_gubernamentales/cetes.html
+2026-09-21,CETES,3 meses,6.66,9.83,MXN,cetesdirecto.com/tablas/valores_gubernamentales/cetes.html
+2026-09-21,BONOS,3 años,8.24,100.94,MXN,cetesdirecto.com/tablas/valores_gubernamentales/bonos.html
+2026-09-21,BONOS,5 años,9.00,98.90,MXN,cetesdirecto.com/tablas/valores_gubernamentales/bonos.html
+2026-09-21,BONOS,10 años,9.16,96.40,MXN,cetesdirecto.com/tablas/valores_gubernamentales/bonos.html
+2026-09-21,BONOS,20 años,9.64,86.34,MXN,cetesdirecto.com/tablas/valores_gubernamentales/bonos.html
+2026-09-21,BONOS,30 años,9.87,84.22,MXN,cetesdirecto.com/tablas/valores_gubernamentales/bonos.html
+2026-09-21,UDIBONOS,3 años,3.99,881.46,MXN,cetesdirecto.com/tablas/valores_gubernamentales/udibonos.html
+2026-09-21,UDIBONOS,10 años,4.75,838.79,MXN,cetesdirecto.com/tablas/valores_gubernamentales/udibonos.html
+2026-09-21,UDIBONOS,30 años,4.90,766.84,MXN,cetesdirecto.com/tablas/valores_gubernamentales/udibonos.html
+2026-09-21,UDI,,,8.818843,MXN,cetesdirecto.com/tablas/valores_gubernamentales/udibonos.html

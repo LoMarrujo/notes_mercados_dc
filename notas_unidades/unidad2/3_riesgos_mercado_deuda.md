@@ -4,18 +4,17 @@
 
 ## Objetivo de la unidad
 
-Que el estudiante distinga el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado, y calcule la duración y la convexidad de un bono para cuantificar su sensibilidad a cambios en la tasa.
+Que el estudiante distinga el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado.
 
 ## Contenido
 
-|     | Tema                                              | Qué cubre                                                                                     |
-| --- | ------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| I   | Riesgo de tasa de interés                         | Por qué el precio de un bono se mueve en sentido contrario a la tasa de mercado               |
-| II  | Riesgo de crédito y calificaciones                | Probabilidad de incumplimiento, investment grade vs. junk, y a quién le aplica                |
-| III | Riesgo de inflación                               | Por qué un cupón fijo pierde poder adquisitivo, y cómo el UDIBONO lo evita                    |
-| IV  | Riesgo de liquidez                                | Qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento          |
-| V   | Los seis instrumentos frente a los cuatro riesgos | Matriz de qué riesgo domina en cada instrumento de esta unidad                                |
-| VI  | Duración y convexidad                             | Cuantificar el riesgo de tasa de interés: cuánto se mueve el precio, no solo en qué dirección |
+|     | Tema                                              | Qué cubre                                                                            |
+| --- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| I   | Riesgo de tasa de interés                         | Por qué el precio de un bono se mueve en sentido contrario a la tasa de mercado      |
+| II  | Riesgo de crédito y calificaciones                | Probabilidad de incumplimiento, investment grade vs. junk, y a quién le aplica       |
+| III | Riesgo de inflación                               | Por qué un cupón fijo pierde poder adquisitivo, y cómo el UDIBONO lo evita           |
+| IV  | Riesgo de liquidez                                | Qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento |
+| V   | Los seis instrumentos frente a los cuatro riesgos | Matriz de qué riesgo domina en cada instrumento de esta unidad                       |
 
 > La práctica de este tema está en [`practica_unidad2.md`](../../practicas/unidad2/practica_unidad2.md).
 
@@ -27,9 +26,16 @@ Hasta aquí, comprar un instrumento de deuda se trató como un problema resuelto
 
 **Definición:** riesgo de tasa de interés es la posibilidad de que la tasa de mercado cambie después de comprar un instrumento de deuda, y que ese cambio mueva su precio en sentido contrario.
 
-La fórmula de la sección 2 de [`2_valuacion_instrumentos_deuda.md`](2_valuacion_instrumentos_deuda.md#2-valuación-con-cupón-fijo) ya muestra por qué: con el cupón $c$ fijo, subir la tasa de descuento $r$ baja $v_0$ (cada flujo futuro se descuenta más fuerte), y bajar $r$ lo sube. Quien compra un bono de cupón fijo y necesita venderlo antes del vencimiento queda expuesto a ese movimiento; quien lo conserva hasta el vencimiento no realiza esa pérdida o ganancia, pero sí enfrenta el riesgo simétrico de **reinversión**: si las tasas bajan, los cupones que va cobrando en el camino se reinvierten a una tasa menor a la que esperaba.
+La razón es de competencia entre instrumentos: el cupón $c$ de un bono ya emitido es fijo, así que si la tasa de mercado sube, ese cupón queda por debajo de lo que ofrecen los bonos nuevos, y nadie paga el precio anterior por un flujo que ahora rinde menos que la alternativa; el precio tiene que bajar hasta que, comprado a ese precio menor, el mismo cupón fijo rinda lo mismo que exige el mercado nuevo. La fórmula de la sección 2 de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#2-valuación-con-cupón-fijo) muestra el mismo efecto desde el descuento: con $c$ fijo, subir la tasa de descuento $r$ baja $v_0$ (cada flujo futuro se descuenta más fuerte), y bajar $r$ lo sube. Quien compra un bono de cupón fijo y necesita venderlo antes del vencimiento queda expuesto a ese movimiento; quien lo conserva hasta el vencimiento no realiza esa pérdida o ganancia, pero sí enfrenta el riesgo simétrico de **reinversión**: si las tasas bajan, los cupones que va cobrando en el camino se reinvierten a una tasa menor a la que esperaba.
 
 Ese riesgo no es del mismo tamaño para cualquier plazo. Con más periodos $N$ por descontar, un mismo cambio en $r$ mueve más el término $(1+r)^{-N}$: un CETE a 28 días apenas se mueve si Banxico cambia su tasa de referencia, porque en 28 días ese cambio se descuenta una sola vez y por poco tiempo; un Bono M a 10 años, con el mismo cambio de tasa, puede mover su precio de forma mucho más pronunciada, porque el cambio afecta diez periodos de descuento en vez de uno.
+
+> **Con datos reales.** El ciclo de alzas de 2021-2023 subió la tasa corta mexicana 7.2 puntos porcentuales (de 4.2% a 11.5%), un 40% más que el alza de la Fed en su ciclo más reciente (+5.1 pp, 2022-2024). El recorte que siguió ha sido todavía más desigual: México ha bajado 4.6 pp desde abril de 2024 contra 1.5 pp de la Fed, así que el diferencial de tasas entre los dos países cayó a 3.16 pp en agosto de 2026, de los niveles más bajos del historial desde 2001 (que promedia 5.2 pp) aunque sin llegar al mínimo de 2.23 pp que tocó en 2006. El riesgo de tasa de interés no es una posibilidad abstracta: los ciclos de política monetaria en México se han movido, en sus episodios más recientes, en un rango bastante más amplio que los de Estados Unidos.
+
+**Ejemplos:**
+
+- Un inversionista compra un Bono M a 10 años con cupón fijo de 8%, a \$93.58 (ver la tabla de [`4_duracion_convexidad.md`](4_duracion_convexidad.md#1-cuánto-se-mueve-el-precio)); si la tasa de mercado sube 100 pb, los bonos nuevos ofrecen más que ese 8%, así que su bono solo se vende si su precio baja lo suficiente para igualar ese nuevo rendimiento, hasta \$87.71.
+- Un ahorrador reinvierte los cupones semestrales de un Bono M a medida que los cobra; si la tasa de mercado baja de 9% a 6% en el camino, cada cupón que reinvierte gana 6% en vez del 9% original: es el riesgo de reinversión, el lado simétrico del riesgo de tasa de interés.
 
 *Fuente: Mishkin, F. S. y Eakins, S. G. (2014). Financial Markets and Institutions (8ª ed.). Pearson. Cap. 3, "What Do Interest Rates Mean and What Is Their Role in Valuation?": riesgo de tasa de interés y riesgo de reinversión.*
 
@@ -44,25 +50,40 @@ La Unidad 1 ya presentó a las calificadoras (S&P, Moody's, HR Ratings, Fitch) y
 
 > **Aplicación a los instrumentos de esta unidad.** La deuda gubernamental (CETE, Bono M, UDIBONO) se trata como de riesgo de crédito mínimo, el mismo supuesto de la Unidad 1: el Gobierno Federal mexicano no se califica de la misma forma que un emisor corporativo. La deuda corporativa (bono corporativo, papel comercial, certificado bursátil emitido por una empresa) sí carga riesgo de crédito, y ese riesgo es justamente lo que califican S&P, Moody's, HR Ratings o Fitch; la sobretasa que paga por encima de un Bono M o un CETE del mismo plazo es, en buena medida, el precio de ese riesgo.
 
+**Ejemplos:**
+
+- Un bono corporativo calificado BBB- (el último escalón de grado de inversión) es rebajado a BB+ (el primer escalón de junk) tras un mal reporte financiero del emisor; el mercado le exige una sobretasa mayor y su precio cae de inmediato.
+- Una empresa mediana emite papel comercial y, al vencimiento, no logra refinanciarse ni cubrir el principal; el tenedor pierde parte o todo el monto invertido, el riesgo de crédito materializado.
+
 *Fuente: Luenberger, D. G. (2013). Investment Science (2ª ed.). Oxford University Press. Cap. 3, "Fixed-Income Securities", "Quality Ratings", pp. 53-54: la escala de calificaciones y la división entre grado de inversión y grado especulativo.*
 
 ### 3. Riesgo de inflación
 
 **Definición:** riesgo de inflación (o riesgo de poder adquisitivo) es la posibilidad de que la inflación real resulte mayor a la que el mercado esperaba al fijar la tasa cupón, de modo que el pago prometido, aunque se cumpla al pie de la letra, compre menos de lo que el inversionista esperaba.
 
-Un instrumento con cupón fijo nominal (Bono M, bono corporativo, papel comercial, CETE) no ajusta ese pago si la inflación sorprende al alza: el monto en pesos es el que es, pero su poder de compra cae con la inflación no anticipada. El UDIBONO, presentado en [`1_instrumentos_deuda.md`](1_instrumentos_deuda.md#1-instrumentos-gubernamentales-cetes-bono-m-y-udibono), es exactamente el instrumento que este curso usa para evitar ese riesgo: al pactar una tasa real sobre un valor nominal denominado en UDIs (que se ajustan con la inflación observada), el cupón y el capital que recibe el inversionista mantienen su poder de compra sin importar qué tan alta resulte la inflación.
+Un instrumento con cupón fijo nominal (Bono M, bono corporativo, papel comercial, CETE) no ajusta ese pago si la inflación sorprende al alza: el monto en pesos es el que es, pero su poder de compra cae con la inflación no anticipada. El UDIBONO, presentado en [`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#6-los-seis-instrumentos), es exactamente el instrumento que este curso usa para evitar ese riesgo: al pactar una tasa real sobre un valor nominal denominado en UDIs (que se ajustan con la inflación observada), el cupón y el capital que recibe el inversionista mantienen su poder de compra sin importar qué tan alta resulte la inflación.
 
 > Este riesgo es más relevante mientras más largo es el plazo del instrumento (más tiempo para que la inflación observada se aleje de la esperada) y mientras más fijo es el cupón en términos nominales; por eso un CETE a 28 días apenas lo enfrenta (muy poco tiempo para que la inflación sorprenda), mientras que un Bono M a 30 años sí queda expuesto de forma relevante.
+
+**Ejemplos:**
+
+- Un Bono M con cupón nominal fijo de 8% se compró esperando una inflación de 5%; si la inflación observada resulta 12%, el cupón sigue pagando el mismo monto en pesos, pero compra menos de lo que el inversionista anticipaba.
+- Un UDIBONO comprado en el mismo momento, con la misma sorpresa inflacionaria de 12%, no pierde poder de compra: su valor nominal en UDIs se ajusta con la inflación observada, así que el cupón y el capital mantienen su valor real.
 
 ### 4. Riesgo de liquidez
 
 **Definición:** riesgo de liquidez es la posibilidad de no poder vender un instrumento rápidamente, o de tener que aceptar un precio desfavorable para lograrlo, antes de su vencimiento.
 
-[`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda) ya explicó que el mercado secundario de deuda es mayoritariamente de mostrador, no un libro de órdenes público como el de una acción; esa estructura por sí sola vuelve a la deuda, en general, menos líquida que una acción de una empresa grande. Dentro del propio mercado de deuda, la liquidez tampoco es uniforme:
+[`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda) ya explicó que el mercado secundario de deuda es mayoritariamente de mostrador, no un libro de órdenes público como el de una acción; esa estructura por sí sola vuelve a la deuda, en general, menos líquida que una acción de una empresa grande. Dentro del propio mercado de deuda, la liquidez tampoco es uniforme:
 
-- Los instrumentos gubernamentales (CETE, Bono M, UDIBONO) son los más líquidos: se colocan en montos grandes y periódicos, y los Formadores de Mercado ([`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda)) están obligados a cotizar precio de compra y venta de forma continua.
-- Una emisión colocada por **oferta pública** suele ser más líquida que una **colocación privada** ([`0_caracteristicas_mercado_deuda.md`](0_caracteristicas_mercado_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda)), porque hay más inversionistas que la conocen y pueden comprarla en el secundario.
+- Los instrumentos gubernamentales (CETE, Bono M, UDIBONO) son los más líquidos: se colocan en montos grandes y periódicos, y los Formadores de Mercado ([`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda)) están obligados a cotizar precio de compra y venta de forma continua.
+- Una emisión colocada por **oferta pública** suele ser más líquida que una **colocación privada** ([`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda)), porque hay más inversionistas que la conocen y pueden comprarla en el secundario.
 - Una emisión corporativa pequeña o poco conocida (un papel comercial de una empresa mediana, un certificado bursátil colocado de forma privada) suele ser la menos líquida de todas: si el tenedor necesita vender antes del vencimiento, puede no encontrar comprador, o solo a un precio con un descuento considerable.
+
+**Ejemplos:**
+
+- El tenedor de un CETE puede venderlo el mismo día a un precio muy cercano al de mercado, porque los Formadores de Mercado cotizan compra y venta de forma continua.
+- El tenedor de un certificado bursátil colocado de forma privada por una empresa poco conocida intenta venderlo antes del vencimiento y solo encuentra comprador con un descuento considerable, o no encuentra comprador en absoluto.
 
 ### 5. Los seis instrumentos frente a los cuatro riesgos
 
@@ -75,42 +96,7 @@ Un instrumento con cupón fijo nominal (Bono M, bono corporativo, papel comercia
 | Papel comercial      | Bajo (plazo corto)                                                     | Sí, aunque acotado por el plazo corto | Bajo (plazo corto)                       | Medio, depende de qué tan conocido es el emisor     |
 | Certificado bursátil | Depende del cupón (bajo si es variable, alto si es fijo a largo plazo) | Sí, si lo emite una empresa           | Depende del cupón (bajo si es variable)  | Depende del canal de colocación (pública o privada) |
 
-El certificado bursátil vuelve a ser el caso que no se puede resolver con una sola palabra por fila, la misma flexibilidad que ya se vio en [`1_instrumentos_deuda.md`](1_instrumentos_deuda.md#3-certificado-bursátil-el-instrumento-híbrido): su exposición a cada riesgo depende de las decisiones de diseño de esa emisión en particular (plazo, mecánica de cupón, emisor, canal de colocación), no de una regla fija como en los otros cinco instrumentos.
-
-### 6. Duración y convexidad
-
-La sección 1 ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
-
-| Cambio en la tasa  | Precio, Bono M 2 años | Precio, Bono M 10 años |
-| ------------------ | --------------------- | ---------------------- |
-| Sin cambio (9.00%) | \$98.24               | \$93.58                |
-| +1 pb (9.01%)      | \$98.22               | \$93.52                |
-| +10 pb (9.10%)     | \$98.07               | \$92.97                |
-| +100 pb (10.00%)   | \$96.53               | \$87.71                |
-
-Graficando el precio contra la tasa para cada bono, las dos curvas descienden, y la del bono a 10 años cae con mayor pendiente que la del bono a 2 años en cualquier punto: esa pendiente, la razón de cambio del precio respecto a la tasa, es exactamente lo que la **duración** va a medir. Se llama así, y se mide en años, por una coincidencia algebraica de su fórmula (se ve abajo), no porque sea literalmente un tiempo: es una sensibilidad, y confundirla con un plazo es uno de los errores más comunes de esta unidad.
-
-**Duración de Macaulay ($D$):** el promedio del plazo de cada flujo, ponderado por qué proporción del precio total aporta ese flujo:
-
-$$D = \dfrac{\displaystyle\sum_{i=1}^{N} t_i\, c_i(1+r)^{-t_i}}{v_0} \qquad (v_0 \neq 0)$$
-
-¿De dónde sale la fórmula? $v_0=\sum_i c_i(1+r)^{-t_i}$ es la fórmula de precio de [`2_valuacion_instrumentos_deuda.md`](2_valuacion_instrumentos_deuda.md#2-valuación-con-cupón-fijo); cada término $c_i(1+r)^{-t_i}$ es el valor presente del flujo del periodo $t_i$, y dividirlo entre $v_0$ da qué fracción del precio total viene de ese flujo. $D$ es el promedio de los plazos $t_i$, ponderado por esas fracciones: un bono cupón cero (un solo flujo, todo el peso en $t_N$) tiene $D=t_N$, exactamente su plazo; un bono con cupones tiene $D<t_N$, porque parte del peso ya se cobró antes del vencimiento.
-
-**Duración modificada ($D_{mod}$):** la sensibilidad real del precio ante un cambio en la tasa, la pendiente que se vio en la tabla:
-
-$$D_{mod} = \dfrac{D}{1+r} \qquad\text{y}\qquad \dfrac{\Delta v_0}{v_0} \approx -D_{mod}\,\Delta r$$
-
-¿De dónde sale la fórmula? Derivando $v_0(r)=\sum_i c_i(1+r)^{-t_i}$ respecto a $r$: $\dfrac{dv_0}{dr} = -\sum_i t_i c_i (1+r)^{-t_i-1} = -\dfrac{1}{1+r}\sum_i t_i c_i(1+r)^{-t_i} = -\dfrac{D\,v_0}{1+r}$. Despejando, $\dfrac{1}{v_0}\dfrac{dv_0}{dr} = -\dfrac{D}{1+r} = -D_{mod}$: la duración modificada es, por definición, el cambio porcentual del precio por cada punto que se mueve la tasa, la derivada de la sección de riesgo de tasa de interés convertida en número.
-
-> **PVBP (price value of a basis point):** cuánto dinero, no porcentaje, cambia el precio si la tasa se mueve exactamente un punto base ($\Delta r = 0.0001$): $\text{PVBP} \approx D_{mod}\,v_0\,(0.0001)$. Es la misma aproximación de arriba, solo que en pesos por posición en vez de en porcentaje, útil para dimensionar una mesa de dinero que necesita saber cuánto arriesga un portafolio completo, no solo un bono.
-
-**Convexidad ($C$):** la aproximación lineal de $D_{mod}$ se aleja del precio real mientras más grande es el cambio de tasa (la tabla ya lo insinúa: el precio no cae proporcionalmente igual entre +1 pb y +100 pb). La convexidad corrige ese error usando la segunda derivada:
-
-$$C = \dfrac{1}{v_0}\dfrac{d^2v_0}{dr^2} = \dfrac{\displaystyle\sum_{i=1}^N t_i(t_i+1)\,c_i(1+r)^{-t_i-2}}{v_0} \qquad\text{y}\qquad \dfrac{\Delta v_0}{v_0} \approx -D_{mod}\,\Delta r + \dfrac{1}{2}C(\Delta r)^2$$
-
-¿De dónde sale la fórmula? Es la misma derivación de $D_{mod}$, un paso más: derivar $dv_0/dr$ una segunda vez respecto a $r$ da $d^2v_0/dr^2 = \sum_i t_i(t_i+1)c_i(1+r)^{-t_i-2}$; dividir entre $v_0$ dimensiona esa segunda derivada igual que se hizo con la primera. Sumar el término de convexidad a la aproximación de $D_{mod}$ es la misma idea que una expansión de Taylor de segundo orden: la recta tangente (duración) más la corrección de curvatura (convexidad).
-
-> Un bono con más convexidad es, en igualdad de duración, mejor para su tenedor: gana más de lo que la duración predice cuando la tasa baja, y pierde menos de lo que predice cuando sube. Esa asimetría es justamente lo que la curvatura de la tabla de arriba ya mostraba, antes de ponerle un nombre o una fórmula.
+El certificado bursátil vuelve a ser el caso que no se puede resolver con una sola palabra por fila, la misma flexibilidad que ya se vio en [`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#6-los-seis-instrumentos): su exposición a cada riesgo depende de las decisiones de diseño de esa emisión en particular (plazo, mecánica de cupón, emisor, canal de colocación), no de una regla fija como en los otros cinco instrumentos.
 
 ---
 
@@ -120,7 +106,7 @@ $$C = \dfrac{1}{v_0}\dfrac{d^2v_0}{dr^2} = \dfrac{\displaystyle\sum_{i=1}^N t_i(
 - Mishkin, F. S. (2019). *The Economics of Money, Banking, and Financial Markets* (Business School Edition, 5ª ed.). Pearson. Cap. 5, "The Risk and Term Structure of Interest Rates": riesgo de crédito (default risk) y su efecto en la sobretasa (spread) sobre la tasa libre de riesgo.
 - Luenberger, D. G. (2013). *Investment Science* (2ª ed.). Oxford University Press. Cap. 3, "Fixed-Income Securities", "Quality Ratings", pp. 53-54: escala de calificaciones crediticias y la división entre grado de inversión y grado especulativo (junk).
 - Banco de México: ficha técnica de UDIBONOS, mecánica de protección contra la inflación vía la UDI.
-- Fabozzi, F. J., & Fabozzi, F. A. (2021). *Bond Markets, Analysis, and Strategies* (10ª ed.). MIT Press: duración de Macaulay, duración modificada, PVBP y convexidad como medidas de sensibilidad del precio ante cambios en la tasa.
+- Federal Reserve Bank of St. Louis (FRED): series mensuales de la tasa interbancaria mexicana y de la fed funds estadounidense, 2001-07 a 2026-08, la misma fuente que usa el apéndice de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#apéndice-verificación-numérica-con-código-y-datos). Los ciclos de alza y baja y el diferencial de tasas del comentario de la sección 1 se reproducen con `codigo/analisis_tasas_mx_eu.py`.
 
 ---
 
@@ -131,6 +117,5 @@ $$C = \dfrac{1}{v_0}\dfrac{d^2v_0}{dr^2} = \dfrac{\displaystyle\sum_{i=1}^N t_i(
 - **Riesgo de inflación**: un cupón fijo nominal pierde poder de compra si la inflación sorprende al alza; el UDIBONO es el instrumento diseñado específicamente para evitarlo, al pactar una tasa real sobre un valor denominado en UDIs.
 - **Riesgo de liquidez**: qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento; los instrumentos gubernamentales son los más líquidos, una colocación privada o una emisión corporativa poco conocida son las menos líquidas.
 - Ningún instrumento de esta unidad enfrenta los cuatro riesgos por igual: caracterizarlo bien significa identificar cuáles aplican y cuáles no, no asumir que todos los riesgos aplican a todos los instrumentos por igual.
-- La **duración modificada** cuantifica el riesgo de tasa de interés: el cambio porcentual aproximado del precio ante un cambio en la tasa. Es una sensibilidad, no un plazo, aunque se mida en años. La **convexidad** corrige esa aproximación lineal para cambios de tasa grandes, y el **PVBP** la expresa en pesos en vez de en porcentaje.
 
-**Próxima sesión:** cómo se transfiere el riesgo de este instrumento sin transferir el proyecto que lo emitió: los títulos negociables, el mercado secundario, y el papel de la deuda soberana como colateral del sistema.
+**Próxima sesión:** cuánto se mueve el precio de un bono ante un cambio de tasa, no solo en qué dirección: la duración y la convexidad.
