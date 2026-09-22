@@ -170,7 +170,7 @@ La diferencia entre sumar (simple) y multiplicar (compuesto) parece pequeña al 
 
 ### 6. Valor futuro y valor presente de un flujo único
 
-**Definición:** llamamos $v_t$ al valor de un flujo en el periodo $t$; $v_0$ es el valor presente (present value, PV), y $v_t$ en un periodo futuro es el valor futuro (future value, FV). Es la fórmula de interés compuesto de la sección anterior, $v = a(1+r)^t$, con otro nombre: $v_0$ es el monto hoy, $v_N$ el monto en el periodo N. Lo que agrega esta sección es la dirección contraria: si conozco el monto futuro, ¿cuánto vale hoy?
+**Definición:** llamamos $v_t$ al valor de un flujo en el periodo $t$; $v_0$ es el valor presente (present value, PV), y $v_t$ en un periodo futuro es el valor futuro (future value, FV). Es la fórmula de interés compuesto de la sección anterior, $v = a(1+r)^t$, con fechas: $v_0 = a$ es el monto hoy y $v_N$ el monto en el periodo N, mientras la tasa no cambie. Lo que agrega esta sección es la dirección contraria: si conozco el monto futuro, ¿cuánto vale hoy?
 
 $$v_N = v_0(1+r)^N \qquad v_0 = v_N(1+r)^{-N}$$
 
@@ -180,7 +180,7 @@ $$v_N = v_0(1+r)^N \qquad v_0 = v_N(1+r)^{-N}$$
 - **r**: tasa de interés por periodo.
 - **N**: número de periodos.
 
-**Justificación matemática.** Partiendo de $v_N = v_0(1+r)^N$ (la fórmula de interés compuesto, renombrada), despejar $v_0$ solo invierte la operación: multiplicar por $(1+r)^{-N}$, el factor de descuento (el inverso del factor de crecimiento), deshace exactamente los N pasos de crecimiento compuesto, es decir, trae el flujo futuro de vuelta al presente ("descontarlo").
+**Justificación matemática.** Partiendo de $v_N = v_0(1+r)^N$ (la fórmula de interés compuesto, con $v_0 = a$), despejar $v_0$ solo invierte la operación: multiplicar por $(1+r)^{-N}$, el factor de descuento (el inverso del factor de crecimiento), deshace exactamente los N pasos de crecimiento compuesto, es decir, trae el flujo futuro de vuelta al presente ("descontarlo").
 
 > **Ejemplo:** ¿cuánto necesitas invertir hoy para tener \$100,000 en 3 años, si la tasa es 8% anual compuesta?
 > $v_0$ = 100,000(1.08)⁻³ ≈ **\$79,383**
