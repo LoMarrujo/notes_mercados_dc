@@ -133,13 +133,26 @@ def wrap_runs_to_lines(runs, max_width_pt, size_pt):
     return lines
 
 
+
+# El ancho de un texto se mide con las fuentes reales via PIL (text_width_px)
+# para aproximar cuánto ocupará en PowerPoint, pero PIL y el motor de texto
+# de PowerPoint (kerning/hinting) no miden exactamente igual: un texto que
+# PIL calcula al 99% del ancho disponible puede desbordar una línea en la
+# exportación real y quedar tapado por el bloque que sigue (una tabla, por
+# ejemplo). Este margen de seguridad reduce el ancho utilizable antes de
+# contar líneas, para que un caso al límite redondee hacia una línea de más
+# (deja un poco de aire) en vez de una de menos (produce un traslape).
+WRAP_SAFETY = 0.97
+
+
 def count_wrapped_lines(text, max_width_pt, size_pt, bold=False, italic=False, font=FONT_BODY):
     if not text:
         return 1
     w = text_width_px(text, font, bold, italic, size_pt)
-    if w <= max_width_pt:
+    usable = max_width_pt * WRAP_SAFETY
+    if w <= usable:
         return 1
-    return max(1, math.ceil(w / max_width_pt))
+    return max(1, math.ceil(w / usable))
 
 
 # --------------------------------------------------------------------------
@@ -162,7 +175,11 @@ def to_roman(n):
 
 GREEK_MAP = {r"\Delta": "Δ", r"\delta": "δ", r"\alpha": "α", r"\beta": "β",
              r"\gamma": "γ", r"\sigma": "σ", r"\mu": "μ", r"\pi": "π",
-             r"\lambda": "λ", r"\theta": "θ", r"\Sigma": "Σ", r"\Pi": "Π"}
+             r"\lambda": "λ", r"\theta": "θ", r"\Sigma": "Σ", r"\Pi": "Π",
+             r"\kappa": "κ", r"\varepsilon": "ε", r"\epsilon": "ε",
+             r"\eta": "η", r"\rho": "ρ", r"\tau": "τ", r"\phi": "φ",
+             r"\chi": "χ", r"\psi": "ψ", r"\omega": "ω", r"\zeta": "ζ",
+             r"\nu": "ν", r"\xi": "ξ", r"\Omega": "Ω", r"\Phi": "Φ"}
 
 # Un subíndice inline ($x_{ab}$) no se aproxima con caracteres Unicode:
 # varias letras (b, c, d, f, g, q, w, y, z) no tienen glifo de subíndice en
@@ -180,7 +197,16 @@ SUP_OPEN, SUP_CLOSE = chr(0xE012), chr(0xE013)
 def _latex_frag_to_text(s):
     s = re.sub(r"\\hat\{([^{}]+)\}", lambda m: m.group(1) + "\u0302", s)
     s = re.sub(r"\\hat\s+(\S)", lambda m: m.group(1) + "\u0302", s)
-    s = re.sub(r"\\d?frac\{([^{}]+)\}\{([^{}]+)\}", r"(\1)/(\2)", s)
+    # \text{...} es texto literal dentro de math mode (p. ej. \text{de} para
+    # una abreviatura); sin esto, el strip final de "\" deja "text{de}" tal
+    # cual en vez de solo "de"
+    s = re.sub(r"\\text\{([^{}]+)\}", r"\1", s)
+    # el numerador/denominador puede traer llaves anidadas (un exponente
+    # como ^{-10} dentro de la fracción, p. ej. \dfrac{1-(1+r)^{-N}}{r});
+    # sin tolerar un nivel de anidamiento el patrón no hace match y deja el
+    # LaTeX crudo como texto
+    _frac_arg = r"(?:[^{}]|\{[^{}]*\})+"
+    s = re.sub(r"\\d?frac\{(" + _frac_arg + r")\}\{(" + _frac_arg + r")\}", r"(\1)/(\2)", s)
     s = s.replace(r"\times", "×").replace(r"\neq", "≠").replace(r"\cdot", "·")
     s = s.replace(r"\to", "→").replace(r"\rightarrow", "→").replace(r"\longrightarrow", "→")
     s = s.replace(r"\infty", "∞")
@@ -1454,9 +1480,16 @@ def build_deck(doc, out_pptx, md_dir="."):
             fuentes_items.extend(_item_text_level(it)[0] for it in blk["items"])
         elif blk["type"] == "para":
             fuentes_items.append(blk["text"])
+    # Un bloque por referencia, no una sola lista con todas: flow_blocks solo
+    # pagina en el límite entre bloques (ver el "if h > avail and placed_any"
+    # de más arriba), y sabe partir una tabla larga (split_table_rows) pero
+    # no una lista de bullets larga. Con todas las referencias en un único
+    # bloque de bullets, una bibliografía de más de 6-7 libros no cabe en una
+    # sola diapositiva y el bloque entero se dibuja de todos modos,
+    # desbordándose por debajo del margen en vez de crear una "(cont.)".
+    fuentes_blocks = [{"type": "bullets", "items": [it]} for it in fuentes_items]
     fuentes_page = flow_blocks(deck, "PREPARACIÓN DOCENTE", "Fuentes y referencias recomendadas",
-                                [{"type": "bullets", "items": fuentes_items}],
-                                allow_subtitle=False)
+                                fuentes_blocks, allow_subtitle=False)
 
     # Rellenar la slide de TOC reservada (índice 2, ya en su posición correcta)
     _fill_toc_slide(toc_slide, entries)
