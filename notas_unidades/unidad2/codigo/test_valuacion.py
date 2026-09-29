@@ -19,7 +19,7 @@ from simulacion import (  # noqa: E402
     DT, KAPPA, R0, R_LP_DESC, SIGMA, cupon_a_la_par, simular_precios, simular_tasas,
 )
 from valuacion import (  # noqa: E402
-    cupon_implicito, flujos_bono, precio_amortizable, precio_bono,
+    cupon_implicito, flujos_bono, precio_amortizable, precio_bonde_f, precio_bono,
     precio_bono_m, precio_descuento, precio_flujos, tabla_amortizacion,
 )
 
@@ -61,6 +61,73 @@ def test_bono_m_ejemplo_oficial_de_banxico():
     sucio, limpio = precio_bono_m(0.18, 0.19, 6, 21)
     assert sucio == pytest.approx(98.81269, abs=5e-6)
     assert limpio == pytest.approx(97.76269, abs=5e-6)
+
+
+def test_bonde_f_ejemplo_oficial_de_banxico():
+    # TIIE de Fondeo 4.03%, sobretasa 0.10%, 13 cupones por cobrar (357 dias),
+    # 7 dias devengados a una tasa capitalizada de 4.049938%
+    sucio, limpio = precio_bonde_f(0.0403, 0.0010, 0.04049938, 13, 7)
+    assert sucio == pytest.approx(99.98144, abs=5e-6)
+    assert limpio == pytest.approx(99.90269, abs=5e-6)
+
+
+def test_bonde_f_a_la_par_sin_sobretasa_en_fecha_de_reseteo():
+    # con sobretasa 0 y sin dias devengados el instrumento vale exactamente v_N
+    sucio, limpio = precio_bonde_f(0.0403, 0.0, 0.0403, 13, 0)
+    assert sucio == pytest.approx(100)
+    assert limpio == pytest.approx(100)
+
+
+def test_bonde_f_baja_de_la_par_casi_sobretasa_por_duracion():
+    # margen de 10 pb sobre 12 cupones restantes: cerca de 100 - s * (anualidad * 28/360)
+    _, limpio = precio_bonde_f(0.0403, 0.0010, 0.0403, 13, 0)
+    assert 99.85 < limpio < 99.95
+
+
+@pytest.mark.parametrize("n, precio", [(28, 9.9516), (91, 9.8445), (182, 9.6937), (364, 9.4056)])
+def test_cete_mismo_rendimiento_a_distintos_plazos(n, precio):
+    assert precio_descuento(10, 0.0625, n) == pytest.approx(precio, abs=5e-5)
+
+
+def test_papel_comercial_ilustrativo():
+    assert precio_descuento(1_000_000, 0.07, 60) == pytest.approx(988_468, abs=0.5)
+
+
+def test_ejemplos_de_cupon_fijo_de_la_nota():
+    # mismo cupon de 8% con las tasas del Bono M a 3 y a 30 anios (21 sep 2026)
+    assert precio_bono(8, 3, 0.0824, 100) == pytest.approx(99.38, abs=5e-3)
+    assert precio_bono(8, 30, 0.0987, 100) == pytest.approx(82.18, abs=5e-3)
+    # bono corporativo con premio: cupon 10% contra tasa de 8%; el premio es el VP de 2 al anio
+    assert precio_bono(10, 5, 0.08, 100) == pytest.approx(107.99, abs=5e-3)
+    assert precio_bono(10, 5, 0.08, 100) - 100 == pytest.approx(precio_bono(2, 5, 0.08, 0), abs=1e-9)
+
+
+@pytest.mark.parametrize("s, limpio", [(0.0, 100.0), (0.0010, 99.9027), (0.0030, 99.7084)])
+def test_bonde_f_con_otras_sobretasas(s, limpio):
+    _, p = precio_bonde_f(0.0403, s, 0.04049938, 13, 7)
+    assert p == pytest.approx(limpio, abs=5e-5)
+
+
+def test_bonde_f_pasos_de_la_nota():
+    # los siete pasos del ejemplo de la nota, con las formas simplificadas de c y c_1
+    r_fond, s, r_dev, k, d = 0.0403, 0.0010, 0.04049938, 13, 7
+    r_per = (1 + (r_fond + s) / 360) ** 28 - 1
+    c = 100 * ((1 + r_fond / 360) ** 28 - 1)
+    c1 = 100 * ((1 + r_dev * d / 360) * (1 + r_fond / 360) ** (28 - d) - 1)
+    assert (r_per, c, c1) == pytest.approx((0.0032172, 0.313919, 0.314281), abs=5e-7)
+    en_proximo_cupon = c1 + precio_bono(c, k - 1, r_per, 100)
+    assert en_proximo_cupon == pytest.approx(100.2226, abs=5e-5)
+    sucio = en_proximo_cupon * (1 + r_per) ** -(1 - d / 28)
+    assert sucio == pytest.approx(99.98144, abs=5e-5)
+    assert sucio - 100 * round(r_dev, 4) * d / 360 == pytest.approx(99.90269, abs=5e-5)
+
+
+def test_certificado_con_sobretasa_que_se_encarece():
+    # 26 cupones de 28 dias, TIIE de fondeo constante de 6.50%, sobretasa pactada 0.50%
+    c = 100 * (0.065 + 0.005) * 28 / 360
+    r_per = lambda dm: (0.065 + dm) * 28 / 360
+    assert precio_bono(c, 26, r_per(0.005), 100) == pytest.approx(100)
+    assert precio_bono(c, 26, r_per(0.009), 100) == pytest.approx(99.25, abs=5e-3)
 
 
 def test_cupon_implicito_recupera_el_cupon():

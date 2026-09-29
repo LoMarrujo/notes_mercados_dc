@@ -58,6 +58,27 @@ def precio_bono_m(tasa_cupon, rend, cupones_por_cobrar, dias_devengados, vn=100.
     return float(sucio), float(sucio - devengado)
 
 
+def precio_bonde_f(r, s, tc_dev, cupones_por_cobrar, dias_devengados, vn=100.0):
+    """Precio sucio y limpio de un Bonde F con la descripcion tecnica de
+    Banxico. Los cupones se proyectan con la ultima TIIE de Fondeo conocida
+    `r`, constante, y se descuentan con la tasa efectiva por periodo
+    R = (1 + (r + s)/360)^28 - 1, con `s` la sobretasa. El cupon vigente
+    combina los `dias_devengados` ya observados (`tc_dev`, tasa anual
+    capitalizada de esos dias) con `r` para los que faltan. Tasas en
+    decimales (0.0403 es 4.03%). Devuelve (sucio, limpio)."""
+    n = 28  # el Bonde F paga cupon cada 28 dias
+    tc1 = ((1 + tc_dev * dias_devengados / BASE) * (1 + r / BASE) ** (n - dias_devengados) - 1) * BASE / n
+    tc = ((1 + r / BASE) ** n - 1) * BASE / n
+    c1 = vn * n * tc1 / BASE
+    c = vn * n * tc / BASE
+    r_per = (1 + (r + s) / BASE) ** n - 1
+    v_prox = c1 + precio_bono(c, cupones_por_cobrar - 1, r_per, vn)
+    sucio = v_prox * (1 + r_per) ** (-(1 - dias_devengados / n))
+    # Banxico calcula el devengado con la tasa redondeada a dos decimales en porcentaje
+    devengado = vn * dias_devengados * round(tc_dev, 4) / BASE
+    return float(sucio), float(sucio - devengado)
+
+
 def cupon_implicito(precio, rend, n, vn=100.0):
     """Cupon anual (con la convencion 182/360) que hace que un bono de n
     periodos de 182 dias, liquidado en fecha de cupon, valga `precio` al
