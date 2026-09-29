@@ -45,7 +45,7 @@ $$r_{t+1} = a + b\,r_t + \varepsilon_{t+1}$$
 
 La correspondencia entre las dos expresiones es directa: $b = e^{-\kappa\Delta t}$ y $a = r_{lp}(1-b)$. El cambio de $R$ a $r$ no es cosmético: marca el paso de un modelo sobre una cantidad incierta a una estimación hecha con datos ya observados.
 
-¿De dónde sale la fórmula? El nivel al que revierte la tasa es una media ponderada entre su nivel de largo plazo y donde está hoy, con peso $e^{-\kappa\Delta t}$ sobre el presente: cuanto más grande $\kappa$, más rápido se olvida de dónde venía. Es el mismo descuento exponencial de la sección 1 de la nota, aplicado a la distancia que falta por recorrer en vez de a un flujo de dinero.
+¿De dónde sale la fórmula? El nivel al que revierte la tasa es una media ponderada entre su nivel de largo plazo y donde está hoy, con peso $e^{-\kappa\Delta t}$ sobre el presente: cuanto más grande $\kappa$, más rápido se olvida de dónde venía. Es el mismo descuento exponencial de la sección 2 de la nota, aplicado a la distancia que falta por recorrer en vez de a un flujo de dinero.
 
 Invertir la correspondencia recupera los parámetros del modelo a partir de los coeficientes de la regresión:
 

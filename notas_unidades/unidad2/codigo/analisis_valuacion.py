@@ -37,7 +37,7 @@ def conciliacion():
     """Precio calculado contra precio publicado, y cupon que haria falta
     para que la formula reproduzca el publicado.
 
-    CETES: la formula de la seccion 1 con n = 28 o 91 dias.
+    CETES: la formula de la seccion 2 con n = 28 o 91 dias.
     BONOS y UDIBONOS: se supone plazo remanente igual al plazo nominal
     (2N periodos de 182 dias) y liquidacion en fecha de cupon, de modo
     que precio limpio = sucio; el cupon implicito absorbe todo lo demas
@@ -65,7 +65,7 @@ def conciliacion():
 
 
 def descomposicion_bono_m_10a():
-    """De 93.58 (ejemplo de la seccion 2) a 96.40 (publicado), un cambio a
+    """De 93.58 (ejemplo de la seccion 3) a 96.40 (publicado), un cambio a
     la vez y en este orden: (1) tasa 9% a 9.16%, (2) pagos cada 182 dias en
     vez de uno al anio, (3) el cupon que cierra la brecha. El orden importa
     para cuanto se atribuye a cada paso; el total no."""

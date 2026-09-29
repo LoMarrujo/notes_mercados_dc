@@ -257,7 +257,7 @@ def fig_precio_hacia_la_par():
     """Tres bonos a 10 anios con cupon de 12%, 9% y 6% y una tasa de mercado
     que se queda en 9%: el que paga premio pierde valor, el que se vende a
     descuento lo gana, y los tres llegan a 100 al vencimiento. Ilustra los
-    tres casos de 1_valuacion (seccion 2, c contra r) y la convergencia a
+    tres casos de 1_valuacion (seccion 3, c contra r) y la convergencia a
     la par (pull to par). Pagos anuales, como en el ejemplo de la nota."""
     anios = np.arange(0, 11)
     r, n = 0.09, 10
@@ -290,7 +290,7 @@ def fig_precio_hacia_la_par():
 def fig_amortizacion_interes_capital():
     """Interes y abono a capital de cada pago de un credito de $500,000 a 20
     anios y 10% anual, en sistema frances y aleman (el ejemplo de la
-    seccion 4 de 1_valuacion). Las barras apiladas suman el pago total."""
+    seccion 5 de 1_valuacion). Las barras apiladas suman el pago total."""
     a, r, n = 500_000, 0.10, 20
     fig, axes = plt.subplots(2, 1, figsize=(7.5, 6.4), sharex=True, sharey=True)
     paneles = (("frances", "Sistema francés: pago total constante", "pago de \\$58,730 cada año"),

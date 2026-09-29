@@ -212,6 +212,12 @@ def _latex_frag_to_text(s):
     s = s.replace(r"\infty", "∞")
     s = s.replace(r"\dots", "…").replace(r"\ldots", "…")
     s = s.replace(r"\qquad", "   ").replace(r"\quad", " ")
+    # \left( / \right) (también con [ ] o \left. sin delimitador visible)
+    # solo ajustan el tamaño del paréntesis en LaTeX real; en el texto
+    # convertido el paréntesis normal ya sirve, así que el comando se
+    # descarta y se conserva el delimitador que le sigue
+    s = re.sub(r"\\left\s*", "", s)
+    s = re.sub(r"\\right\s*", "", s)
     s = s.replace(r"\approx", "≈").replace(r"\leq", "≤").replace(r"\geq", "≥")
     for latex, glyph in GREEK_MAP.items():
         s = s.replace(latex + " ", glyph).replace(latex, glyph)
@@ -354,6 +360,13 @@ def parse_blockquote(bq_lines):
                 items.append((re.sub(r"^[-*]\s+", "", bq_lines[i]), 0))
                 i += 1
             blocks.append({"type": "bullets", "items": items})
+            continue
+        if bq_lines[i].startswith("|"):
+            table_lines = []
+            while i < n and bq_lines[i].startswith("|"):
+                table_lines.append(bq_lines[i])
+                i += 1
+            blocks.append({"type": "table", "rows": parse_table(table_lines)})
             continue
         if bq_lines[i].startswith("$$"):
             line = bq_lines[i]
@@ -1078,19 +1091,52 @@ def draw_table(slide, header, body_rows, col_widths, left, top, size_pt):
     return total_h
 
 
+def blockquote_inner_block_height(b, inner_w):
+    """Altura de un bloque dentro de un blockquote, incluido el espacio
+    tras él. Usada tanto para medir el blockquote completo como para
+    decidir dónde partirlo entre diapositivas."""
+    if b["type"] == "para":
+        return estimate_para_height(b["text"], inner_w, 13) + 40000
+    if b["type"] == "bullets":
+        return estimate_bullets_height(b["items"], inner_w, 13,
+                                        img_items=b.get("_img_items")) + 40000
+    if b["type"] == "displaymath":
+        return b.get("img_h_emu", 900000) + 40000
+    if b["type"] == "table":
+        col_widths = compute_col_widths(b["rows"], inner_w)
+        size_pt = table_font_size(b["rows"])
+        return estimate_table_height(b["rows"], col_widths, size_pt) + 40000
+    return 40000
+
+
 def estimate_blockquote_height(bq_blocks, width_emu):
-    inner_pad = 180000
-    inner_w = width_emu - 2 * inner_pad
+    inner_w = width_emu - 2 * 180000
     h = 2 * 140000
     for b in bq_blocks:
-        if b["type"] == "para":
-            h += estimate_para_height(b["text"], inner_w, 13) + 40000
-        elif b["type"] == "bullets":
-            h += estimate_bullets_height(b["items"], inner_w, 13,
-                                          img_items=b.get("_img_items")) + 40000
-        elif b["type"] == "displaymath":
-            h += b.get("img_h_emu", 900000) + 40000
+        h += blockquote_inner_block_height(b, inner_w)
     return h
+
+
+def split_blockquote_blocks(bq_blocks, inner_w, max_height):
+    """Parte los bloques internos de un blockquote en trozos que quepan en
+    `max_height` cada uno, igual que split_table_rows para una tabla."""
+    fixed = 2 * 140000
+    chunks = []
+    cur = []
+    cur_h = fixed
+    for b in bq_blocks:
+        h = blockquote_inner_block_height(b, inner_w)
+        if cur and cur_h + h > max_height:
+            chunks.append(cur)
+            cur = []
+            cur_h = fixed
+        cur.append(b)
+        cur_h += h
+    if cur:
+        chunks.append(cur)
+    if not chunks:
+        chunks = [[]]
+    return chunks
 
 
 def draw_blockquote(slide, bq_blocks, left, top, width):
@@ -1126,6 +1172,12 @@ def draw_blockquote(slide, bq_blocks, left, top, width):
         elif b["type"] == "displaymath":
             hh = draw_image_block(slide, b["img_path"], b["img_w_emu"], b["img_h_emu"],
                                    left + inner_pad, y, inner_w)
+            y += hh + 40000
+        elif b["type"] == "table":
+            col_widths = compute_col_widths(b["rows"], inner_w)
+            size_pt = table_font_size(b["rows"])
+            hh = draw_table(slide, b["rows"][0], b["rows"][1:], col_widths,
+                             left + inner_pad, y, size_pt)
             y += hh + 40000
     return h
 
@@ -1332,6 +1384,19 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
                 if rest:
                     blocks[idx] = {"type": "table",
                                     "rows": [header] + [r for c in rest for r in c]}
+                else:
+                    idx += 1
+                break
+            if h > avail and b["type"] == "blockquote":
+                inner_w = CONTENT_W - 2 * 180000
+                chunks = split_blockquote_blocks(b["blocks"], inner_w, max(avail - GAP, 900000))
+                first_chunk = chunks[0]
+                hh = draw_blockquote(slide, first_chunk, MARGIN_L, y, CONTENT_W)
+                y += hh + GAP
+                placed_any = True
+                rest = [blk for c in chunks[1:] for blk in c]
+                if rest:
+                    blocks[idx] = {"type": "blockquote", "blocks": rest}
                 else:
                     idx += 1
                 break

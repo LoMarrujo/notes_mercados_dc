@@ -38,7 +38,7 @@ Graficando el precio contra la tasa para cada bono, las dos curvas descienden, y
 
 $$D = \dfrac{\displaystyle\sum_{i=1}^{N} t_i\, c_i(1+r)^{-t_i}}{v_0} \qquad (v_0 \neq 0)$$
 
-¿De dónde sale la fórmula? $v_0=\sum_i c_i(1+r)^{-t_i}$ es la fórmula de precio de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#2-valuación-con-cupón-fijo); cada término $c_i(1+r)^{-t_i}$ es el valor presente del flujo del periodo $t_i$, y dividirlo entre $v_0$ da qué fracción del precio total viene de ese flujo. $D$ es el promedio de los plazos $t_i$, ponderado por esas fracciones: un bono cupón cero (un solo flujo, todo el peso en $t_N$) tiene $D=t_N$, exactamente su plazo; un bono con cupones tiene $D<t_N$, porque parte del peso ya se cobró antes del vencimiento.
+¿De dónde sale la fórmula? $v_0=\sum_i c_i(1+r)^{-t_i}$ es la fórmula de precio de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#1-los-flujos-de-un-bono-y-las-incógnitas-que-se-despejan); cada término $c_i(1+r)^{-t_i}$ es el valor presente del flujo del periodo $t_i$, y dividirlo entre $v_0$ da qué fracción del precio total viene de ese flujo. $D$ es el promedio de los plazos $t_i$, ponderado por esas fracciones: un bono cupón cero (un solo flujo, todo el peso en $t_N$) tiene $D=t_N$, exactamente su plazo; un bono con cupones tiene $D<t_N$, porque parte del peso ya se cobró antes del vencimiento.
 
 ### 3. Duración modificada y PVBP
 
