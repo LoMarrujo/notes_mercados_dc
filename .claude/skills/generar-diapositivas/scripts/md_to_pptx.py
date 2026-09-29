@@ -192,6 +192,7 @@ SUB_OPEN, SUB_CLOSE = "", ""
 
 
 SUP_OPEN, SUP_CLOSE = chr(0xE012), chr(0xE013)
+MATH_LBRACK, MATH_RBRACK = chr(0xE014), chr(0xE015)
 
 
 def _latex_frag_to_text(s):
@@ -204,9 +205,21 @@ def _latex_frag_to_text(s):
     # el numerador/denominador puede traer llaves anidadas (un exponente
     # como ^{-10} dentro de la fracción, p. ej. \dfrac{1-(1+r)^{-N}}{r});
     # sin tolerar un nivel de anidamiento el patrón no hace match y deja el
-    # LaTeX crudo como texto
+    # LaTeX crudo como texto. Una fracción anidada en otra (\dfrac{v_N}{1+
+    # r\frac{n}{360}}) excede ese nivel, así que se repite hasta que no quede
+    # ninguna: cada pasada resuelve primero la interior. Un argumento que es
+    # un solo término (v_N, 360) no lleva paréntesis
     _frac_arg = r"(?:[^{}]|\{[^{}]*\})+"
-    s = re.sub(r"\\d?frac\{(" + _frac_arg + r")\}\{(" + _frac_arg + r")\}", r"(\1)/(\2)", s)
+    _frac_re = re.compile(r"\\d?frac\{(" + _frac_arg + r")\}\{(" + _frac_arg + r")\}")
+
+    def _frac_side(x):
+        return f"({x})" if re.search(r"[+\-\s]", x) else x
+
+    while True:
+        s2 = _frac_re.sub(lambda m: _frac_side(m.group(1)) + "/" + _frac_side(m.group(2)), s)
+        if s2 == s:
+            break
+        s = s2
     s = s.replace(r"\times", "×").replace(r"\neq", "≠").replace(r"\cdot", "·")
     s = s.replace(r"\to", "→").replace(r"\rightarrow", "→").replace(r"\longrightarrow", "→")
     s = s.replace(r"\infty", "∞")
@@ -234,7 +247,10 @@ def _latex_frag_to_text(s):
 
     s = re.sub(r"_\{([^{}]+)\}|_(\S)", sub_repl, s)
     s = s.replace("\\", "")
-    return s
+    # un corchete seguido de paréntesis ([c_1 + ...](1+r)^{...}) lo tomaría
+    # strip_links por un enlace [texto](url) y lo borraría; se protege con
+    # marcadores que parse_inline restaura después de quitar los enlaces
+    return s.replace("[", MATH_LBRACK).replace("]", MATH_RBRACK)
 
 
 def convert_inline_math(text):
@@ -309,7 +325,7 @@ def _split_subscript(s, bold, italic, code):
 def parse_inline(text):
     """Devuelve lista de runs (text,bold,italic,code,sub)."""
     text = convert_inline_math(text)
-    text = strip_links(text)
+    text = strip_links(text).replace(MATH_LBRACK, "[").replace(MATH_RBRACK, "]")
     tokens = []
     pos = 0
     for m in INLINE_TOKEN_RE.finditer(text):
