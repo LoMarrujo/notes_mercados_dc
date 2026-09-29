@@ -214,7 +214,13 @@ Sí se puede afirmar algo del precio sin proyectar cada flujo. El cupón se reca
 
 ### 5. Amortización de capital
 
-La sección 1 dejó abierta una segunda incógnita, el pago $c$: aquí el capital, la tasa y el plazo son datos, y lo que se busca es el pago. Ningún instrumento mexicano de esta unidad amortiza capital antes del vencimiento (todos devuelven el capital en un solo pago al vencimiento, o *bullet*, como vimos en la sección 2 de la nota anterior), pero un crédito hipotecario, un préstamo de auto o una emisión corporativa con retiro programado sí lo hacen, y Fabozzi documenta las tres formas como otra característica más de los bonos. Todas comparten la misma estructura de saldo insoluto:
+La sección 1 dejó abierta una segunda incógnita, el pago $c$: aquí el capital, la tasa y el plazo son datos, y lo que se busca es el pago. Ningún instrumento mexicano de esta unidad amortiza capital antes del vencimiento (todos devuelven el capital en un solo pago al vencimiento, o *bullet*, como vimos en la sección 2 de la nota anterior), pero un crédito hipotecario, un préstamo de auto o una emisión corporativa con retiro programado sí lo hacen, y Fabozzi documenta las tres formas como otra característica más de los bonos.
+
+Las tres usan el vector amortizado de esa misma sección. A diferencia del vector bullet de la sección 3, $(-a,\ c,\ \ldots,\ c,\ c+v_N)$, que concentra el capital en el último flujo, el vector amortizado lo reparte en abonos $k_t$, y cada pago suma el abono del periodo y el interés sobre lo que todavía se debe:
+
+$$(c_0, c_1, \ldots, c_N) = (-a,\ k_1+rs_0,\ k_2+rs_1,\ \ldots,\ k_N+rs_{N-1})$$
+
+Lo que todavía se debe es el saldo insoluto, el capital menos los abonos ya pagados:
 
 $$s_t = a - \sum_{i=1}^{t} k_i \qquad (s_0 = a)$$
 
