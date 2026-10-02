@@ -40,9 +40,9 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Clasificar un instrumento de deuda (CETES, Bonos gubernamentales, UDIBONOS, Bonos corporativos, Papel comercial, Certificados bursátiles) según su emisor, su plazo y su mecánica de pago, y distinguirlo de un instrumento de participación de capital.
 - Calcular el precio de un instrumento de deuda a partir de sus flujos y su valor nominal.
 - Calcular el rendimiento al vencimiento (YTM) de un bono a partir de su precio de mercado y sus flujos, y ubicarlo en la curva de rendimientos para compararlo con bonos de otros plazos.
-- Distinguir el tipo de riesgo (tasa de interés, crédito, inflación, liquidez) al que está expuesto un instrumento de deuda dado.
-- Calcular la duración y la convexidad de un bono para cuantificar su sensibilidad a cambios en la tasa.
-- Justificar una estrategia de inversión en renta fija para un escenario de tasas o de riesgo dado.
+- Justificar una estrategia de inversión en renta fija (calce de flujos o elección de plazo) para una obligación o un escenario de tasas dado.
+
+> Los riesgos del mercado de deuda y la duración y convexidad quedan como lectura complementaria ([`4_riesgos_mercado_deuda.md`](notas_unidades/unidad2/4_riesgos_mercado_deuda.md), [`5_duracion_convexidad.md`](notas_unidades/unidad2/5_duracion_convexidad.md)); no se evalúan.
 
 ### 3. Mercado de Capitales (mercado de participación) [Evaluación al finalizar o Proyecto final]
 
@@ -53,6 +53,12 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Valuación de instrumentos financieros y análisis de información financiera para la inversión
 - Ética y conducta profesional del asesor/gestor financiero
 - Ejercicio práctico (evaluación)
+
+**Objetivo:** al terminar esta unidad, el alumno podrá:
+
+- Clasificar un instrumento de participación (acción común, acción preferente, FIBRA, CKD, CERPI) según los derechos que da a su tenedor y el activo que financia.
+- Calcular el rendimiento anualizado (con dividendos) y la volatilidad de una acción o del S&P/BMV IPC a partir de sus precios históricos, para compararlo con el de un CETE.
+- Calcular el valor de una acción con el modelo de descuento de dividendos a partir de su información financiera, para decidir si su precio de mercado está caro o barato.
 
 ### 4. Mercados de deuda y capitales en el contexto internacional
 
@@ -72,7 +78,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 ## Qué vas a encontrar aquí
 
-- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_ciencia_inversion.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano). La Unidad 2 tiene, por ahora: `0_mercado_e_instrumentos_deuda.md`, `1_valuacion_instrumentos_deuda.md`, `2_rendimiento_y_curva_de_rendimientos.md`, `3_riesgos_mercado_deuda.md`, `4_duracion_convexidad.md` y `5_estrategias_renta_fija.md` (solo estructura), todavía sin su `.pdf`/`.pptx`.
+- **`notas_unidades/`**: diapositivas y apuntes de teoría de cada unidad, en su propia carpeta. Cada archivo cubre un solo objetivo de aprendizaje (los del README), numerado `0_...`, `1_...`, etc. La Unidad 1 tiene: `0_activo_financiero.md`, `1_intermediacion_financiera.md`, `2_estructura_sfm.md`, `3_mecanica_mercado.md` y `4_ciencia_inversion.md` (cada uno con su `.pdf` del mismo nombre, generado automáticamente desde el `.md` con la skill `generar-diapositivas`; el `.pptx` intermedio no se versiona ni se edita a mano). La Unidad 2 evalúa `0_mercado_e_instrumentos_deuda.md`, `1_valuacion_instrumentos_deuda.md` (estas dos ya con su `.pdf`), `2_rendimiento_y_curva_de_rendimientos.md` y `3_estrategias_renta_fija.md`; `4_riesgos_mercado_deuda.md` y `5_duracion_convexidad.md` son lectura complementaria. La Unidad 3 tiene, por ahora, la estructura de `0_mercado_e_instrumentos_participacion.md`, `1_rendimiento_y_riesgo_acciones.md` y `2_valuacion_acciones.md`.
 - **`practicas/`**: toda la práctica (ejercicios, talleres, casos) de cada unidad, en un solo archivo `practicas/unidadN/practica_unidadN.md` que junta la práctica de todos los objetivos de esa unidad.
 - **`references/`**: solicitar al profesor.
 

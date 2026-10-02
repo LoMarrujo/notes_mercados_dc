@@ -18,16 +18,17 @@ Unit 1.
 
 Unit 2.
 
-- Structure follows Luenberger c. 3-5 (order: valuation -> yield -> curve -> risks -> duration -> strategies):
+- Structure follows Luenberger c. 3-5 (order: valuation -> yield/curve -> strategies; risks and duration renumbered 4_/5_ as complementary reading, 2026-10-01):
     0_mercado_e_instrumentos_deuda (c. 3.1; old 0_ + 1_ merged)          [written]
     1_valuacion_instrumentos_deuda (c. 3.2, 4.7)                         [written]
     2_rendimiento_y_curva_de_rendimientos (c. 3.4, 4.1-4.4; old 2_+3_ merged)
                                      [written; simple objective = YTM + place a bond on the curve;
                                       bootstrapping, forward, theories, Nelson-Siegel, real curve live
                                       in the "Apendice", not evaluated]
-    3_riesgos_mercado_deuda (c. 3.3 "Quality Ratings" pp. 53-54)         [written; duration moved out]
-    4_duracion_convexidad (c. 3.5, 3.7, 4.8)                             [written; moved from old riesgos s.6]
-    5_estrategias_renta_fija (c. 3.6, 4.9, 5.2 cash matching)            [skeleton only]
+    3_estrategias_renta_fija (c. 3.6, 4.9, 5.2 cash matching)            [written 2026-10-01: calce, escenario a horizonte,
+                                      bala/barra/escalera; inmunizacion en Apendice; codigo/estrategias.py + tests]
+    4_riesgos_mercado_deuda (c. 3.3 "Quality Ratings" pp. 53-54)         [written; LECTURA COMPLEMENTARIA, no evaluada (2026-09-30)]
+    5_duracion_convexidad (c. 3.5, 3.7, 4.8)                             [written; LECTURA COMPLEMENTARIA, no evaluada (2026-09-30)]
 - Out of scope: c. 5.1 (repeats VPN/TIR, unit 1), 5.3-5.5 (dynamic programming), 4.5-4.6; c. 5.6 (dividend discount) goes to unit 3.
 - 1_valuacion: add perpetuities (c. 3.2) if wanted.
 - 1_valuacion: Apendice de verificacion numerica written (codigo/ with tests, datos/ with the Sep 21 snapshot, 3 new figures). Reusable in practica_unidad2: implied coupon of a Bono M from its price, floater-vs-fixed simulation with other volatilities, amortization table in Excel/pandas. Implied coupons are a diagnostic (nominal term assumed), not checked against each series' real coupon.
@@ -44,7 +45,10 @@ Unit 2.
 - 0_mercado_e_instrumentos_deuda is long (7 sections): if it does not fit one session, split it again.
 - Luenberger is cited as 1998 in the README bibliography; the PDF in references/ is the 2013 2nd ed.
 - Practice for 2_rendimiento_y_curva: compute the YTM of a Bono M with TIR in Excel and plot it against the Sep 2026 curve.
-- practica_unidad2.md still doesn't exist (linked from all theory files but never written)
+- Practicas: formato numerado (practica_1_deuda cubre 0_+1_). 2_ y 3_estrategias enlazan a practica_2_rendimiento_estrategias.md, que falta escribir. 4_riesgos/5_duracion ya no enlazan practica.
+- 2_ seccion 1: el cupon implicito del Bono M a 10 anios dice $8.59, pero la formula anual da 8.5951 (= $8.60); arrastra al CY (8.91% -> 8.92%) y al precio a +50 pb ($93.35 -> $93.36). Revisar.
+- 4_riesgos s.2 (2026-10-01): escalones, tabla de PD de Moody's 1970-2012 (via Hull, tomada de "notas_unidades/2 Credit Risk.tex"), r_rec = 1 - LGD; Apendice con tasa de riesgo, supervivencia y lambda = s/(1-r_rec). Datos viejos: actualizar con Hull 11a ed. o el estudio anual de Moody's. Contraparte, VaR de credito, CDS fuera.
+- Pendiente U2: practica_2 + respuestas, .pdf de 2_ y 3_estrategias (generar-diapositivas), examen U2.
 
 
 Misc:
