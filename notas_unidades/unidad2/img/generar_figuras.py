@@ -21,6 +21,7 @@ from calibracion import calibrar_vasicek, evaluar_oos  # noqa: E402
 from datos_fred import cargar  # noqa: E402
 from simulacion import DT, simular_precios  # noqa: E402
 from valuacion import tabla_amortizacion  # noqa: E402
+from estrategias import ejemplos as ejemplos_estrategias  # noqa: E402
 
 NAVY = "#1E2761"
 GOLD = "#C9A227"
@@ -42,6 +43,8 @@ OUT_HACIA_LA_PAR = os.path.join(IMG_DIR, "precio_hacia_la_par.png")
 OUT_AMORT_TABLA = os.path.join(IMG_DIR, "amortizacion_interes_capital.png")
 OUT_FIJO_VARIABLE = os.path.join(IMG_DIR, "fijo_vs_variable_simulacion.png")
 OUT_CALIBRACION = os.path.join(IMG_DIR, "calibracion_tasas.png")
+OUT_CALCE = os.path.join(IMG_DIR, "flujo_calce.png")
+OUT_ESCENARIOS = os.path.join(IMG_DIR, "estrategia_escenarios.png")
 
 
 def _scale(f):
@@ -414,6 +417,57 @@ def fig_fijo_vs_variable():
     print(f"figura generada: {OUT_FIJO_VARIABLE}")
 
 
+def fig_flujo_calce():
+    """Calce de flujos de 3_estrategias_renta_fija.md, seccion 1: arriba la
+    obligacion (pagos de 100,000 en los anios 1 y 3), abajo el portafolio
+    de CETE a 364 dias y Bono M a 3 anios que la cubre, con su costo en
+    t = 0 y el cupon sobrante del anio 2."""
+    e = ejemplos_estrategias()
+    flujo = [f for _, _, f, _ in e["tabla"]]
+    fig, axes = plt.subplots(2, 1, figsize=(7.5, 6.0))
+    y_max = abs(_scale(e["costo"])) * 1.335
+    _panel_flujo(axes[0], [1, 3], [-100_000.0, -100_000.0], "La obligación: pagos en los años 1 y 3", y_max)
+    _panel_flujo(axes[1], [0, 1, 2, 3], [-e["costo"]] + flujo,
+                 "El portafolio que la calza: CETE a 364 días y Bono M a 3 años", y_max)
+    for ax in axes:
+        ax.set_xlim(-0.6, 4.3)
+    fig.tight_layout()
+    fig.savefig(OUT_CALCE, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_CALCE}")
+
+
+def fig_estrategia_escenarios():
+    """Rendimiento a un anio del CETE a 364 dias contra el Bono M a 10
+    anios vendido al cierre del anio, si su YTM baja 100 pb, no cambia o
+    sube 100 pb (3_estrategias_renta_fija.md, seccion 2)."""
+    e = ejemplos_estrategias()
+    etiquetas = ["Tasas bajan\n100 pb", "Sin cambio", "Tasas suben\n100 pb"]
+    bono = [e["escenarios"][d] * 100 for d in (-0.01, 0.0, 0.01)]
+    cete = [e["r_cete"] * 100] * 3
+    x = np.arange(3)
+    w = 0.36
+    fig, ax = plt.subplots(figsize=(7.5, 4.4))
+    for desp, vals, color, nombre in ((-w / 2, cete, GRAY, "CETE 364 días"),
+                                      (w / 2, bono, NAVY, "Bono M 10 años")):
+        barras = ax.bar(x + desp, vals, w, color=color, label=nombre, zorder=3)
+        for b, v in zip(barras, vals):
+            ax.text(b.get_x() + b.get_width() / 2, v + 0.3, f"{v:.2f}%",
+                    ha="center", va="bottom", fontsize=10.5, color=BODY, fontweight="bold")
+    ax.set_xticks(x, etiquetas)
+    ax.set_ylim(0, max(bono) * 1.18)
+    ax.yaxis.set_major_locator(plt.MultipleLocator(4))
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}%"))
+    ax.set_ylabel("Rendimiento en un año", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10.5)
+    ax.legend(frameon=False, fontsize=10.5, loc="upper right")
+    ax.set_title("Un año de inversión: CETE contra Bono M a 10 años",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_ESCENARIOS, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_ESCENARIOS}")
+
+
 def main():
     fig_flujo_efectivo([0, 1], [-90.91, 100], OUT_DESCUENTO,
                         "Flujo de efectivo a descuento (CETE)")
@@ -427,6 +481,8 @@ def main():
     fig_amortizacion_interes_capital()
     fig_fijo_vs_variable()
     fig_calibracion_tasas()
+    fig_flujo_calce()
+    fig_estrategia_escenarios()
 
 
 if __name__ == "__main__":

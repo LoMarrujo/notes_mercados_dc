@@ -17,7 +17,7 @@ Que el estudiante calcule el precio de un instrumento de deuda a partir de sus f
 | V   | Amortización de capital                                | Sistema francés, sistema alemán y fondo de amortización (sinking fund)  |
 | VI  | Ejemplo integrador con datos de mercado                | Precio de un CETE, un Bono M y un UDIBONO con tasas de mercado de 2026  |
 
-> La práctica de este tema está en [`practica_unidad2.md`](../../practicas/unidad2/practica_unidad2.md).
+> La práctica de este tema está en [`practica_1_deuda.md`](../../practicas/unidad2/practica_1_deuda.md).
 
 ---
 
@@ -39,7 +39,7 @@ que es la suma de la anualidad de esa misma nota (sección 7), con un $c_t$ dist
 - **El precio $a$, dados los flujos y la tasa: fijación de precio (pricing).** La pregunta es qué precio es consistente con lo que ofrece el resto del mercado, y la tasa $r$ con que se descuenta es justo esa referencia del mercado. Se calcula $v_0$ y ese es el precio.
 - **El pago $c$, dados el capital, la tasa y el plazo: también fijación de precio, del lado de quien pide prestado.** Qué pago periódico es consistente con la tasa que exige el mercado. Se despeja $c$ de la fórmula de anualidad con $v_0=a$; así se calcula la mensualidad de un crédito (sección 5) y el cupón implícito del apéndice.
 - **La tasa $r$, dados el precio y los flujos: inversión pura.** Para decidir dónde colocar el capital hay que comparar lo que rinde cada alternativa. Se busca la $r$ que hace $v_0=a$, la misma idea de la TIR de la unidad 1 aplicada a un bono; es el tema de [`2_rendimiento_y_curva_de_rendimientos.md`](2_rendimiento_y_curva_de_rendimientos.md).
-- **El valor en una fecha futura, dado el valor de hoy: cobertura (hedging).** Cubrir una obligación que vence más adelante exige saber cuánto valdrá cada flujo en esa fecha. La fórmula de valor futuro, $v_t=v_0(1+r)^t$, lleva el resultado hacia adelante; es lo que hay detrás del riesgo de reinversión de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md) y de las estrategias de [`5_estrategias_renta_fija.md`](5_estrategias_renta_fija.md).
+- **El valor en una fecha futura, dado el valor de hoy: cobertura (hedging).** Cubrir una obligación que vence más adelante exige saber cuánto valdrá cada flujo en esa fecha. La fórmula de valor futuro, $v_t=v_0(1+r)^t$, lleva el resultado hacia adelante; es lo que hay detrás del riesgo de reinversión de [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md) y de las estrategias de [`3_estrategias_renta_fija.md`](3_estrategias_renta_fija.md).
 
 Importa por tres razones. El mercado cotiza tasas, no precios (el CETE se anuncia a 6.25%, y quien lo compra necesita saber cuántos pesos pagar). La fórmula pone en la misma fecha flujos que llegan en fechas distintas, así que permite comparar un CETE que paga una sola vez contra un Bono M que paga seis. Y es una sola relación entre precio, tasa y flujos: saber despejar cualquiera de las tres es lo que sostiene el resto de la unidad (rendimiento, riesgos, duración).
 

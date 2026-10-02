@@ -2,6 +2,8 @@
 
 **Mercados de Deuda y Capitales**, Licenciatura en Comercio y Finanzas Internacionales, Universidad Autónoma de Zacatecas
 
+> **Lectura complementaria, no evaluada.** Por calendario, este tema sale del examen de la unidad; se conserva como consulta.
+
 ## Objetivo de la unidad
 
 Que el estudiante calcule la duración y la convexidad de un bono para cuantificar su sensibilidad a cambios en la tasa.
@@ -15,13 +17,11 @@ Que el estudiante calcule la duración y la convexidad de un bono para cuantific
 | III | Duración modificada y PVBP | La sensibilidad del precio a la tasa, en porcentaje y en pesos por punto base          |
 | IV  | Convexidad                 | La corrección de curvatura cuando el cambio de tasa es grande                          |
 
-> La práctica de este tema está en [`practica_unidad2.md`](../../practicas/unidad2/practica_unidad2.md).
-
 ---
 
 ### 1. Cuánto se mueve el precio
 
-La sección 1 de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés) ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
+La sección 1 de [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés) ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
 
 | Cambio en la tasa  | Precio, Bono M 2 años | Precio, Bono M 10 años |
 | ------------------ | --------------------- | ---------------------- |
@@ -75,4 +75,4 @@ $$C = \dfrac{1}{v_0}\dfrac{d^2v_0}{dr^2} = \dfrac{\displaystyle\sum_{i=1}^N t_i(
 - La **duración modificada** cuantifica el riesgo de tasa de interés: el cambio porcentual aproximado del precio ante un cambio en la tasa. Es una sensibilidad, no un plazo, aunque se mida en años; el **PVBP** la expresa en pesos por punto base en vez de en porcentaje.
 - La **convexidad** corrige esa aproximación lineal para cambios de tasa grandes: en igualdad de duración, más convexidad es mejor para el tenedor.
 
-**Próxima sesión:** cómo se usan la duración y la curva para decidir qué comprar: una estrategia de inversión en renta fija para un escenario de tasas o de riesgo dado.
+**Dónde se usa:** la duración es la herramienta del apéndice de inmunización de [`3_estrategias_renta_fija.md`](3_estrategias_renta_fija.md#apéndice-inmunización).

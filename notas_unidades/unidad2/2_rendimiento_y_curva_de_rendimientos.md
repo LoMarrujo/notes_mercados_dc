@@ -15,7 +15,7 @@ Que el estudiante calcule el rendimiento al vencimiento (YTM) de un bono a parti
 | III | Qué mide y qué no mide el rendimiento     | Las tres fuentes de retorno, los dos supuestos del YTM y el rendimiento corriente                           |
 | IV  | La curva de rendimientos: ubicar un bono  | Graficar el YTM contra el plazo, leer su forma y sus movimientos, y ver dónde cae un bono frente al mercado |
 
-> La práctica de este tema está en [`practica_unidad2.md`](../../practicas/unidad2/practica_unidad2.md).
+> La práctica de este tema está en [`practica_2_rendimiento_estrategias.md`](../../practicas/unidad2/practica_2_rendimiento_estrategias.md).
 
 ---
 
@@ -84,7 +84,7 @@ El YTM permite preguntar lo contrario: si el rendimiento que exige el mercado ca
 | 10 años | \$180.00 | \$114.72 | \$100.00 | \$93.58 | \$87.71 | \$77.40 |
 | 30 años | \$340.00 | \$127.53 | \$100.00 | \$89.73 | \$81.15 | \$67.78 |
 
-Al pasar del 8% al 9%, el precio cae 2.53% a 3 años, 6.42% a 10 años y 10.27% a 30 años. Esa pendiente, cuánto se mueve el precio por cada punto de rendimiento, es el riesgo de tasa de interés de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés), y [`4_duracion_convexidad.md`](4_duracion_convexidad.md) la convierte en un número.
+Al pasar del 8% al 9%, el precio cae 2.53% a 3 años, 6.42% a 10 años y 10.27% a 30 años. Esa pendiente, cuánto se mueve el precio por cada punto de rendimiento, es el riesgo de tasa de interés de [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés), y [`5_duracion_convexidad.md`](5_duracion_convexidad.md) la convierte en un número (las dos son lectura complementaria, no se evalúan).
 
 > **Ejemplo resuelto.** La misma sensibilidad se ve con bonos reales, no solo con el hipotético de cupón 8%. Con el cupón implícito del Bono M a 10 y a 30 años de la sección 1 (\$8.59 y \$8.21), subir el YTM de cada uno 50 puntos base sobre el observado el 21 de septiembre de 2026 da:
 >
@@ -104,7 +104,7 @@ El retorno de un bono viene de tres fuentes: los cupones, la ganancia o pérdida
 1. Los cupones se reinvierten a la misma tasa del YTM.
 2. El bono se conserva hasta el vencimiento.
 
-Si no se cumple el primero, aparece el riesgo de reinversión; si no se cumple el segundo, el riesgo de tasa de interés (ambos en [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés)).
+Si no se cumple el primero, aparece el riesgo de reinversión; si no se cumple el segundo, el riesgo de tasa de interés (ambos en [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés)).
 
 > **Ejemplo resuelto.** Un bono a la par a 10 años, con cupón de 7% (un pago anual), tiene YTM de 7%. Para ganar 7% anual, los \$100 deben convertirse en $100(1.07)^{10} \approx$ \$196.72, un retorno total de \$96.72. Los cupones aportan $7 \times 10 =$ \$70; los \$26.72 restantes (28% del total) solo aparecen si cada cupón se reinvierte al 7%. No hay ganancia de precio, porque el bono se compró a la par. Si las tasas bajaran y los cupones se reinvirtieran al 4%, la riqueza final sería \$184.04 y el rendimiento efectivo, 6.29% en vez de 7%.
 >
@@ -156,7 +156,7 @@ La misma gráfica repetida para varias fechas (por ejemplo, un corte mensual dur
 
 **Ubicar un bono en la curva.** Al estudiar un bono conviene calcular su YTM y su plazo, y ubicarlo como un punto frente a la curva de referencia: da una idea de cómo está valuado frente al mercado. Si cae lejos de la curva, hay una razón: el riesgo de crédito del emisor, su liquidez o alguna cláusula del contrato, como que sea rescatable.
 
-> **Ejemplo resuelto.** El Bono M a 10 años que cotizaba cetesdirecto el 21 de septiembre de 2026 valía \$96.40 con un YTM de 9.16%, justo sobre la curva a 10 años (es ese mismo punto): el mercado lo valúa en línea con los demás bonos gubernamentales. Un bono corporativo a 10 años (ejemplo ilustrativo), también con cupón de 8%, cotiza en \$88 y tiene un YTM de 9.95%, casi ocho décimas de punto porcentual (0.79 pp) sobre la curva. Esa diferencia es la **sobretasa** (*spread*): lo que el mercado exige de más por el riesgo de crédito ([`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#2-riesgo-de-crédito-y-calificaciones)) y la menor liquidez ([`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#4-riesgo-de-liquidez)) del emisor corporativo.
+> **Ejemplo resuelto.** El Bono M a 10 años que cotizaba cetesdirecto el 21 de septiembre de 2026 valía \$96.40 con un YTM de 9.16%, justo sobre la curva a 10 años (es ese mismo punto): el mercado lo valúa en línea con los demás bonos gubernamentales. Un bono corporativo a 10 años (ejemplo ilustrativo), también con cupón de 8%, cotiza en \$88 y tiene un YTM de 9.95%, casi ocho décimas de punto porcentual (0.79 pp) sobre la curva. Esa diferencia es la **sobretasa** (*spread*): lo que el mercado exige de más por el riesgo de crédito ([`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#2-riesgo-de-crédito-y-calificaciones)) y la menor liquidez ([`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#4-riesgo-de-liquidez)) del emisor corporativo.
 >
 > **Ejemplo resuelto.** La misma curva se puede comparar contra su versión en UDIBONOS, que paga en unidades ajustadas por inflación. El 21 de septiembre de 2026, cetesdirecto cotizaba UDIBONOS a 3.99% a 3 años, 4.75% a 10 años y 4.90% a 30 años, siempre por debajo de los 8.24%, 9.16% y 9.87% nominales del mismo plazo. La diferencia, entre 4 y 5 puntos porcentuales según el plazo, es lo que el mercado cobra por la inflación que todavía no ocurre: el apéndice muestra cómo convertir esa diferencia en una cifra concreta de inflación esperada.
 
@@ -252,4 +252,4 @@ $$\hat{r}_{inf} \approx r_{nom} - r_{real}$$
 - La **curva de rendimientos** grafica el YTM contra el plazo: es normal o invertida y se mueve en nivel, pendiente y curvatura. Ubicar un bono frente a ella muestra cómo está valuado; la diferencia es la **sobretasa**. Ojo: la curva de YTM no es la curva spot.
 - Fuera del objetivo, el apéndice muestra cómo se corrige el efecto cupón (**bootstrapping**, con un ejemplo numérico completo a partir de datos reales), la **tasa forward**, las tres teorías de la estructura de plazos, **Nelson-Siegel** y la curva real.
 
-**Próxima sesión:** los riesgos a los que queda expuesto quien compra un instrumento de deuda, y por qué la duración (una idea que ya rondó esta nota, al ver cómo se mueve la curva) es la forma de medir uno de ellos.
+**Próxima sesión:** cómo se usan la curva y el plazo para decidir qué comprar: una estrategia de inversión en renta fija para una obligación o un escenario de tasas dado.
