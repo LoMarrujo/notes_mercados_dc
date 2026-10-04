@@ -11,6 +11,7 @@ import os
 import sys
 
 import numpy as np
+import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -45,6 +46,7 @@ OUT_FIJO_VARIABLE = os.path.join(IMG_DIR, "fijo_vs_variable_simulacion.png")
 OUT_CALIBRACION = os.path.join(IMG_DIR, "calibracion_tasas.png")
 OUT_CALCE = os.path.join(IMG_DIR, "flujo_calce.png")
 OUT_ESCENARIOS = os.path.join(IMG_DIR, "estrategia_escenarios.png")
+OUT_TASAS_TIEMPO = os.path.join(IMG_DIR, "tasa_10a_en_el_tiempo.png")
 
 
 def _scale(f):
@@ -468,6 +470,76 @@ def fig_estrategia_escenarios():
     print(f"figura generada: {OUT_ESCENARIOS}")
 
 
+MESES = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.",
+         "jul.", "ago.", "sep.", "oct.", "nov.", "dic."]
+
+
+def fig_tasa_10a_en_el_tiempo():
+    """Rendimiento del bono gubernamental mexicano a 10 anios (FRED,
+    IRLTLT01MXM156N, espejo de la OCDE; datos/fred_tasas_mensual.csv) de
+    2001 a 2026, contra el cupon fijo de un Bono M hipotetico emitido a la
+    par en septiembre de 2020 (5.68%, el rendimiento de ese mes). Ilustra la
+    seccion 1 de 2_rendimiento_y_curva_de_rendimientos.md: el cupon queda
+    fijo y la tasa del mercado no, asi que el precio se aleja de la par.
+    Incluye el Tesoro de EE.UU. a 10 anios (DGS10) hasta el mismo mes, para
+    mostrar que el movimiento no es exclusivo de Mexico."""
+    datos = cargar()
+    larga = datos["r_larga"].dropna()
+    trazo = datos["r_larga"].interpolate(limit=2, limit_area="inside")
+
+    emision = pd.Timestamp("2020-09-01")
+    cupon = float(datos.loc[emision, "r_larga"])
+    ultimo = larga.index[-1]
+    r_hoy = float(larga.iloc[-1])
+
+    eu = datos["us_10a"].loc[:ultimo]
+    mes = f"{MESES[ultimo.month - 1]} {ultimo:%Y}"
+
+    fig, ax = plt.subplots(figsize=(7.5, 4.6))
+    ax.plot(eu.index, eu.values, color=GRAY, lw=2, zorder=2, label="Tesoro de EE.UU. a 10 años")
+    ax.plot(trazo.index, trazo.values, color=NAVY, lw=2, zorder=3, label="México, 10 años")
+    ax.text(ultimo + pd.Timedelta(days=120), r_hoy,
+            f"México,\n{mes}:\n{r_hoy:.2f}%", color=BODY, fontsize=10, va="center")
+    ax.text(ultimo + pd.Timedelta(days=120), float(eu.iloc[-1]),
+            f"EE.UU.,\n{mes}:\n{eu.iloc[-1]:.2f}%", color=BODY, fontsize=10, va="center")
+    ax.legend(loc="upper center", frameon=False, fontsize=10, ncol=2,
+              bbox_to_anchor=(0.5, 1.0))
+
+    ax.hlines(cupon, emision, ultimo, color=GOLD, lw=2.4, zorder=4)
+    ax.plot([emision], [cupon], "o", color=GOLD, ms=8, zorder=5,
+            markeredgecolor="white", markeredgewidth=2)
+    ax.annotate(f"cupón fijo de un Bono M emitido\na la par en sep. 2020: {cupon:.2f}%",
+                xy=(emision, cupon), xytext=(pd.Timestamp("2014-01-01"), 4.3),
+                fontsize=10, color=BODY, va="center",
+                arrowprops={"arrowstyle": "-", "color": GOLD, "lw": 1.2, "shrinkB": 6})
+    ax.plot([ultimo], [r_hoy], "o", color=NAVY, ms=8, zorder=5,
+            markeredgecolor="white", markeredgewidth=2)
+    ax.annotate("", xy=(ultimo, r_hoy - 0.12), xytext=(ultimo, cupon + 0.12),
+                arrowprops={"arrowstyle": "<->", "color": GRAY, "lw": 1.2,
+                            "shrinkA": 0, "shrinkB": 0})
+    ax.text(ultimo - pd.Timedelta(days=90), (r_hoy + cupon) / 2,
+            f"{r_hoy - cupon:.2f} pp", color=GRAY, fontsize=10, ha="right", va="center")
+
+    ax.set_xlim(larga.index[0], ultimo + pd.Timedelta(days=1300))
+    ax.set_xticks(pd.to_datetime([f"{a}-01-01" for a in range(2004, 2027, 4)]))
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(
+        lambda v, _: f"{matplotlib.dates.num2date(v):%Y}"))
+    ax.set_ylim(0, 12.5)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}%"))
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.set_ylabel("Rendimiento anual", fontsize=11, color=GRAY)
+    ax.set_title("Rendimiento de los bonos gubernamentales a 10 años, 2001-2026",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    fig.text(0.01, 0.01, "Fuente: FRED, series IRLTLT01MXM156N (México, datos de la OCDE) "
+             "y DGS10 (EE.UU.), mensual.\nMéxico: huecos de hasta 2 meses interpolados "
+             "solo para el trazo.",
+             fontsize=8.5, color=GRAY)
+    sns.despine(ax=ax)
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
+    fig.savefig(OUT_TASAS_TIEMPO, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_TASAS_TIEMPO}")
+
+
 def main():
     fig_flujo_efectivo([0, 1], [-90.91, 100], OUT_DESCUENTO,
                         "Flujo de efectivo a descuento (CETE)")
@@ -483,6 +555,7 @@ def main():
     fig_calibracion_tasas()
     fig_flujo_calce()
     fig_estrategia_escenarios()
+    fig_tasa_10a_en_el_tiempo()
 
 
 if __name__ == "__main__":

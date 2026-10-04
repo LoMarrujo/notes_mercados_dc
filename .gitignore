@@ -3,3 +3,6 @@ evaluaciones/
 data/
 *.pptx
 --no-pdf
+
+
+__pycache__
