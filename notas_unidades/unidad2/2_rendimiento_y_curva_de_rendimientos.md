@@ -115,6 +115,8 @@ Si la compra cae entre dos fechas de cupón, como casi siempre en el mercado, el
 4. **YTM cotizado:** se anualiza, $r_{nom}=r_{per}/\Delta t$.
 5. **Para comparar con otros bonos:** $TEA=(1+r_{per})^{1/\Delta t}-1$.
 
+<!-- diapositivas: conservar -->
+
 > **Ejemplo resuelto.** El mismo Bono M hipotético (tasa cupón de 8%, valor nominal de \$100, 10 años), ahora con los pagos reales cada 182 días, se compra en \$93.45.
 >
 > 1. **Cupón por periodo:** con $r_{cup}=0.08$ y $\Delta t=182/360$, $c=100\times0.08\times182/360\approx$ \$4.0444, y hay $N=20$ periodos.
@@ -147,16 +149,24 @@ El YTM también es un indicador económico. El rendimiento del bono gubernamenta
 
 El YTM se calcula al comprar el bono. ¿Es lo que el inversionista terminará ganando?
 
+<!-- diapositivas: conservar -->
+
 El retorno de un bono viene de tres fuentes: los cupones, la ganancia o pérdida de precio (al vencer, al venderlo o si el emisor lo rescata) y lo que rinde reinvertir los cupones conforme se cobran. Una buena medida de rendimiento debería contar las tres, y el YTM lo hace, pero solo bajo dos supuestos:
 
 1. Los cupones se reinvierten a la misma tasa del YTM.
 2. El bono se conserva hasta el vencimiento.
 
+<!-- diapositivas: conservar -->
+
 Si no se cumple el primero, aparece el riesgo de reinversión; si no se cumple el segundo, el riesgo de tasa de interés (ambos en [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#2-riesgo-de-tasa-de-interés)).
+
+<!-- diapositivas: conservar -->
 
 > **Ejemplo resuelto.** Un bono a la par a 10 años, con cupón de 7% (un pago anual), tiene YTM de 7%. Para ganar 7% anual, los \$100 deben convertirse en $100(1.07)^{10} \approx$ \$196.72, un retorno total de \$96.72. Los cupones aportan $7 \times 10 =$ \$70; los \$26.72 restantes (28% del total) solo aparecen si cada cupón se reinvierte al 7%. No hay ganancia de precio, porque el bono se compró a la par. Si las tasas bajaran y los cupones se reinvirtieran al 4%, la riqueza final sería \$184.04 y el rendimiento efectivo, 6.29% en vez de 7%.
 >
 > **Ejemplo resuelto.** El mismo cálculo con un bono real y un plazo corto muestra que el riesgo de reinversión crece con el plazo. El Bono M a 3 años (precio \$100.94, YTM 8.24%, cupón implícito de \$4.35 cada 182 días; ver el apéndice) debería crecer a $100.94(1+0.0824\times182/360)^6\approx$ \$128.95 si todo se reinvierte al 8.24%. Si las tasas bajaran y los cupones se reinvirtieran al 5% en vez de 8.24%, la riqueza final sería \$127.78 y el rendimiento efectivo, 7.93% en vez de 8.24%: una caída de 31 puntos base, muy por debajo de los 71 puntos base del ejemplo anterior a 10 años. Mientras más corto el plazo, menos cupones hay que reinvertir y menos pesa esa fuente de retorno.
+
+<!-- diapositivas: conservar -->
 
 Otra medida, más simple, es el **rendimiento corriente** (*current yield*, CY): el cupón anual entre el precio.
 
@@ -172,7 +182,9 @@ $$CY = \dfrac{c}{a} \qquad (a>0)$$
 
 Un bono con cupón de 8% que cuesta \$88 a 10 años tiene $CY = 8/88 \approx 9.09\%$ y YTM de 9.95%: a descuento, con el rendimiento corriente entre el cupón y el YTM. Con datos reales, el Bono M a 10 años (tasa cupón implícita de 8.61% anual, precio \$96.40, YTM 9.16%) da $CY = 8.61/96.40 \approx 8.93\%$: de nuevo tasa cupón (8.61%) < rendimiento corriente (8.93%) < YTM (9.16%), la misma fila de la tabla. Otras dos variantes usan el mismo método de la TIR con un supuesto distinto: el **rendimiento a la opción de compra** (*yield to call*, YTC) supone que el emisor rescata el bono en la fecha más temprana posible, y el **rendimiento al peor caso** (*yield to worst*) toma el más bajo de todos los rendimientos posibles.
 
-Por último, el YTM es lo que se promete al comprar; el retorno efectivamente obtenido depende también del precio al que se venda y de lo que rinda reinvertir.
+<!-- diapositivas: conservar -->
+
+**En resumen.** El YTM es el rendimiento que se promete al comprar, no el que se obtiene: coincide con el retorno efectivo solo si los cupones se reinvierten a esa misma tasa y el bono se conserva hasta el vencimiento. El rendimiento corriente es más simple, pero deja fuera la ganancia de precio y la reinversión. Lo que se gana de verdad depende de dos cosas que solo se conocen después de comprar: la tasa a la que se reinvierten los cupones y el precio al que se vende el bono. Cuánto se mueve ese precio es la pregunta de la sección 3.
 
 ### 3. Relación entre rendimiento y precio
 

@@ -45,6 +45,20 @@ directorio, mismo nombre base). Requiere Windows con PowerPoint instalado
 (usa automatización COM para exportar el PDF); si solo hace falta el
 `.pptx`, agrega `--no-pdf`.
 
+Con `--conciso` el deck lleva el mínimo de texto: se conservan definiciones
+(primera cláusula), fórmulas, tablas, figuras, el arranque de cada "Ejemplo
+resuelto" con sus fórmulas/tablas/listas, y de cada lista o párrafo con
+encabezado en negritas solo el encabezado y su primera cláusula. La prosa
+explicativa, los "¿De dónde sale la fórmula?", los comentarios en
+blockquote y el `## Apéndice` se quedan solo en el `.md`; las fuentes se
+reducen a la referencia bibliográfica. Sigue siendo generado desde el `.md`
+(los recortes son reglas mecánicas en `condense_doc`), así que no hay drift.
+
+Si una diapositiva conciso queda demasiado escueta, se marca en el `.md` el
+bloque que debe salir completo con `<!-- diapositivas: conservar -->` en la
+línea anterior (un párrafo, una lista o un blockquote entero). El comentario
+no se ve en la nota renderizada y no afecta el modo normal.
+
 Para regenerar una unidad completa, corre el script sobre cada archivo de
 teoría de esa unidad (no sobre `practica_unidadN.md`, que no lleva
 diapositivas):
@@ -92,7 +106,16 @@ origen.
 
 Todo el contenido de cada sección se dibuja; si no cabe en una diapositiva,
 el motor pagina automáticamente creando una diapositiva "(cont.)" — nunca
-recorta o resume contenido para que quepa.
+recorta o resume contenido para que quepa (salvo con `--conciso`, ver
+arriba).
+
+La paginación respeta segmentos de conocimiento (`starts_segment`): un
+subtítulo `#### N.M ...` abre su propia diapositiva y se vuelve su título;
+un párrafo con encabezado en negritas (`**Definición:**`, `**Cómo se
+mitiga.**`), un "Ejemplo resuelto" o una figura empiezan un segmento, que
+pasa completo a la siguiente diapositiva si no cabe en lo que queda. Un
+encabezado sin cuerpo propio viaja con el segmento que le sigue. Solo un
+segmento más alto que una diapositiva entera se parte bloque por bloque.
 
 **Límite conocido del math inline (`$...$`) y su excepción.** El math en
 línea no es LaTeX real: convierte sub/superíndices a caracteres Unicode

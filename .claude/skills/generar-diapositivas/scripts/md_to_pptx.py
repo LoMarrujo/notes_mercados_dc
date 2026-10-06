@@ -5,7 +5,7 @@ siguiendo la convención de notas_unidades/**/*.md descrita en el skill
 regenera completo desde el .md cada vez; no se edita el .pptx a mano.
 
 Uso:
-    python md_to_pptx.py <ruta.md> [<ruta_salida.pptx>]
+    python md_to_pptx.py <ruta.md> [<ruta_salida.pptx>] [--no-pdf] [--conciso]
 
 Si no se da ruta de salida, se usa el mismo nombre que el .md con
 extensión .pptx, en el mismo directorio.
@@ -40,6 +40,8 @@ EMU_PER_IN = 914400
 
 # Marcador que excluye una sección de las diapositivas (queda solo en el .md).
 SKIP_SLIDE_MARKER = "<!-- diapositivas: omitir -->"
+# Marcador que pide conservar completo el bloque siguiente en modo --conciso.
+KEEP_MARKER = "<!-- diapositivas: conservar -->"
 
 SLIDE_W = 12192000
 SLIDE_H = 6858000
@@ -232,6 +234,14 @@ def _latex_frag_to_text(s):
     s = re.sub(r"\\left\s*", "", s)
     s = re.sub(r"\\right\s*", "", s)
     s = s.replace(r"\approx", "≈").replace(r"\leq", "≤").replace(r"\geq", "≥")
+    # \ge/\le van después de \geq/\leq; sin ellos el strip final de "\" deja
+    # "ge0" en vez de "≥0"
+    s = s.replace(r"\ge", "≥").replace(r"\le", "≤")
+    s = s.replace(r"\gt", ">").replace(r"\lt", "<")
+    s = s.replace(r"\,", " ").replace(r"\;", " ").replace(r"\!", "")
+    s = re.sub(r"\\bar\{([^{}]+)\}", lambda m: m.group(1) + "\u0304", s)
+    s = re.sub(r"\\bar\s*(\S)", lambda m: m.group(1) + "\u0304", s)
+    s = s.replace(r"\sqrt", "√").replace(r"\ln", "ln ")
     for latex, glyph in GREEK_MAP.items():
         s = s.replace(latex + " ", glyph).replace(latex, glyph)
 
@@ -377,6 +387,17 @@ def parse_blockquote(bq_lines):
                 i += 1
             blocks.append({"type": "bullets", "items": items})
             continue
+        m = re.match(r"^(\d+)\.\s+", bq_lines[i])
+        if m:
+            # la numeración sigue aunque la lista se corte (p. ej. por una
+            # tabla dentro del paso 3)
+            start = int(m.group(1))
+            items = []
+            while i < n and re.match(r"^\d+\.\s+", bq_lines[i]):
+                items.append((re.sub(r"^\d+\.\s+", "", bq_lines[i]), 0))
+                i += 1
+            blocks.append({"type": "numbered", "items": items, "start": start})
+            continue
         if bq_lines[i].startswith("|"):
             table_lines = []
             while i < n and bq_lines[i].startswith("|"):
@@ -403,6 +424,7 @@ def parse_blockquote(bq_lines):
         para = [bq_lines[i]]
         i += 1
         while i < n and bq_lines[i] != "" and not re.match(r"^[-*]\s+", bq_lines[i]) \
+                and not re.match(r"^\d+\.\s+", bq_lines[i]) \
                 and not bq_lines[i].startswith("$$"):
             para.append(bq_lines[i])
             i += 1
@@ -435,6 +457,10 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
         if line.startswith(stop_prefixes):
             break
         if stripped == "---":
+            i += 1
+            continue
+        if stripped == KEEP_MARKER:
+            blocks.append({"type": "keep_marker"})
             i += 1
             continue
         if stripped.startswith("```mermaid"):
@@ -553,7 +579,21 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
             para_lines.append(nxt_s)
             i += 1
         blocks.append({"type": "para", "text": " ".join(para_lines)})
-    return blocks, i
+    return _apply_keep_markers(blocks), i
+
+
+def _apply_keep_markers(blocks):
+    out = []
+    keep_next = False
+    for b in blocks:
+        if b["type"] == "keep_marker":
+            keep_next = True
+            continue
+        if keep_next:
+            b["keep"] = True
+            keep_next = False
+        out.append(b)
+    return out
 
 
 def parse_md(path):
@@ -629,6 +669,149 @@ def parse_md(path):
                                      "skip_slide": skip_slide})
             continue
         i += 1
+    return doc
+
+
+# --------------------------------------------------------------------------
+# Modo conciso (--conciso): misma fuente .md, menos texto en la diapositiva.
+# Se conservan definiciones, fórmulas, tablas, figuras y el esqueleto de los
+# ejemplos resueltos; la prosa explicativa se queda solo en el .md.
+# --------------------------------------------------------------------------
+
+BOLD_LEAD_RE = re.compile(r"^(\*\*[^*]+\*\*)\s*(.*)$")
+
+
+def first_clause(text, min_len=25):
+    """Recorta `text` hasta el primer '.', ':' o ';' (fuera de $...$ y de
+    **...**) que aparezca después de `min_len` caracteres."""
+    in_math = in_bold = False
+    k = 0
+    while k < len(text):
+        ch = text[k]
+        if ch == "\\":
+            k += 2
+            continue
+        if ch == "$":
+            in_math = not in_math
+        elif text.startswith("**", k):
+            in_bold = not in_bold
+            k += 2
+            continue
+        elif ch in ".:;" and not in_math and not in_bold and k >= min_len and \
+                (k + 1 == len(text) or text[k + 1] == " "):
+            return text[:k].rstrip(" ,") + "."
+        k += 1
+    return text
+
+
+def condense_text(text):
+    m = BOLD_LEAD_RE.match(text)
+    if m:
+        lead, rest = m.groups()
+        return f"{lead} {first_clause(rest)}".strip() if rest else lead
+    return first_clause(text)
+
+
+def condense_items(items):
+    out = []
+    for it in items:
+        txt, lvl = it[0], it[1]
+        out.append((condense_text(txt), lvl) + ((([],) if len(it) > 2 else ())))
+    return out
+
+
+def condense_blocks(blocks):
+    out = []
+    for b in blocks:
+        t = b["type"]
+        keep = b.get("keep")
+        if keep and t != "blockquote":
+            out.append(b)
+        elif t in ("displaymath", "image", "table", "mermaid", "citation"):
+            out.append(b)
+        elif t in ("bullets", "numbered"):
+            out.append({**b, "items": condense_items(b["items"])})
+        elif t == "para":
+            txt = b["text"]
+            if txt.startswith("####"):
+                out.append(b)  # flow_blocks la vuelve título de su propia diapositiva
+            elif BOLD_LEAD_RE.match(txt):
+                out.append({"type": "para", "text": condense_text(txt)})
+        elif t == "blockquote":
+            inner = b["blocks"]
+            if not keep and not (inner and inner[0]["type"] == "para" and
+                                 inner[0]["text"].startswith("**Ejemplo resuelto")):
+                continue
+            kept = []
+            for j, ib in enumerate(inner):
+                if ib["type"] == "para":
+                    m = IMAGE_RE.match(ib["text"].strip())
+                    if m:
+                        # una figura dentro del ejemplo sale como bloque propio
+                        if kept:
+                            out.append({"type": "blockquote", "blocks": kept})
+                            kept = []
+                        out.append({"type": "image", "alt": m.group(1), "src": m.group(2),
+                                    "attach": True})
+                    elif keep:
+                        kept.append(ib)
+                    elif j == 0 or ib["text"].startswith("**Ejemplo resuelto"):
+                        kept.append({"type": "para", "text": condense_text(ib["text"])})
+                elif keep:
+                    kept.append(ib)
+                elif ib["type"] in ("bullets", "numbered"):
+                    kept.append({**ib, "items": condense_items(ib["items"])})
+                else:
+                    kept.append(ib)
+            if kept:
+                out.append({"type": "blockquote", "blocks": kept})
+    return out
+
+
+def condense_reference(text):
+    """Deja solo la referencia bibliográfica: corta en el primer ':' después
+    del título en cursiva (la descripción de para qué se usa se queda en el .md)."""
+    end_title = text.rfind("*")
+    if end_title < 0:
+        # fuente sin título (datos, sitios): basta la institución y la serie
+        m = re.search(r"; | para | con las |, (?=[a-záéíóúñ])", text)
+        return text[:m.start()].rstrip(" .") + "." if m else text
+    k = text.find(": ", end_title + 1)
+    return text[:k] + "." if k > 0 else text
+
+
+MITIGATION_RE = re.compile(r"Se (?:reduce|mitiga)[^.]*\.")
+
+
+def _condense_cierre_item(it):
+    """Primera cláusula del punto de cierre, más sus oraciones de mitigación
+    ("Se reduce ..."), que en una nota de riesgos son la otra mitad de lo
+    esencial y suelen ir al final del punto."""
+    txt = it[0]
+    short = condense_text(txt)
+    extra = [m for m in MITIGATION_RE.findall(txt) if m not in short]
+    return (" ".join([short] + extra),) + tuple(it[1:])
+
+
+def condense_doc(doc):
+    doc["sections"] = [
+        {**s, "blocks": condense_blocks(s["blocks"])}
+        for s in doc["sections"] if s["number"] is not None
+    ]
+    doc["cierre"] = [
+        {**b, "items": [_condense_cierre_item(it) for it in b["items"]]}
+        if b["type"] == "bullets" else b
+        for b in doc["cierre"] if not (b["type"] == "para" and b["text"].startswith("**Próxima"))
+    ]
+    # sin apéndice en las diapositivas, tampoco su resumen en el cierre
+    for b in doc["cierre"]:
+        if b["type"] == "bullets":
+            b["items"] = [it for it in b["items"] if "apéndice" not in it[0].lower()]
+    doc["fuentes"] = [
+        {**b, "items": [(condense_reference(it[0]),) + tuple(it[1:]) for it in b["items"]]}
+        if b["type"] == "bullets" else b
+        for b in doc["fuentes"]
+    ]
     return doc
 
 
@@ -930,14 +1113,14 @@ def estimate_bullets_height(items, width_emu, size_pt=13.5, img_items=None):
 
 
 def draw_bullets(slide, items, left, top, width, size_pt=13.5, numbered=False,
-                  color=BODY_COLOR, marker_color=GOLD, img_items=None):
+                  color=BODY_COLOR, marker_color=GOLD, img_items=None, start=1):
     img_items = img_items or {}
     y = top
     for idx, it in enumerate(items):
         text, level = _item_text_level(it)
         indent = level * BULLET_INDENT_STEP
         avail = width - BULLET_MARKER_W - indent
-        marker = f"{idx + 1}." if numbered else ("◦" if level else "•")
+        marker = f"{idx + start}." if numbered else ("◦" if level else "•")
         if idx in img_items:
             info = img_items[idx]
             rest_runs = parse_inline(info["rest"])
@@ -1113,7 +1296,7 @@ def blockquote_inner_block_height(b, inner_w):
     decidir dónde partirlo entre diapositivas."""
     if b["type"] == "para":
         return estimate_para_height(b["text"], inner_w, 13) + 40000
-    if b["type"] == "bullets":
+    if b["type"] in ("bullets", "numbered"):
         return estimate_bullets_height(b["items"], inner_w, 13,
                                         img_items=b.get("_img_items")) + 40000
     if b["type"] == "displaymath":
@@ -1181,8 +1364,9 @@ def draw_blockquote(slide, bq_blocks, left, top, width):
             runs = parse_inline(b["text"])
             hh = draw_para(slide, runs, left + inner_pad, y, inner_w, size_pt=13, color=NAVY)
             y += hh + 40000
-        elif b["type"] == "bullets":
+        elif b["type"] in ("bullets", "numbered"):
             hh = draw_bullets(slide, b["items"], left + inner_pad, y, inner_w, size_pt=13,
+                               numbered=(b["type"] == "numbered"), start=b.get("start", 1),
                                color=NAVY, marker_color=GOLD, img_items=b.get("_img_items"))
             y += hh + 40000
         elif b["type"] == "displaymath":
@@ -1345,12 +1529,50 @@ class Deck:
         return self.page
 
 
+def is_subheading(b):
+    return b["type"] == "para" and b["text"].startswith("####")
+
+
+def starts_segment(b):
+    """¿Empieza `b` un segmento de conocimiento? Un segmento (una definición
+    con sus fórmulas, un ejemplo resuelto con su figura, un "Cómo se mitiga"
+    con su lista) se mantiene en una sola diapositiva siempre que quepa."""
+    if b["type"] == "para":
+        return is_subheading(b) or bool(BOLD_LEAD_RE.match(b["text"]))
+    if b["type"] == "blockquote":
+        inner = b["blocks"]
+        return bool(inner) and inner[0]["type"] == "para" and \
+            inner[0]["text"].startswith("**Ejemplo resuelto")
+    if b["type"] == "image":
+        return not b.get("attach")
+    return False
+
+
+def segment_height(blocks, idx, width_emu):
+    h = estimate_block_height(blocks[idx], width_emu) + GAP
+    j = idx + 1
+    while j < len(blocks) and not starts_segment(blocks[j]):
+        h += estimate_block_height(blocks[j], width_emu) + GAP
+        j += 1
+    # un encabezado en negritas sin cuerpo propio ("Ubicar un bono en la
+    # curva." seguido de su ejemplo) viaja con el segmento que le sigue
+    if j == idx + 1 and j < len(blocks) and blocks[idx]["type"] == "para" and \
+            not is_subheading(blocks[j]):
+        h += segment_height(blocks, j, width_emu)
+    return h
+
+
 def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
-    """Genera 1+ slides para `blocks`, paginando automáticamente.
+    """Genera 1+ slides para `blocks`, paginando por segmentos de
+    conocimiento (ver starts_segment): un segmento que no cabe en lo que
+    queda de la diapositiva pasa completo a la siguiente, y un subtítulo
+    `####` abre su propia diapositiva con él como título. Solo un segmento
+    más alto que una diapositiva entera se parte bloque por bloque.
     Devuelve el número de página de la primera slide creada."""
     blocks = list(blocks)
     first_page = None
     cont = False
+    cur_title = base_title
     if not blocks:
         blocks = [{"type": "para", "text": ""}]
     idx = 0
@@ -1359,9 +1581,16 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
         page = deck.next_page()
         if first_page is None:
             first_page = page
-        title = base_title + (" (cont.)" if cont else "")
+        if is_subheading(blocks[idx]):
+            cur_title = blocks[idx]["text"].lstrip("#").strip()
+            cont = False
+            idx += 1
+        title = cur_title + (" (cont.)" if cont else "")
         title_bottom = add_eyebrow_title(slide, eyebrow, title, page_num=page)
         y = title_bottom + 90000
+        body_full = BODY_BOTTOM_MAX - y
+        if idx >= len(blocks):
+            break
         if allow_subtitle and not cont and blocks[idx]["type"] == "para" and \
                 len(plain_text_of(blocks[idx]["text"])) <= 200:
             runs = parse_inline(blocks[idx]["text"])
@@ -1374,6 +1603,12 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
             h = estimate_block_height(b, CONTENT_W)
             bottom_limit = BODY_BOTTOM_MAX + (260000 if b["type"] == "citation" else 0)
             avail = bottom_limit - y
+            if placed_any and is_subheading(b):
+                break
+            if placed_any and starts_segment(b):
+                seg_h = segment_height(blocks, idx, CONTENT_W)
+                if avail < seg_h <= body_full:
+                    break
             if b["type"] == "para" and idx + 1 < len(blocks) and placed_any and \
                     len(plain_text_of(b["text"])) < 160 and \
                     plain_text_of(b["text"]).rstrip().endswith(":"):
@@ -1625,8 +1860,11 @@ def main():
         print(__doc__)
         sys.exit(1)
     md_path = sys.argv[1]
-    out_pptx = sys.argv[2] if len(sys.argv) > 2 else os.path.splitext(md_path)[0] + ".pptx"
+    positional = [a for a in sys.argv[1:] if not a.startswith("--")]
+    out_pptx = positional[1] if len(positional) > 1 else os.path.splitext(md_path)[0] + ".pptx"
     doc = parse_md(md_path)
+    if "--conciso" in sys.argv:
+        condense_doc(doc)
     md_dir = os.path.dirname(os.path.abspath(md_path))
     build_deck(doc, out_pptx, md_dir)
     print(f"pptx generado: {out_pptx}")
