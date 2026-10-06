@@ -421,7 +421,7 @@ def fig_fijo_vs_variable():
 
 
 def fig_flujo_calce():
-    """Calce de flujos de 3_estrategias_renta_fija.md, seccion 1: arriba la
+    """Calce de flujos de 4_estrategias_renta_fija.md, seccion 1: arriba la
     obligacion (pagos de 100,000 en los anios 1 y 3), abajo el portafolio
     de CETE a 364 dias y Bono M a 3 anios que la cubre, con su costo en
     t = 0 y el cupon sobrante del anio 2."""
@@ -442,7 +442,7 @@ def fig_flujo_calce():
 def fig_estrategia_escenarios():
     """Rendimiento a un anio del CETE a 364 dias contra el Bono M a 10
     anios vendido al cierre del anio, si su YTM baja 100 pb, no cambia o
-    sube 100 pb (3_estrategias_renta_fija.md, seccion 2)."""
+    sube 100 pb (4_estrategias_renta_fija.md, seccion 2)."""
     e = ejemplos_estrategias()
     etiquetas = ["Tasas bajan\n100 pb", "Sin cambio", "Tasas suben\n100 pb"]
     bono = [e["escenarios"][d] * 100 for d in (-0.01, 0.0, 0.01)]

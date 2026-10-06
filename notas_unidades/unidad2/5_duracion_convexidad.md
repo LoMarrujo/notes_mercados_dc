@@ -21,7 +21,7 @@ Que el estudiante calcule la duración y la convexidad de un bono para cuantific
 
 ### 1. Cuánto se mueve el precio
 
-La sección 2 de [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#2-riesgo-de-tasa-de-interés) ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
+La sección 2 de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#2-riesgo-de-tasa-de-interés) ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
 
 | Cambio en la tasa  | Precio, Bono M 2 años | Precio, Bono M 10 años |
 | ------------------ | --------------------- | ---------------------- |
@@ -75,4 +75,4 @@ $$C = \dfrac{1}{v_0}\dfrac{d^2v_0}{dr^2} = \dfrac{\displaystyle\sum_{i=1}^N t_i(
 - La **duración modificada** cuantifica el riesgo de tasa de interés: el cambio porcentual aproximado del precio ante un cambio en la tasa. Es una sensibilidad, no un plazo, aunque se mida en años; el **PVBP** la expresa en pesos por punto base en vez de en porcentaje.
 - La **convexidad** corrige esa aproximación lineal para cambios de tasa grandes: en igualdad de duración, más convexidad es mejor para el tenedor.
 
-**Dónde se usa:** la duración es la herramienta del apéndice de inmunización de [`3_estrategias_renta_fija.md`](3_estrategias_renta_fija.md#apéndice-inmunización).
+**Dónde se usa:** la duración es la herramienta del apéndice de inmunización de [`4_estrategias_renta_fija.md`](4_estrategias_renta_fija.md#apéndice-inmunización).

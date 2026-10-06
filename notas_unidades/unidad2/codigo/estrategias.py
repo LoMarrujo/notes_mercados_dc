@@ -1,4 +1,4 @@
-"""Funciones de 3_estrategias_renta_fija.md.
+"""Funciones de 4_estrategias_renta_fija.md.
 
 Misma convencion simplificada de 2_rendimiento_y_curva_de_rendimientos.md:
 un cupon anual c por cada 100 de valor nominal, descontado con la formula
@@ -102,7 +102,7 @@ def valor_portafolio(monto_a, d_a, r0, monto_b, flujos_b, r1):
 
 
 def ejemplos():
-    """Numeros que cita 3_estrategias_renta_fija.md."""
+    """Numeros que cita 4_estrategias_renta_fija.md."""
     c3 = cupon_anual_implicito(*BONOS_M[3], 3)
     c10 = cupon_anual_implicito(*BONOS_M[10], 10)
     precio_cete = VN / FACTOR_CETE_364

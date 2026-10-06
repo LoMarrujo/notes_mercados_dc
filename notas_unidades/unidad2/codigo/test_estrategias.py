@@ -1,4 +1,4 @@
-"""Pruebas de las funciones y los ejemplos de 3_estrategias_renta_fija.md.
+"""Pruebas de las funciones y los ejemplos de 4_estrategias_renta_fija.md.
 
 Uso (desde la raiz del repo):
     python -m pytest notas_unidades/unidad2/codigo -q
@@ -20,7 +20,7 @@ E = ejemplos()
 
 
 def test_cupones_implicitos_de_la_nota_de_rendimiento():
-    # cupon implicito con un pago anual (3_estrategias usa flujos anuales);
+    # cupon implicito con un pago anual (4_estrategias usa flujos anuales);
     # con pagos cada 182 dias, el apendice de 2_ da 8.61% a 10 anios
     assert round(E["c3"], 2) == 8.61
     assert round(E["c10"], 4) == 8.5951
