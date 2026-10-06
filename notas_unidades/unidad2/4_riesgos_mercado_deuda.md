@@ -12,17 +12,43 @@ Que el estudiante distinga el tipo de riesgo (tasa de interés, crédito, inflac
 
 |     | Tema                                              | Qué cubre                                                                                   |
 | --- | ------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| I   | Riesgo de tasa de interés                         | Por qué el precio de un bono se mueve en sentido contrario a la tasa de mercado             |
-| II  | Riesgo de crédito y calificaciones                | Escala de calificaciones, probabilidad de incumplimiento de cada una y tasa de recuperación |
-| III | Riesgo de inflación                               | Por qué un cupón fijo pierde poder adquisitivo, y cómo el UDIBONO lo evita                  |
-| IV  | Riesgo de liquidez                                | Qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento        |
-| V   | Los seis instrumentos frente a los cuatro riesgos | Matriz de qué riesgo domina en cada instrumento de esta unidad                              |
+| I   | Qué puede salir mal al comprar deuda              | De dónde sale el rendimiento de un bono, qué parte de él ataca cada riesgo y cómo se reduce |
+| II  | Riesgo de tasa de interés                         | Por qué el precio de un bono se mueve en sentido contrario a la tasa de mercado             |
+| III | Riesgo de crédito y calificaciones                | Escala de calificaciones, probabilidad de incumplimiento de cada una y tasa de recuperación |
+| IV  | Riesgo de inflación                               | Por qué un cupón fijo pierde poder adquisitivo, y cómo el UDIBONO lo evita                  |
+| V   | Riesgo de liquidez                                | Qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento        |
+| VI  | Los seis instrumentos frente a los cuatro riesgos | Matriz de qué riesgo domina en cada instrumento de esta unidad                              |
 
 ---
 
-### 1. Riesgo de tasa de interés
+### 1. Qué puede salir mal al comprar deuda
 
-Hasta aquí, comprar un instrumento de deuda se trató como un problema resuelto en cuanto se calculaba su precio. Pero comprarlo no cierra el trato para siempre: entre la compra y el vencimiento puede pasar algo que cambie lo que ese instrumento vale, o lo que se esperaba cobrar. ¿Qué puede salir mal, y quién absorbe la pérdida si sale mal? Cuatro riesgos distintos responden esa pregunta para un instrumento de deuda.
+Hasta aquí, comprar un instrumento de deuda se trató como un problema resuelto en cuanto se calculaba su precio. Pero el precio se calcula con lo que se espera hoy, y comprarlo no cierra el trato: entre la compra y el vencimiento puede pasar algo que cambie lo que el instrumento vale, o lo que se esperaba cobrar. [`3_estrategias_renta_fija.md`](3_estrategias_renta_fija.md#2-elegir-el-plazo-según-el-escenario-de-tasas) ya lo mostró con un caso: el mismo Bono M comprado hoy da un rendimiento a horizonte distinto en cada escenario de tasas.
+
+**Definición:** el riesgo de un instrumento de deuda es la posibilidad de que el rendimiento que obtiene su tenedor, entre la compra y la venta (o el vencimiento), sea distinto del que esperaba al comprarlo, por causas que el tenedor no controla.
+
+Para ver dónde puede fallar ese rendimiento conviene separarlo en sus dos partes, las mismas del numerador del rendimiento a horizonte $r_h=(c+v_1-a)/a$: los **flujos** que se cobran (cupones y valor nominal, más lo que rinda reinvertir los cupones) y el **precio** al que se vende el instrumento si se vende antes del vencimiento. Cada riesgo de esta nota ataca una de esas partes, o el poder de compra de ambas, y cada uno tiene su forma de reducirlo:
+
+| Riesgo          | Qué cambia después de comprar                | Origen                     | Qué parte del rendimiento afecta                                  | Cómo se mitiga                                            |
+| --------------- | -------------------------------------------- | -------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------- |
+| Tasa de interés | La tasa de mercado                           | La economía en su conjunto | El precio de venta, y la tasa a la que se reinvierten los cupones | Calzar el plazo con la fecha en que se necesita el dinero |
+| Crédito         | La capacidad de pago del emisor              | El emisor y la emisión     | Los flujos: el cupón o el valor nominal pueden no pagarse         | Calificación, garantías y diversificación entre emisores  |
+| Inflación       | El nivel general de precios                  | La economía en su conjunto | El poder de compra de los flujos y del precio                     | UDIBONO, o plazo corto o cupón variable                   |
+| Liquidez        | Cuántos compradores hay dispuestos a comprar | El emisor y la emisión     | El precio de venta: vender rápido obliga a aceptar un descuento   | Emisiones gubernamentales o grandes de oferta pública     |
+
+Los de tasa de interés e inflación golpean a la vez a todos los instrumentos de cupón fijo, sin importar quién los emitió. Los de crédito y liquidez, en cambio, explican por qué dos bonos del mismo plazo no rinden lo mismo: la sobretasa del bono corporativo sobre el Bono M en la sección 4 de [`2_rendimiento_y_curva_de_rendimientos.md`](2_rendimiento_y_curva_de_rendimientos.md#4-la-curva-de-rendimientos-ubicar-un-bono) es lo que el mercado cobra por esos dos riesgos. A esa diferencia entre bonos del mismo plazo se le llama **estructura de riesgo de las tasas de interés** (risk structure of interest rates), en contraste con la estructura temporal que describe la curva de rendimientos.
+
+Las fuentes de renta fija enumeran más riesgos que estos cuatro:
+
+- **Amortización anticipada (call risk):** el emisor puede recomprar el bono antes del vencimiento.
+- **Tipo de cambio:** afecta a quien mide su rendimiento en otra moneda, como un fondo extranjero que compra Bonos M.
+- **Eventos o cambios legales:** alteran de golpe la capacidad de pago de un emisor.
+
+Esta nota se concentra en los cuatro que aplican a los seis instrumentos de la unidad vistos por un inversionista en pesos. Para cada uno, las preguntas son las mismas: ¿qué puede salir mal, en qué instrumentos pesa más y quién absorbe la pérdida?
+
+### 2. Riesgo de tasa de interés
+
+El primero es también el más importante para quien puede necesitar vender antes del vencimiento.
 
 **Definición:** riesgo de tasa de interés es la posibilidad de que la tasa de mercado cambie después de comprar un instrumento de deuda, y que ese cambio mueva su precio en sentido contrario.
 
@@ -32,12 +58,14 @@ Ese riesgo no es del mismo tamaño para cualquier plazo. Con más periodos $N$ p
 
 > **Con datos reales.** El ciclo de alzas de 2021-2023 subió la tasa corta mexicana 7.2 puntos porcentuales (de 4.2% a 11.5%), un 40% más que el alza de la Fed en su ciclo más reciente (+5.1 pp, 2022-2024). El recorte que siguió ha sido todavía más desigual: México ha bajado 4.6 pp desde abril de 2024 contra 1.5 pp de la Fed, así que el diferencial de tasas entre los dos países cayó a 3.16 pp en agosto de 2026, de los niveles más bajos del historial desde 2001 (que promedia 5.2 pp) aunque sin llegar al mínimo de 2.23 pp que tocó en 2006. El riesgo de tasa de interés no es una posibilidad abstracta: los ciclos de política monetaria en México se han movido, en sus episodios más recientes, en un rango bastante más amplio que los de Estados Unidos.
 
+**Cómo se mitiga.** La forma más directa es calzar el plazo con la fecha en que se necesita el dinero, el calce de flujos de la nota de estrategias: quien no tiene que vender antes del vencimiento no realiza la pérdida de precio. Si se espera que las tasas suban, se acorta el plazo o se prefiere un cupón variable (sección 4 de la nota de valuación), que se recalcula con la tasa de mercado y por eso apenas cambia de precio. Sin una opinión sobre las tasas, la escalera reparte el dinero entre plazos, y la inmunización del apéndice de esa misma nota elige el plazo en el que la pérdida de precio y la ganancia por reinversión se compensan. Las instituciones también cubren este riesgo con derivados (swaps de tasa, futuros sobre el Bono M), que quedan fuera de esta unidad.
+
 **Ejemplos:**
 
 - Un inversionista compra un Bono M a 10 años con cupón fijo de 8%, a \$93.58 (ver la tabla de [`5_duracion_convexidad.md`](5_duracion_convexidad.md#1-cuánto-se-mueve-el-precio)); si la tasa de mercado sube 100 pb, los bonos nuevos ofrecen más que ese 8%, así que su bono solo se vende si su precio baja lo suficiente para igualar ese nuevo rendimiento, hasta \$87.71.
 - Un ahorrador reinvierte los cupones semestrales de un Bono M a medida que los cobra; si la tasa de mercado baja de 9% a 6% en el camino, cada cupón que reinvierte gana 6% en vez del 9% original: es el riesgo de reinversión, el lado simétrico del riesgo de tasa de interés.
 
-### 2. Riesgo de crédito y calificaciones
+### 3. Riesgo de crédito y calificaciones
 
 **Definición:** riesgo de crédito (o de incumplimiento) es la posibilidad de que el emisor no pague el cupón o el valor nominal prometido, en parte o por completo.
 
@@ -69,12 +97,19 @@ Cuánto se recupera depende sobre todo de las garantías del crédito y de su pr
 
 > **Aplicación a los instrumentos de esta unidad.** La deuda gubernamental (CETE, Bono M, UDIBONO) se trata como de riesgo de crédito mínimo, el mismo supuesto de la Unidad 1: el Gobierno Federal mexicano no se califica de la misma forma que un emisor corporativo. La deuda corporativa (bono corporativo, papel comercial, certificado bursátil emitido por una empresa) sí carga riesgo de crédito, y ese riesgo es justamente lo que califican S&P, Moody's, HR Ratings o Fitch; la sobretasa que paga por encima de un Bono M o un CETE del mismo plazo es, en buena medida, el precio de ese riesgo.
 
+**Cómo se mitiga.** El riesgo de crédito no se elimina comprando deuda corporativa, pero se reduce de cuatro formas:
+
+- **Elegir por calificación:** comprar solo grado de inversión, o exigir una sobretasa acorde a la probabilidad de incumplimiento de la tabla.
+- **Diversificar:** repartir el dinero entre varios emisores y sectores, para que un solo incumplimiento pese poco en el portafolio.
+- **Revisar el contrato de emisión:** preferir emisiones con garantía o con cláusulas de protección, como la subordinación de deuda de la sección 6 de la nota de instrumentos, que pone al tenedor antes que otros acreedores y sube la tasa de recuperación.
+- **Acortar el plazo:** la probabilidad acumulada de incumplir crece con los años, por eso el papel comercial carga menos riesgo de crédito que un bono del mismo emisor.
+
 **Ejemplos:**
 
 - Un bono corporativo calificado BBB- (el último escalón de grado de inversión) es rebajado a BB+ (el primer escalón de junk) tras un mal reporte financiero del emisor; el mercado le exige una sobretasa mayor y su precio cae de inmediato.
 - Una empresa mediana emite papel comercial y, al vencimiento, no logra refinanciarse ni cubrir el principal. Si en la liquidación el tenedor recupera \$40 de cada \$100 de valor nominal, $r_{rec}=40\%$ y pierde $LGD=60\%$: el riesgo de crédito materializado.
 
-### 3. Riesgo de inflación
+### 4. Riesgo de inflación
 
 **Definición:** riesgo de inflación (o riesgo de poder adquisitivo) es la posibilidad de que la inflación real resulte mayor a la que el mercado esperaba al fijar la tasa cupón, de modo que el pago prometido, aunque se cumpla al pie de la letra, compre menos de lo que el inversionista esperaba.
 
@@ -82,12 +117,18 @@ Un instrumento con cupón fijo nominal (Bono M, bono corporativo, papel comercia
 
 > Este riesgo es más relevante mientras más largo es el plazo del instrumento (más tiempo para que la inflación observada se aleje de la esperada) y mientras más fijo es el cupón en términos nominales; por eso un CETE a 28 días apenas lo enfrenta (muy poco tiempo para que la inflación sorprenda), mientras que un Bono M a 30 años sí queda expuesto de forma relevante.
 
+**Cómo se mitiga.** Hay tres formas, de más a menos directa:
+
+- **Indexar a la inflación:** el UDIBONO cubre el riesgo por diseño.
+- **Plazo corto:** un CETE que se renueva cada 28 días se vuelve a comprar a la tasa nueva, que ya incorpora la inflación observada.
+- **Cupón variable:** si la inflación sube y Banxico responde subiendo su tasa, el cupón variable sube con ella; cubre la inflación solo en la medida en que la tasa de referencia la siga.
+
 **Ejemplos:**
 
 - Un Bono M con cupón nominal fijo de 8% se compró esperando una inflación de 5%; si la inflación observada resulta 12%, el cupón sigue pagando el mismo monto en pesos, pero compra menos de lo que el inversionista anticipaba.
 - Un UDIBONO comprado en el mismo momento, con la misma sorpresa inflacionaria de 12%, no pierde poder de compra: su valor nominal en UDIs se ajusta con la inflación observada, así que el cupón y el capital mantienen su valor real.
 
-### 4. Riesgo de liquidez
+### 5. Riesgo de liquidez
 
 **Definición:** riesgo de liquidez es la posibilidad de no poder vender un instrumento rápidamente, o de tener que aceptar un precio desfavorable para lograrlo, antes de su vencimiento.
 
@@ -97,12 +138,14 @@ Un instrumento con cupón fijo nominal (Bono M, bono corporativo, papel comercia
 - Una emisión colocada por **oferta pública** suele ser más líquida que una **colocación privada** ([`0_mercado_e_instrumentos_deuda.md`](0_mercado_e_instrumentos_deuda.md#5-cómo-se-coloca-y-se-negocia-la-deuda)), porque hay más inversionistas que la conocen y pueden comprarla en el secundario.
 - Una emisión corporativa pequeña o poco conocida (un papel comercial de una empresa mediana, un certificado bursátil colocado de forma privada) suele ser la menos líquida de todas: si el tenedor necesita vender antes del vencimiento, puede no encontrar comprador, o solo a un precio con un descuento considerable.
 
+**Cómo se mitiga.** Si existe la posibilidad de necesitar el dinero antes del vencimiento, se prefieren instrumentos gubernamentales o emisiones grandes de oferta pública. Si no, se calza el plazo con la fecha en que se necesita el dinero, como en el riesgo de tasa, para no tener que vender. Un portafolio con instrumentos menos líquidos suele guardar una parte en CETES como colchón: se venden primero si hace falta efectivo, sin malbaratar el resto.
+
 **Ejemplos:**
 
 - El tenedor de un CETE puede venderlo el mismo día a un precio muy cercano al de mercado, porque los Formadores de Mercado cotizan compra y venta de forma continua.
 - El tenedor de un certificado bursátil colocado de forma privada por una empresa poco conocida intenta venderlo antes del vencimiento y solo encuentra comprador con un descuento considerable, o no encuentra comprador en absoluto.
 
-### 5. Los seis instrumentos frente a los cuatro riesgos
+### 6. Los seis instrumentos frente a los cuatro riesgos
 
 | Instrumento          | Riesgo de tasa de interés                                              | Riesgo de crédito                     | Riesgo de inflación                      | Riesgo de liquidez                                  |
 | -------------------- | ---------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- | --------------------------------------------------- |
@@ -119,7 +162,7 @@ El certificado bursátil vuelve a ser el caso que no se puede resolver con una s
 
 ## Apéndice: Supervivencia y estimación de la probabilidad de incumplimiento
 
-La tabla de la sección 2 da probabilidades **acumuladas**: la de incumplir en algún momento entre hoy y el año $t$, vista desde hoy. Para valuar un bono o comparar emisores suele interesar otra pregunta: si el emisor sobrevivió hasta hoy, ¿qué tan probable es que incumpla en el próximo periodo?
+La tabla de la sección 3 da probabilidades **acumuladas**: la de incumplir en algún momento entre hoy y el año $t$, vista desde hoy. Para valuar un bono o comparar emisores suele interesar otra pregunta: si el emisor sobrevivió hasta hoy, ¿qué tan probable es que incumpla en el próximo periodo?
 
 **Probabilidad condicional.** Con la misma tabla: un emisor Baa incumple en los dos primeros años con probabilidad 0.495% y en el primero con 0.177%, así que incumple *durante el segundo año* con probabilidad $0.495\% - 0.177\% = 0.318\%$. Condicionada a que sobrevivió el primer año (probabilidad $1-0.00177$), es $0.318\%/(1-0.00177) \approx 0.319\%$. Para grado de inversión, esta probabilidad condicional crece con los años (un emisor sano tiene más tiempo para deteriorarse); para las peores calificaciones, decrece: los primeros uno o dos años son críticos, y el que sobrevive tiende a recuperarse.
 
@@ -143,29 +186,30 @@ $$\bar{\lambda} \approx \dfrac{s}{1-r_{rec}} \qquad (r_{rec}<1)$$
 
 ¿De dónde sale la fórmula? En cada año, el emisor incumple con probabilidad aproximada $\bar{\lambda}$, y si incumple el tenedor pierde $LGD = 1-r_{rec}$ del valor nominal. La pérdida esperada por año es entonces $\bar{\lambda}(1-r_{rec})$, y la sobretasa es lo que el mercado cobra de más para compensarla: $s \approx \bar{\lambda}(1-r_{rec})$. Despejando $\bar{\lambda}$ sale la fórmula.
 
-> **Ejemplo resuelto.** El bono corporativo a 10 años de la sección 4 de [`2_rendimiento_y_curva_de_rendimientos.md`](2_rendimiento_y_curva_de_rendimientos.md#4-la-curva-de-rendimientos-ubicar-un-bono) rinde 0.79 pp sobre el Bono M del mismo plazo. Con $r_{rec}=40\%$, $\bar{\lambda} \approx 0.79\%/0.60 \approx 1.32\%$ al año, y la probabilidad de incumplir en 10 años es $p(10) = 1-e^{-0.0132 \times 10} \approx 12.3\%$. Frente a la tabla, el mercado lo trata como un emisor entre Baa (4.74%) y Ba (19.71%).
+> **Ejemplo resuelto.** El bono corporativo a 10 años de la sección 4 de la nota de rendimiento rinde 0.79 pp sobre el Bono M del mismo plazo. Con $r_{rec}=40\%$, $\bar{\lambda} \approx 0.79\%/0.60 \approx 1.32\%$ al año, y la probabilidad de incumplir en 10 años es $p(10) = 1-e^{-0.0132 \times 10} \approx 12.3\%$. Frente a la tabla, el mercado lo trata como un emisor entre Baa (4.74%) y Ba (19.71%).
 
-Las dos estimaciones no coinciden en general: para una misma calificación, la que sale de la sobretasa es mayor que la histórica. La sobretasa no paga solo la pérdida esperada; también paga la menor liquidez del bono (sección 4) y un premio por cargar un riesgo que no se puede diversificar del todo. Por eso la estimación con la sobretasa sirve para valuar y comparar bonos, y la histórica para medir cuánto se espera perder de verdad.
+Las dos estimaciones no coinciden en general: para una misma calificación, la que sale de la sobretasa es mayor que la histórica. La sobretasa no paga solo la pérdida esperada; también paga la menor liquidez del bono (sección 5) y un premio por cargar un riesgo que no se puede diversificar del todo. Por eso la estimación con la sobretasa sirve para valuar y comparar bonos, y la histórica para medir cuánto se espera perder de verdad.
 
 ---
 
 ## Fuentes y referencias recomendadas
 
+- Fabozzi, F. J. (Ed.). (2021). *The Handbook of Fixed Income Securities* (9ª ed.). McGraw Hill: el rendimiento de un bono dividido en cambio de precio y flujos cobrados (con su reinversión), y la clasificación de los riesgos de invertir en renta fija como factores que afectan una u otra parte, y cómo se controla cada uno.
 - Mishkin, F. S. y Eakins, S. G. (2014). *Financial Markets and Institutions* (8ª ed.). Pearson: riesgo de tasa de interés y riesgo de reinversión.
-- Mishkin, F. S. (2019). *The Economics of Money, Banking, and Financial Markets* (Business School Edition, 5ª ed.). Pearson: riesgo de crédito (default risk) y su efecto en la sobretasa (spread) sobre la tasa libre de riesgo.
+- Mishkin, F. S. (2019). *The Economics of Money, Banking, and Financial Markets* (Business School Edition, 5ª ed.). Pearson: estructura de riesgo de las tasas de interés (risk structure of interest rates), riesgo de crédito (default risk) y su efecto en la sobretasa (spread) sobre la tasa libre de riesgo.
 - Luenberger, D. G. (2013). *Investment Science* (2ª ed.). Oxford University Press: escala de calificaciones crediticias y la división entre grado de inversión y grado especulativo (junk).
 - Hull, J. C. (2022). *Options, Futures, and Other Derivatives* (11ª ed.). Pearson: calificaciones crediticias, tasas de incumplimiento acumuladas de Moody's por calificación, tasa de recuperación, tasa de riesgo (hazard rate) y estimación de la probabilidad de incumplimiento a partir de la sobretasa.
 - Banco de México: ficha técnica de UDIBONOS, mecánica de protección contra la inflación vía la UDI.
-- Federal Reserve Bank of St. Louis (FRED): series mensuales de la tasa interbancaria mexicana y de la fed funds estadounidense, 2001-07 a 2026-08, la misma fuente que usa el apéndice de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#apéndice-verificación-numérica-con-código-y-datos). Los ciclos de alza y baja y el diferencial de tasas del comentario de la sección 1 se reproducen con `codigo/analisis_tasas_mx_eu.py`.
+- Federal Reserve Bank of St. Louis (FRED): series mensuales de la tasa interbancaria mexicana y de la fed funds estadounidense, 2001-07 a 2026-08, la misma fuente que usa el apéndice de [`1_valuacion_instrumentos_deuda.md`](1_valuacion_instrumentos_deuda.md#apéndice-verificación-numérica-con-código-y-datos). Los ciclos de alza y baja y el diferencial de tasas del comentario de la sección 2 se reproducen con `codigo/analisis_tasas_mx_eu.py`.
 
 ---
 
 ## Cierre de la unidad — Lo esencial para recordar
 
-- **Riesgo de tasa de interés**: el precio de un bono de cupón fijo se mueve en sentido contrario a la tasa de mercado, y ese movimiento es más fuerte mientras más largo es el plazo por vencer.
-- **Riesgo de crédito**: la posibilidad de que el emisor incumpla; las calificadoras (S&P, Moody's, HR Ratings, Fitch) lo resumen en una escala de grado de inversión (AAA a BBB-) o grado especulativo/junk (BB+ o menor). Cada calificación tiene detrás una probabilidad de incumplimiento histórica, que se multiplica al cruzar a grado especulativo, y si el emisor incumple se recupera solo una fracción $r_{rec}=1-LGD$ del valor nominal. La deuda gubernamental mexicana se asume de riesgo mínimo, la corporativa no.
-- **Riesgo de inflación**: un cupón fijo nominal pierde poder de compra si la inflación sorprende al alza; el UDIBONO es el instrumento diseñado específicamente para evitarlo, al pactar una tasa real sobre un valor denominado en UDIs.
-- **Riesgo de liquidez**: qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento; los instrumentos gubernamentales son los más líquidos, una colocación privada o una emisión corporativa poco conocida son las menos líquidas.
+- **Riesgo de tasa de interés**: el precio de un bono de cupón fijo se mueve en sentido contrario a la tasa de mercado, y ese movimiento es más fuerte mientras más largo es el plazo por vencer. Se reduce calzando el plazo con la fecha en que se necesita el dinero.
+- **Riesgo de crédito**: la posibilidad de que el emisor incumpla; las calificadoras (S&P, Moody's, HR Ratings, Fitch) lo resumen en una escala de grado de inversión (AAA a BBB-) o grado especulativo/junk (BB+ o menor). Cada calificación tiene detrás una probabilidad de incumplimiento histórica, que se multiplica al cruzar a grado especulativo, y si el emisor incumple se recupera solo una fracción $r_{rec}=1-LGD$ del valor nominal. La deuda gubernamental mexicana se asume de riesgo mínimo, la corporativa no. Se reduce eligiendo por calificación y diversificando entre emisores.
+- **Riesgo de inflación**: un cupón fijo nominal pierde poder de compra si la inflación sorprende al alza; el UDIBONO es el instrumento diseñado específicamente para evitarlo, al pactar una tasa real sobre un valor denominado en UDIs. Un plazo corto o un cupón variable también lo reducen.
+- **Riesgo de liquidez**: qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento; los instrumentos gubernamentales son los más líquidos, una colocación privada o una emisión corporativa poco conocida son las menos líquidas. Se reduce no teniendo que vender (calce de plazo) o guardando una parte en CETES.
 - Ningún instrumento de esta unidad enfrenta los cuatro riesgos por igual: caracterizarlo bien significa identificar cuáles aplican y cuáles no, no asumir que todos los riesgos aplican a todos los instrumentos por igual.
 
 **Próxima sesión:** cuánto se mueve el precio de un bono ante un cambio de tasa, no solo en qué dirección: la duración y la convexidad.

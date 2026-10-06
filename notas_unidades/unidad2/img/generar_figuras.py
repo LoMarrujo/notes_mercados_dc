@@ -47,6 +47,7 @@ OUT_CALIBRACION = os.path.join(IMG_DIR, "calibracion_tasas.png")
 OUT_CALCE = os.path.join(IMG_DIR, "flujo_calce.png")
 OUT_ESCENARIOS = os.path.join(IMG_DIR, "estrategia_escenarios.png")
 OUT_TASAS_TIEMPO = os.path.join(IMG_DIR, "tasa_10a_en_el_tiempo.png")
+OUT_VPN_YTM = os.path.join(IMG_DIR, "vpn_ytm_raiz.png")
 
 
 def _scale(f):
@@ -199,7 +200,7 @@ def fig_precio_rendimiento():
     ax.set_xlabel("Rendimiento al vencimiento (YTM)", fontsize=11, color=GRAY)
     ax.set_ylabel("Precio (% del valor nominal)", fontsize=11, color=GRAY)
     ax.tick_params(colors=GRAY, labelsize=10)
-    ax.set_title("Precio y rendimiento de un bono con cupón de 8%",
+    ax.set_title("Precio y rendimiento de un bono hipotético con cupón de 8%",
                  fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
     sns.despine(ax=ax)
     fig.tight_layout()
@@ -470,19 +471,34 @@ def fig_estrategia_escenarios():
     print(f"figura generada: {OUT_ESCENARIOS}")
 
 
+RUTA_DGS10 = os.path.join(IMG_DIR, "..", "datos", "fred_dgs10_mensual.csv")
+
+
+def _cargar_dgs10():
+    """Tesoro de EE.UU. a 10 anios (DGS10) desde su primer dato, enero de
+    1962, con el mismo criterio de datos_fred.py (ultimo dato de cada mes).
+    El panel de datos_fred.py la corta en 2001-07; esta copia completa es
+    solo para la figura y se descarga una vez."""
+    if not os.path.exists(RUTA_DGS10):
+        from datos_fred import _descargar
+        _descargar("DGS10").rename("us_10a").to_csv(RUTA_DGS10, float_format="%.6f")
+    return pd.read_csv(RUTA_DGS10, parse_dates=["fecha"], index_col="fecha")["us_10a"]
+
+
 MESES = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.",
          "jul.", "ago.", "sep.", "oct.", "nov.", "dic."]
 
 
 def fig_tasa_10a_en_el_tiempo():
     """Rendimiento del bono gubernamental mexicano a 10 anios (FRED,
-    IRLTLT01MXM156N, espejo de la OCDE; datos/fred_tasas_mensual.csv) de
-    2001 a 2026, contra el cupon fijo de un Bono M hipotetico emitido a la
+    IRLTLT01MXM156N, espejo de la OCDE; datos/fred_tasas_mensual.csv) desde
+    su primer dato, julio de 2001, contra el cupon fijo de un Bono M hipotetico emitido a la
     par en septiembre de 2020 (5.68%, el rendimiento de ese mes). Ilustra la
     seccion 1 de 2_rendimiento_y_curva_de_rendimientos.md: el cupon queda
     fijo y la tasa del mercado no, asi que el precio se aleja de la par.
-    Incluye el Tesoro de EE.UU. a 10 anios (DGS10) hasta el mismo mes, para
-    mostrar que el movimiento no es exclusivo de Mexico."""
+    Incluye el Tesoro de EE.UU. a 10 anios (DGS10) desde su primer dato,
+    enero de 1962, hasta el mismo mes, para mostrar que el movimiento no es
+    exclusivo de Mexico."""
     datos = cargar()
     larga = datos["r_larga"].dropna()
     trazo = datos["r_larga"].interpolate(limit=2, limit_area="inside")
@@ -492,24 +508,23 @@ def fig_tasa_10a_en_el_tiempo():
     ultimo = larga.index[-1]
     r_hoy = float(larga.iloc[-1])
 
-    eu = datos["us_10a"].loc[:ultimo]
+    eu = _cargar_dgs10().loc[:ultimo]
     mes = f"{MESES[ultimo.month - 1]} {ultimo:%Y}"
 
     fig, ax = plt.subplots(figsize=(7.5, 4.6))
     ax.plot(eu.index, eu.values, color=GRAY, lw=2, zorder=2, label="Tesoro de EE.UU. a 10 años")
     ax.plot(trazo.index, trazo.values, color=NAVY, lw=2, zorder=3, label="México, 10 años")
-    ax.text(ultimo + pd.Timedelta(days=120), r_hoy,
+    ax.text(ultimo + pd.Timedelta(days=500), r_hoy,
             f"México,\n{mes}:\n{r_hoy:.2f}%", color=BODY, fontsize=10, va="center")
-    ax.text(ultimo + pd.Timedelta(days=120), float(eu.iloc[-1]),
+    ax.text(ultimo + pd.Timedelta(days=500), float(eu.iloc[-1]),
             f"EE.UU.,\n{mes}:\n{eu.iloc[-1]:.2f}%", color=BODY, fontsize=10, va="center")
-    ax.legend(loc="upper center", frameon=False, fontsize=10, ncol=2,
-              bbox_to_anchor=(0.5, 1.0))
+    ax.legend(loc="lower left", frameon=False, fontsize=10)
 
     ax.hlines(cupon, emision, ultimo, color=GOLD, lw=2.4, zorder=4)
     ax.plot([emision], [cupon], "o", color=GOLD, ms=8, zorder=5,
             markeredgecolor="white", markeredgewidth=2)
     ax.annotate(f"cupón fijo de un Bono M emitido\na la par en sep. 2020: {cupon:.2f}%",
-                xy=(emision, cupon), xytext=(pd.Timestamp("2014-01-01"), 4.3),
+                xy=(emision, cupon), xytext=(pd.Timestamp("2001-01-01"), 14.2),
                 fontsize=10, color=BODY, va="center",
                 arrowprops={"arrowstyle": "-", "color": GOLD, "lw": 1.2, "shrinkB": 6})
     ax.plot([ultimo], [r_hoy], "o", color=NAVY, ms=8, zorder=5,
@@ -517,27 +532,68 @@ def fig_tasa_10a_en_el_tiempo():
     ax.annotate("", xy=(ultimo, r_hoy - 0.12), xytext=(ultimo, cupon + 0.12),
                 arrowprops={"arrowstyle": "<->", "color": GRAY, "lw": 1.2,
                             "shrinkA": 0, "shrinkB": 0})
-    ax.text(ultimo - pd.Timedelta(days=90), (r_hoy + cupon) / 2,
-            f"{r_hoy - cupon:.2f} pp", color=GRAY, fontsize=10, ha="right", va="center")
+    ax.text(ultimo + pd.Timedelta(days=500), (r_hoy + cupon) / 2,
+            f"{r_hoy - cupon:.2f} pp", color=GRAY, fontsize=10, va="center")
 
-    ax.set_xlim(larga.index[0], ultimo + pd.Timedelta(days=1300))
-    ax.set_xticks(pd.to_datetime([f"{a}-01-01" for a in range(2004, 2027, 4)]))
+    ax.set_xlim(eu.index[0], ultimo + pd.Timedelta(days=3300))
+    ax.set_xticks(pd.to_datetime([f"{a}-01-01" for a in range(1965, 2026, 10)]))
     ax.xaxis.set_major_formatter(plt.FuncFormatter(
         lambda v, _: f"{matplotlib.dates.num2date(v):%Y}"))
-    ax.set_ylim(0, 12.5)
+    ax.set_ylim(0, 16.5)
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}%"))
     ax.tick_params(colors=GRAY, labelsize=10)
     ax.set_ylabel("Rendimiento anual", fontsize=11, color=GRAY)
-    ax.set_title("Rendimiento de los bonos gubernamentales a 10 años, 2001-2026",
+    ax.set_title(f"Rendimiento de los bonos gubernamentales a 10 años, "
+                 f"{eu.index[0]:%Y}-{ultimo:%Y}",
                  fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
     fig.text(0.01, 0.01, "Fuente: FRED, series IRLTLT01MXM156N (México, datos de la OCDE) "
-             "y DGS10 (EE.UU.), mensual.\nMéxico: huecos de hasta 2 meses interpolados "
+             "y DGS10 (EE.UU.), mensual, cada una desde su primer dato.\nMéxico: huecos de hasta 2 meses interpolados "
              "solo para el trazo.",
              fontsize=8.5, color=GRAY)
     sns.despine(ax=ax)
     fig.tight_layout(rect=(0, 0.06, 1, 1))
     fig.savefig(OUT_TASAS_TIEMPO, dpi=200, facecolor="white")
     print(f"figura generada: {OUT_TASAS_TIEMPO}")
+
+
+def fig_vpn_ytm_raiz():
+    """Valor presente neto g(r) = v_0(r) - a del Bono M hipotetico de la
+    seccion 1 de 2_rendimiento_y_curva_de_rendimientos.md (cupon 8 anual,
+    10 anios, valor nominal 100, precio a = 93.58) contra la tasa. Decrece
+    con r y cruza el cero una sola vez, en el YTM de 9%; los intentos de 8%
+    y 10% quedan de un lado y del otro de la raiz."""
+    a = 93.58
+    r = np.linspace(0.02, 0.16, 300)
+    g = _precio_bono(8, 10, r) - a
+
+    fig, ax = plt.subplots(figsize=(7.5, 4.4))
+    ax.axhline(0, color=LGRAY, lw=1.2, zorder=1)
+    ax.plot(r, g, color=NAVY, lw=2.6, zorder=3)
+    for r_i, txt, off, ha in ((0.08, "8%: g > 0, la tasa\nprobada es baja", (-14, 2), "right"),
+                              (0.10, "10%: g < 0, la tasa\nprobada es alta", (-10, -14), "right")):
+        g_i = _precio_bono(8, 10, r_i) - a
+        ax.plot([r_i], [g_i], "o", color=GRAY, ms=8, zorder=4,
+                markeredgecolor="white", markeredgewidth=2)
+        ax.annotate(f"{txt}\ng = {g_i:+.2f}", xy=(r_i, g_i), xytext=off, ha=ha, va="top",
+                    textcoords="offset points", fontsize=10, color=BODY)
+    ax.plot([0.09], [0], "o", color=GOLD, ms=10, zorder=5,
+            markeredgecolor="white", markeredgewidth=2)
+    ax.annotate("raíz: g(r) = 0 en r = 9%,\nel YTM", xy=(0.09, 0), xytext=(0.105, 22),
+                fontsize=10.5, color=BODY, fontweight="bold",
+                arrowprops={"arrowstyle": "-", "color": GOLD, "lw": 1.2, "shrinkB": 6})
+
+    ax.set_xlim(0.02, 0.16)
+    ax.set_xticks(np.arange(0.02, 0.161, 0.02))
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v * 100:.0f}%"))
+    ax.set_xlabel("Tasa r", fontsize=11, color=GRAY)
+    ax.set_ylabel("g(r) = v0(r) − a, en pesos", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.set_title("Valor presente neto del bono según la tasa: el YTM es donde cruza el cero",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_VPN_YTM, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_VPN_YTM}")
 
 
 def main():
@@ -556,6 +612,7 @@ def main():
     fig_flujo_calce()
     fig_estrategia_escenarios()
     fig_tasa_10a_en_el_tiempo()
+    fig_vpn_ytm_raiz()
 
 
 if __name__ == "__main__":

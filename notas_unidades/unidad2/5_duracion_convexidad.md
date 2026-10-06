@@ -21,7 +21,7 @@ Que el estudiante calcule la duración y la convexidad de un bono para cuantific
 
 ### 1. Cuánto se mueve el precio
 
-La sección 1 de [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#1-riesgo-de-tasa-de-interés) ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
+La sección 2 de [`4_riesgos_mercado_deuda.md`](4_riesgos_mercado_deuda.md#2-riesgo-de-tasa-de-interés) ya dijo que un bono de plazo más largo se mueve más que uno corto ante el mismo cambio de tasa. Eso responde en qué dirección y, a grandes rasgos, en qué instrumentos es peor; falta responder cuánto. Antes de nombrar nada, conviene verlo en una tabla: el precio de un Bono M a 10 años y el de uno a 2 años, ambos con cupón fijo de 8% y valor nominal \$100, ante subidas de la tasa de mercado de 1, 10 y 100 puntos base (pb) sobre una tasa inicial de 9%.
 
 | Cambio en la tasa  | Precio, Bono M 2 años | Precio, Bono M 10 años |
 | ------------------ | --------------------- | ---------------------- |

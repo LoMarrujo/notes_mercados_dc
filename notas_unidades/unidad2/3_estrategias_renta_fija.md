@@ -20,7 +20,7 @@ Que el estudiante justifique una estrategia de inversión en renta fija (calce d
 
 ### 1. Calce de flujos
 
-[`2_rendimiento_y_curva_de_rendimientos.md`](2_rendimiento_y_curva_de_rendimientos.md#3-qué-mide-y-qué-no-mide-el-rendimiento) cerró con dos advertencias: el precio de un bono se mueve en sentido contrario a la tasa, más mientras más largo el plazo, y el YTM solo se gana si el bono se conserva hasta el vencimiento y los cupones se reinvierten a esa misma tasa. Quien invierte en deuda casi siempre tiene un motivo concreto: un pago que hacer en una fecha conocida, o una opinión sobre hacia dónde van las tasas. ¿Qué conviene comprar en cada caso? Esta nota responde primero el caso de la fecha conocida.
+[`2_rendimiento_y_curva_de_rendimientos.md`](2_rendimiento_y_curva_de_rendimientos.md#2-qué-mide-y-qué-no-mide-el-rendimiento) dejó dos advertencias: el precio de un bono se mueve en sentido contrario a la tasa, más mientras más largo el plazo, y el YTM solo se gana si el bono se conserva hasta el vencimiento y los cupones se reinvierten a esa misma tasa. Quien invierte en deuda casi siempre tiene un motivo concreto: un pago que hacer en una fecha conocida, o una opinión sobre hacia dónde van las tasas. ¿Qué conviene comprar en cada caso? Esta nota responde primero el caso de la fecha conocida.
 
 **Definición:** el **calce de flujos** (*cash matching*) consiste en comprar bonos cuyos pagos cubran cada pago de una obligación en su fecha, y conservarlos hasta su vencimiento.
 
@@ -34,7 +34,7 @@ $$q_N = \dfrac{o_N}{c+v_N} \qquad\text{y}\qquad \text{falta en } t<N:\ o_t - q_N
 
 > **Ejemplo resuelto.** Un fondo de becas tiene que pagar \$100,000 dentro de un año y otros \$100,000 dentro de tres. Con los precios de cetesdirecto del 21 de septiembre de 2026:
 >
-> 1. **Año 3.** El Bono M a 3 años cuesta \$100.94 y su cupón implícito es \$8.61 (sección 1 de la nota de rendimiento; \$8.6063 sin redondear). Hacen falta $q_3 = 100{,}000/108.61 \approx 920.76$ títulos, que cuestan $920.76 \times 100.94 =$ \$92,941.17.
+> 1. **Año 3.** El Bono M a 3 años cuesta \$100.94 y su cupón implícito con un pago anual es \$8.61 (el que reproduce ese precio con la simplificación anual de esta nota, como en el bootstrapping del apéndice de la nota de rendimiento; \$8.6063 sin redondear). Hacen falta $q_3 = 100{,}000/108.61 \approx 920.76$ títulos, que cuestan $920.76 \times 100.94 =$ \$92,941.17.
 > 2. **Año 1.** Esos títulos ya pagan \$7,924.34 de cupón al año 1, así que solo falta cubrir $100{,}000 - 7{,}924.34 =$ \$92,075.66. Se cubre con CETES a 364 días al 7.24%: cada \$100 de valor nominal cuestan $100/(1+0.0724 \times 364/360) \approx$ \$93.18, y el total cuesta \$85,795.08.
 > 3. **Año 2.** No hay pago, pero el Bono M paga otro cupón de \$7,924.34: es un **sobrante**.
 >
@@ -52,7 +52,7 @@ El calce tiene tres límites. No siempre existe un bono que venza en la fecha ex
 
 ### 2. Elegir el plazo según el escenario de tasas
 
-El segundo caso es el del inversionista que no tiene una fecha de pago, sino un horizonte y una opinión sobre las tasas. La tabla de la sección 2 de la nota de rendimiento ya mostró cuánto pesa el plazo: al pasar el rendimiento de 8% a 9%, el precio cae 2.53% a 3 años, 6.42% a 10 años y 10.27% a 30 años. Eso funciona en los dos sentidos: si las tasas bajan, el bono largo es el que más sube.
+El segundo caso es el del inversionista que no tiene una fecha de pago, sino un horizonte y una opinión sobre las tasas. La tabla de la sección 3 de la nota de rendimiento ya mostró cuánto pesa el plazo: al pasar el rendimiento de 8% a 9%, el precio cae 2.53% a 3 años, 6.42% a 10 años y 10.27% a 30 años. Eso funciona en los dos sentidos: si las tasas bajan, el bono largo es el que más sube.
 
 Para comparar dos estrategias a un mismo horizonte se usa el **rendimiento a horizonte**: lo que se gana en un año al comprar un bono hoy en $a$, cobrar su cupón $c$ y venderlo al cierre del año en $v_1$, el precio que tenga entonces.
 

@@ -20,7 +20,8 @@ E = ejemplos()
 
 
 def test_cupones_implicitos_de_la_nota_de_rendimiento():
-    # 2_ seccion 1 cita $8.59 a 10 anios; la formula anual da 8.5951
+    # cupon implicito con un pago anual (3_estrategias usa flujos anuales);
+    # con pagos cada 182 dias, el apendice de 2_ da 8.61% a 10 anios
     assert round(E["c3"], 2) == 8.61
     assert round(E["c10"], 4) == 8.5951
 

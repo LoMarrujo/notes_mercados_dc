@@ -18,6 +18,8 @@ Unit 1.
 
 Unit 2.
 
+- Valuacion de bonos en el mercado secundario.
+
 - Structure follows Luenberger c. 3-5 (order: valuation -> yield/curve -> strategies; risks and duration renumbered 4_/5_ as complementary reading, 2026-10-01):
     0_mercado_e_instrumentos_deuda (c. 3.1; old 0_ + 1_ merged)          [written]
     1_valuacion_instrumentos_deuda (c. 3.2, 4.7)                         [written]
