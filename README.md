@@ -49,7 +49,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Características del mercado de capitales
 - Instrumentos de capital: acciones comunes, acciones preferentes, FIBRAS, Certificados de Capital de Desarrollo (CKD) y Certificados de Proyectos de Inversión (CERPIs)
 - Funcionamiento bursátil e índices bursátiles
-- Riesgo y rendimiento de las acciones; tasas nominales y efectivas
+- Riesgo y rendimiento de las acciones
 - Valuación de instrumentos financieros y análisis de información financiera para la inversión
 - Ética y conducta profesional del asesor/gestor financiero
 - Ejercicio práctico (evaluación)
