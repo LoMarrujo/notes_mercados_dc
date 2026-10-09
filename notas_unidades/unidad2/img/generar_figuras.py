@@ -441,15 +441,17 @@ def fig_flujo_calce():
 
 def fig_estrategia_escenarios():
     """Rendimiento a un anio del CETE a 364 dias contra el Bono M a 10
-    anios vendido al cierre del anio, si su YTM baja 100 pb, no cambia o
-    sube 100 pb (4_estrategias_renta_fija.md, seccion 2)."""
+    anios vendido al cierre del anio, si su YTM baja 100 pb, no cambia,
+    sube 100 pb o si la curva completa no cambia y el bono baja por ella
+    (4_estrategias_renta_fija.md, seccion 4.1)."""
     e = ejemplos_estrategias()
-    etiquetas = ["Tasas bajan\n100 pb", "Sin cambio", "Tasas suben\n100 pb"]
-    bono = [e["escenarios"][d] * 100 for d in (-0.01, 0.0, 0.01)]
-    cete = [e["r_cete"] * 100] * 3
-    x = np.arange(3)
+    etiquetas = ["YTM baja\n100 pb", "YTM sin\ncambio", "Curva sin\ncambio", "YTM sube\n100 pb"]
+    bono = [e["escenarios"][-0.01] * 100, e["escenarios"][0.0] * 100,
+            e["rodada"][10] * 100, e["escenarios"][0.01] * 100]
+    cete = [e["r_cete"] * 100] * 4
+    x = np.arange(4)
     w = 0.36
-    fig, ax = plt.subplots(figsize=(7.5, 4.4))
+    fig, ax = plt.subplots(figsize=(8.5, 4.4))
     for desp, vals, color, nombre in ((-w / 2, cete, GRAY, "CETE 364 días"),
                                       (w / 2, bono, NAVY, "Bono M 10 años")):
         barras = ax.bar(x + desp, vals, w, color=color, label=nombre, zorder=3)

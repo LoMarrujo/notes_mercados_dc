@@ -40,7 +40,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 - Clasificar un instrumento de deuda (CETES, Bonos gubernamentales, UDIBONOS, Bonos corporativos, Papel comercial, Certificados bursátiles) según su emisor, su plazo y su mecánica de pago, y distinguirlo de un instrumento de participación de capital.
 - Calcular el precio de un instrumento de deuda a partir de sus flujos y su valor nominal.
 - Calcular el rendimiento al vencimiento (YTM) de un bono a partir de su precio de mercado y sus flujos, y ubicarlo en la curva de rendimientos para compararlo con bonos de otros plazos.
-- Justificar una estrategia de inversión en renta fija (calce de flujos o elección de plazo) para una obligación o un escenario de tasas dado.
+- Justificar una estrategia de inversión en renta fija (pasiva, de calce de flujos o activa) para una obligación, un horizonte o un escenario de mercado dado.
 
 > Los riesgos del mercado de deuda y la duración y convexidad quedan como lectura complementaria ([`3_riesgos_mercado_deuda.md`](notas_unidades/unidad2/3_riesgos_mercado_deuda.md), [`5_duracion_convexidad.md`](notas_unidades/unidad2/5_duracion_convexidad.md)); no se evalúan.
 

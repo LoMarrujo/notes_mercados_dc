@@ -1,0 +1,3 @@
+fecha,serie,valor,descripcion,fuente
+2026-09-21,DGS1,4.45,Rendimiento del Treasury a 1 año (por ciento),fred.stlouisfed.org/graph/fredgraph.csv?id=DGS1
+2026-09-21,DEXMXUS,17.2252,Pesos mexicanos por dólar (mediodía Nueva York),fred.stlouisfed.org/graph/fredgraph.csv?id=DEXMXUS

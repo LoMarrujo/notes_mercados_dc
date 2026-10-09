@@ -11,8 +11,9 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from estrategias import (  # noqa: E402
-    calce_flujos, cupon_anual_implicito, duracion_macaulay, ejemplos,
-    rendimiento_horizonte, tasa_equilibrio,
+    calce_flujos, cupon_anual_implicito, depreciacion_equilibrio,
+    duracion_macaulay, ejemplos, rendimiento_bonde_f, rendimiento_en_dolares, rendimiento_horizonte, rendimiento_real,
+    tasa_equilibrio, tasa_fondeo_equilibrio, ytm_curva,
 )
 from valuacion import flujos_bono, precio_bono  # noqa: E402
 
@@ -93,3 +94,72 @@ def test_inmunizacion_protege_ante_choques_de_100_pb():
 def test_tasa_equilibrio_con_bono_a_la_par():
     r_eq = tasa_equilibrio(100.0, 9.0, 5, 0.09)
     assert r_eq == pytest.approx(0.09, abs=1e-8)
+
+
+def test_calce_valuado_con_la_curva():
+    assert round(E["v_oblig_curva"], 2) == 172035.24
+    assert round(E["v_sobrante"], 2) == 6826.67
+    assert round(E["costo"] - E["v_oblig_curva"], 2) == 6701.02
+
+
+def test_ytm_interpolado_en_la_curva():
+    assert round(ytm_curva(2) * 100, 2) == 7.74
+    assert round(ytm_curva(9) * 100, 3) == 9.128
+    assert ytm_curva(10) == pytest.approx(0.0916)
+
+
+def test_recorrer_la_curva_sin_cambio():
+    assert round(E["rodada"][3] * 100, 2) == 9.13
+    assert round(E["rodada"][10] * 100, 2) == 9.35
+    # precio de venta del Bono M a 10 anios como bono a 9, al 9.128% de la curva
+    assert round(precio_bono(E["c10"], 9, ytm_curva(9)), 2) == 96.82
+
+
+def test_bonde_f_contra_cete():
+    bf = {round(d * 1e4): round(r * 100, 2) for d, r in E["bonde_f"].items()}
+    assert bf == {0: 6.79, 50: 7.33, 100: 7.88}
+    assert round(E["fondeo_eq"] * 100, 2) == 6.99
+    assert rendimiento_bonde_f(tasa_fondeo_equilibrio(0.05)) == pytest.approx(0.05)
+
+
+def test_udibono_contra_bono_m():
+    assert round(E["infl_aprox"] * 100, 2) == 4.41
+    assert round(E["infl_exacta"] * 100, 2) == 4.21
+    real = {k: round(v * 100, 2) for k, v in E["real_bono_m"].items()}
+    assert real == {0.03: 5.98, 0.06: 2.98}
+    # con la inflacion implicita exacta, el Bono M rinde lo mismo que el UDIBONO
+    assert rendimiento_real(0.0916, E["infl_exacta"]) == pytest.approx(0.0475)
+
+
+def test_escalera_de_cetes():
+    parte, tasa = E["escalera"]
+    assert parte == 25000.0
+    assert round(tasa * 100, 2) == 6.76
+
+
+def test_calce_no_cuesta_mas_que_lo_que_compra():
+    # el costo coincide con el valor de la obligacion mas el del sobrante
+    assert round(E["costo"] - E["v_oblig_curva"] - E["v_sobrante"], 2) == -125.65
+
+
+def test_cete_comprado_a_364_y_vendido_a_182():
+    assert round(E["cete_rodado"] * 100, 2) == 7.32
+    assert round((E["cete_rodado"] - 0.069) * 1e4) == 42
+
+
+def test_corporativo_contra_bono_m():
+    assert round(E["sobretasa"] * 100, 2) == 0.79
+    cr = {round(d * 1e4): round(r * 100, 2) for d, r in E["credito"].items()}
+    assert cr == {-25: 11.47, 0: 9.94, 50: 6.98}
+    assert round(E["sobretasa_eq"] * 100, 2) == 0.92
+    assert round((E["sobretasa_eq"] - E["sobretasa"]) * 1e4) == 13
+
+
+def test_carry_en_dolares():
+    assert round(E["deprec_eq"] * 100, 2) == 2.75
+    ca = {m: round(r * 100, 2) for m, r in E["carry"].items()}
+    assert ca == {-0.03: 10.64, 0.0: 7.32, 0.05: 2.21}
+    # con la depreciacion de equilibrio, el CETE rinde lo mismo que el Treasury
+    s1 = 17.2252 * (1 + depreciacion_equilibrio(E["r_cete"], 0.0445))
+    assert rendimiento_en_dolares(E["r_cete"], 17.2252, s1) == pytest.approx(0.0445)
+    assert round(s1, 2) == 17.70
