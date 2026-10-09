@@ -19,6 +19,8 @@ Que el estudiante distinga el tipo de riesgo (tasa de interés, crédito, inflac
 | V   | Riesgo de liquidez                                | Qué tan rápido y a qué precio se puede vender un instrumento antes de su vencimiento        |
 | VI  | Los seis instrumentos frente a los cuatro riesgos | Matriz de qué riesgo domina en cada instrumento de esta unidad                              |
 
+> La práctica de este tema está en [`practica_2_rendimiento_riesgos.md`](../../practicas/unidad2/practica_2_rendimiento_riesgos.md).
+
 ---
 
 ### 1. Qué puede salir mal al comprar deuda

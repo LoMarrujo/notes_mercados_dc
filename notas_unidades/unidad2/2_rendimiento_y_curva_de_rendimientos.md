@@ -15,7 +15,7 @@ Que el estudiante calcule el rendimiento al vencimiento (YTM) de un bono a parti
 | III | Relación entre rendimiento y precio       | La curva precio-rendimiento: por qué baja, por qué se curva y por qué los plazos largos se mueven más       |
 | IV  | La curva de rendimientos: ubicar un bono  | Graficar el YTM contra el plazo, leer su forma y sus movimientos, y ver dónde cae un bono frente al mercado |
 
-> La práctica de este tema está en [`practica_2_rendimiento_estrategias.md`](../../practicas/unidad2/practica_2_rendimiento_estrategias.md).
+> La práctica de este tema está en [`practica_2_rendimiento_riesgos.md`](../../practicas/unidad2/practica_2_rendimiento_riesgos.md).
 
 ---
 
