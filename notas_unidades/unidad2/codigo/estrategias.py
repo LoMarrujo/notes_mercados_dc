@@ -12,14 +12,14 @@ Uso (desde la raiz del repo):
 """
 import numpy as np
 
-from valuacion import flujos_bono, precio_bono, precio_flujos
+from valuacion import flujos_bono, precio_bono
 
 VN = 100.0
 # CETE a 364 dias: tasa simple 7.24% con base 360, se toma como el plazo de un anio
 TASA_CETE_364 = 0.0724
 FACTOR_CETE_364 = 1 + TASA_CETE_364 * 364 / 360
 # Bonos M del 21 de septiembre de 2026: plazo -> (precio, YTM)
-BONOS_M = {3: (100.94, 0.0824), 10: (96.40, 0.0916)}
+BONOS_M = {3: (100.94, 0.0824), 5: (98.90, 0.0900), 10: (96.40, 0.0916), 20: (86.34, 0.0964)}
 # CETES del 21 de septiembre de 2026: plazo en dias -> tasa (cetesdirecto)
 CETES = {28: 0.0625, 91: 0.0666, 182: 0.0690, 364: 0.0724}
 # Curva de rendimientos de esa fecha, plazo en anios -> YTM. El CETE a 364
@@ -134,6 +134,59 @@ def rendimiento_real(r_nom, r_inf):
     return (1 + r_nom) / (1 + r_inf) - 1
 
 
+def comprar_y_conservar(monto, precio, c, n, r_reinv, vn=VN):
+    """Invierte `monto` en un bono de n anios con cupon anual c, comprado a
+    `precio`, y lo conserva al vencimiento reinvirtiendo cada cupon a r_reinv
+    hasta el anio n. Devuelve (titulos, flujos de los anios 1..n, valor
+    acumulado en n, rendimiento anual del monto)."""
+    titulos = monto / precio
+    flujos = titulos * flujos_bono(c, n, vn)
+    t = np.arange(1, n + 1)
+    valor_final = float(np.sum(flujos * (1 + r_reinv) ** (n - t)))
+    return titulos, flujos, valor_final, (valor_final / monto) ** (1 / n) - 1
+
+
+def escalera_flujos(monto, tasas_por_plazo, base=360):
+    """Lo que devuelve cada tramo de una escalera de CETES al vencer:
+    {dias: monto por parte (1 + r dias / base)}."""
+    parte = monto / len(tasas_por_plazo)
+    return {d: parte * (1 + r * d / base) for d, r in sorted(tasas_por_plazo.items())}
+
+
+def directo_vs_fondo(monto, r, comisiones, anios):
+    """Valor de `monto` tras cada anio si rinde r directo, o r menos la
+    comision anual en un fondo que replica el mismo indice.
+    Devuelve {comision: [valor en t = 0, 1, ..., anios]} (comision 0 = directo)."""
+    return {k: [monto * (1 + r - k) ** t for t in range(anios + 1)] for k in (0.0, *comisiones)}
+
+
+def bala_y_barra(monto, r_cete, plazo_bala, plazo_largo, cambios_largo, curva=CURVA, vn=VN):
+    """Bala: todo en el Bono M a `plazo_bala`. Barra: CETE a un anio y Bono M
+    a `plazo_largo`, con pesos que dan el mismo plazo promedio que la bala.
+    El rendimiento a un anio se calcula si el tramo largo cambia `d` sobre la
+    curva y el resto de la curva no cambia (el tramo medio queda igual).
+    Devuelve (monto en CETE, monto en el largo, {d: (bala, barra)}, d de equilibrio)."""
+    p_b, r_b = BONOS_M[plazo_bala]
+    p_l, r_l = BONOS_M[plazo_largo]
+    c_b = cupon_anual_implicito(p_b, r_b, plazo_bala)
+    c_l = cupon_anual_implicito(p_l, r_l, plazo_largo)
+    w = (plazo_bala - 1) / (plazo_largo - 1)
+    bala = rendimiento_horizonte(p_b, c_b, plazo_bala, ytm_curva(plazo_bala - 1, curva), vn)
+
+    def barra(d):
+        largo = rendimiento_horizonte(p_l, c_l, plazo_largo, ytm_curva(plazo_largo - 1, curva) + d, vn)
+        return (1 - w) * r_cete + w * largo
+
+    lo, hi = -0.05, 0.05  # la barra gana mas mientras mas baje el tramo largo
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        if barra(mid) > bala:
+            lo = mid
+        else:
+            hi = mid
+    return (1 - w) * monto, w * monto, {d: (bala, barra(d)) for d in cambios_largo}, (lo + hi) / 2
+
+
 def escalera_cetes(monto, tasas_por_plazo):
     """Reparte `monto` en partes iguales entre los plazos de CETES. Devuelve
     (monto por parte, tasa promedio de hoy)."""
@@ -174,32 +227,6 @@ def depreciacion_equilibrio(r_mxn, r_usd):
     return (1 + r_mxn) / (1 + r_usd) - 1
 
 
-def duracion_macaulay(flujos, r):
-    """D = sum t c_t (1+r)^-t / v_0, flujos (c_1, ..., c_N); 4_ seccion 2."""
-    flujos = np.asarray(flujos, dtype=float)
-    t = np.arange(1, len(flujos) + 1)
-    return float(np.sum(t * flujos * (1 + r) ** -t) / precio_flujos(flujos, r))
-
-
-def inmunizar(obligacion, d_a, flujos_b, r):
-    """Pesos que igualan valor presente y duracion del portafolio con los de
-    la obligacion, con un cupon cero de duracion d_a y un bono B con flujos
-    flujos_b, todo a la tasa plana r. Devuelve (v_0 obligacion,
-    D obligacion, monto en A, monto en B)."""
-    v0 = precio_flujos(obligacion, r)
-    d_obl = duracion_macaulay(obligacion, r)
-    d_b = duracion_macaulay(flujos_b, r)
-    w_b = (d_obl - d_a) / (d_b - d_a)
-    return v0, d_obl, (1 - w_b) * v0, w_b * v0
-
-
-def valor_portafolio(monto_a, d_a, r0, monto_b, flujos_b, r1):
-    """Valor a la tasa r1 de un portafolio armado a la tasa r0."""
-    va = monto_a * (1 + r0) ** d_a * (1 + r1) ** -d_a
-    vb = monto_b * precio_flujos(flujos_b, r1) / precio_flujos(flujos_b, r0)
-    return float(va + vb)
-
-
 def ejemplos():
     """Numeros que cita 4_estrategias_renta_fija.md."""
     c3 = cupon_anual_implicito(*BONOS_M[3], 3)
@@ -233,6 +260,20 @@ def ejemplos():
     real_bono_m = {r_inf: rendimiento_real(BONOS_M[10][1], r_inf) for r_inf in (0.03, 0.06)}
 
     escalera = escalera_cetes(100_000.0, CETES)
+    escalera_vence = escalera_flujos(100_000.0, CETES)
+
+    # indexacion: CETE a un anio directo contra un fondo con comision
+    # (ilustrativo: se supone que el indice rinde lo mismo que el CETE)
+    fondo = directo_vs_fondo(100_000.0, r_cete, (0.005, 0.01), 10)
+
+    # bala (Bono M a 10 anios) contra barra (CETE y Bono M a 20 anios)
+    barra_cete, barra_largo, bala_barra, barra_eq = bala_y_barra(
+        1_000_000.0, r_cete, 10, 20, (-0.005, 0.0, 0.005))
+
+    # comprar y conservar el Bono M a 3 anios, con los cupones reinvertidos
+    # al YTM de la compra o a la tasa objetivo de Banxico
+    conservar = {r: comprar_y_conservar(100_000.0, BONOS_M[3][0], c3, 3, r)
+                 for r in (BONOS_M[3][1], TASA_OBJETIVO)}
 
     # recorrer la curva con CETES: comprar a 364 y vender a los 182 dias
     cete_rodado = rendimiento_cete_rodado(CETES[364], 364, CETES[182], 182)
@@ -250,22 +291,16 @@ def ejemplos():
     carry = {m: rendimiento_en_dolares(r_cete, TIPO_CAMBIO, TIPO_CAMBIO * (1 + m))
              for m in (-0.03, 0.0, 0.05)}
 
-    r_plana = 0.09
-    flujos_obl = [100_000.0, 0.0, 100_000.0]
-    flujos_b = flujos_bono(c10, 10, VN)
-    v0, d_obl, m_a, m_b = inmunizar(flujos_obl, 1.0, flujos_b, r_plana)
-    choque = {d: (valor_portafolio(m_a, 1.0, r_plana, m_b, flujos_b, r_plana + d),
-                  precio_flujos(flujos_obl, r_plana + d)) for d in (-0.01, 0.01)}
     return {
         "c3": c3, "c10": c10, "precio_cete": precio_cete, "r_cete": r_cete,
         "titulos": titulos, "costo": costo, "tabla": tabla,
         "escenarios": escenarios, "r_eq": r_eq,
-        "d_b": duracion_macaulay(flujos_b, r_plana),
-        "inm": (v0, d_obl, m_a, m_b), "choque": choque,
         "v_oblig_curva": float(v_oblig_curva), "v_sobrante": float(v_sobrante),
         "rodada": rodada, "bonde_f": bonde_f, "fondeo_eq": fondeo_eq,
         "infl_aprox": infl_aprox, "infl_exacta": infl_exacta, "real_bono_m": real_bono_m,
-        "escalera": escalera, "cete_rodado": cete_rodado,
+        "escalera": escalera, "escalera_vence": escalera_vence, "fondo": fondo,
+        "barra_montos": (barra_cete, barra_largo), "bala_barra": bala_barra, "barra_eq": barra_eq,
+        "conservar": conservar, "cete_rodado": cete_rodado,
         "sobretasa": sobretasa, "credito": credito, "sobretasa_eq": sobretasa_eq,
         "deprec_eq": deprec_eq, "carry": carry,
     }
@@ -292,6 +327,16 @@ if __name__ == "__main__":
     for r_inf, r in e["real_bono_m"].items():
         print(f"  Bono M real con inflacion {r_inf:.0%}: {r:.4%} (UDIBONO {UDIBONOS[10]:.2%})")
     print(f"escalera: {e['escalera'][0]:,.2f} por parte, tasa promedio {e['escalera'][1]:.4%}")
+    for r, (n, fl, vf, rend) in e["conservar"].items():
+        print(f"comprar y conservar Bono M 3a, reinversion {r:.2%}: titulos {n:,.2f} "
+              f"flujos {[round(float(x), 2) for x in fl]} valor final {vf:,.2f} rendimiento {rend:.4%}")
+    print("escalera, recibe al vencer:", {d: round(v, 2) for d, v in e["escalera_vence"].items()})
+    for k, v in e["fondo"].items():
+        print(f"comision {k:.2%}: 1 anio {v[1]:,.2f}, 10 anios {v[10]:,.2f}")
+    print(f"barra: CETE {e['barra_montos'][0]:,.2f} Bono M 20a {e['barra_montos'][1]:,.2f}")
+    for d, (b1, b2) in e["bala_barra"].items():
+        print(f"  tramo largo {d * 1e4:+.0f} pb: bala {b1:.4%} barra {b2:.4%}")
+    print(f"  equilibrio: tramo largo {e['barra_eq'] * 1e4:+.1f} pb, YTM a 19a {ytm_curva(19) + e['barra_eq']:.4%}")
     print(f"CETE 364 vendido a los 182 dias: {e['cete_rodado']:.4%} (CETE 182: {CETES[182]:.2%})")
     print(f"calce: costo - (obligacion + sobrante) = "
           f"{e['costo'] - e['v_oblig_curva'] - e['v_sobrante']:,.2f}")
@@ -304,7 +349,3 @@ if __name__ == "__main__":
           f"tipo de cambio {TIPO_CAMBIO * (1 + e['deprec_eq']):.4f}")
     for m, r in e["carry"].items():
         print(f"  peso {m:+.0%} (s1 {TIPO_CAMBIO * (1 + m):.4f}): {r:.4%} en dolares")
-    v0, d_obl, m_a, m_b = e["inm"]
-    print(f"inmunizacion: v0 {v0:,.2f} D {d_obl:.4f} D_B {e['d_b']:.4f} CETE {m_a:,.2f} BonoM {m_b:,.2f}")
-    for d, (vp, vo) in e["choque"].items():
-        print(f"  {d * 1e4:+.0f} pb: portafolio {vp:,.2f} obligacion {vo:,.2f} diferencia {vp - vo:,.2f}")

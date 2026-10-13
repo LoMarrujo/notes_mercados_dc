@@ -78,7 +78,7 @@ def test_bonde_f_a_la_par_sin_sobretasa_en_fecha_de_reseteo():
     assert limpio == pytest.approx(100)
 
 
-def test_bonde_f_baja_de_la_par_casi_sobretasa_por_duracion():
+def test_bonde_f_baja_de_la_par_casi_sobretasa_por_anualidad():
     # margen de 10 pb sobre 12 cupones restantes: cerca de 100 - s * (anualidad * 28/360)
     _, limpio = precio_bonde_f(0.0403, 0.0010, 0.0403, 13, 0)
     assert 99.85 < limpio < 99.95

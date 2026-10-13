@@ -198,6 +198,9 @@ MATH_LBRACK, MATH_RBRACK = chr(0xE014), chr(0xE015)
 
 
 def _latex_frag_to_text(s):
+    # {,} es el separador de miles de LaTeX (100{,}000); sin esto, el strip de
+    # llaves deja "100(,)000" tras la conversión de fracciones y paréntesis
+    s = s.replace("{,}", ",")
     s = re.sub(r"\\hat\{([^{}]+)\}", lambda m: m.group(1) + "\u0302", s)
     s = re.sub(r"\\hat\s+(\S)", lambda m: m.group(1) + "\u0302", s)
     # \text{...} es texto literal dentro de math mode (p. ej. \text{de} para
@@ -682,9 +685,12 @@ BOLD_LEAD_RE = re.compile(r"^(\*\*[^*]+\*\*)\s*(.*)$")
 
 
 def first_clause(text, min_len=25):
-    """Recorta `text` hasta el primer '.', ':' o ';' (fuera de $...$ y de
-    **...**) que aparezca después de `min_len` caracteres."""
+    """Recorta `text` hasta el primer '.', ':' o ';' (fuera de $...$, de
+    **...** y de paréntesis) que aparezca después de `min_len` caracteres.
+    Cortar dentro de un paréntesis ("(una **obligación**: la colegiatura...")
+    lo dejaría abierto en la diapositiva."""
     in_math = in_bold = False
+    depth = 0
     k = 0
     while k < len(text):
         ch = text[k]
@@ -697,19 +703,43 @@ def first_clause(text, min_len=25):
             in_bold = not in_bold
             k += 2
             continue
-        elif ch in ".:;" and not in_math and not in_bold and k >= min_len and \
+        elif ch == "(" and not in_math:
+            depth += 1
+        elif ch == ")" and not in_math and depth:
+            depth -= 1
+        elif ch in ".:;" and not in_math and not in_bold and not depth and k >= min_len and \
                 (k + 1 == len(text) or text[k + 1] == " "):
             return text[:k].rstrip(" ,") + "."
         k += 1
     return text
 
 
+LEAD_PAREN_RE = re.compile(r"^(\([^()]*\)\.?)\s*(.*)$")
+
+
 def condense_text(text):
     m = BOLD_LEAD_RE.match(text)
     if m:
         lead, rest = m.groups()
+        # el término en inglés entre paréntesis ("**Recorrer la curva**
+        # (*riding the yield curve*). Apuesta a...") es parte del encabezado:
+        # la primera cláusula se busca después de él, no dentro
+        mp = LEAD_PAREN_RE.match(rest)
+        if mp:
+            lead, rest = f"{lead} {mp.group(1)}", mp.group(2)
         return f"{lead} {first_clause(rest)}".strip() if rest else lead
     return first_clause(text)
+
+
+SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿(])")
+
+
+def bold_sentences(text):
+    """Oraciones de `text` que llevan algo en **negritas**. Dentro de un
+    ejemplo resuelto, la cifra en negritas marca la conclusión (el punto de
+    equilibrio, lo que se gana o se pierde), y es lo que el modo conciso
+    conserva de la prosa del ejemplo."""
+    return " ".join(s.strip() for s in SENTENCE_SPLIT_RE.split(text) if "**" in s)
 
 
 def condense_items(items):
@@ -757,6 +787,8 @@ def condense_blocks(blocks):
                         kept.append(ib)
                     elif j == 0 or ib["text"].startswith("**Ejemplo resuelto"):
                         kept.append({"type": "para", "text": condense_text(ib["text"])})
+                    elif bold_sentences(ib["text"]):
+                        kept.append({"type": "para", "text": bold_sentences(ib["text"])})
                 elif keep:
                     kept.append(ib)
                 elif ib["type"] in ("bullets", "numbered"):
@@ -765,6 +797,16 @@ def condense_blocks(blocks):
                     kept.append(ib)
             if kept:
                 out.append({"type": "blockquote", "blocks": kept})
+    # la figura que sigue a un ejemplo resuelto es parte de él: viaja en su
+    # segmento y puede reducirse para caber en la misma diapositiva. La
+    # figura muestra lo mismo que la tabla del ejemplo, así que en la
+    # diapositiva la figura reemplaza a la tabla (la tabla sigue en el .md)
+    for k in range(1, len(out)):
+        if out[k]["type"] == "image" and starts_segment(out[k - 1]) and \
+                out[k - 1]["type"] == "blockquote":
+            out[k] = {**out[k], "attach": True, "shrink": True}
+            out[k - 1] = {**out[k - 1],
+                          "blocks": [ib for ib in out[k - 1]["blocks"] if ib["type"] != "table"]}
     return out
 
 
@@ -774,8 +816,11 @@ def condense_reference(text):
     end_title = text.rfind("*")
     if end_title < 0:
         # fuente sin título (datos, sitios): basta la institución y la serie
-        m = re.search(r"; | para | con las |, (?=[a-záéíóúñ])", text)
-        return text[:m.start()].rstrip(" .") + "." if m else text
+        # el corte no puede caer dentro de un paréntesis: lo dejaría abierto
+        for m in re.finditer(r"; | para | con las |, (?=[a-záéíóúñ])", text):
+            if text.count("(", 0, m.start()) == text.count(")", 0, m.start()):
+                return text[:m.start()].rstrip(" .") + "."
+        return text
     k = text.find(": ", end_title + 1)
     return text[:k] + "." if k > 0 else text
 
@@ -1511,6 +1556,9 @@ def prepare_media(blocks, tmpdir, prefix, md_dir="."):
 # --------------------------------------------------------------------------
 
 CONTENT_START_DEFAULT = 1850000
+# Escala mínima a la que se reduce la figura de un ejemplo (modo --conciso)
+# para que quepa en la misma diapositiva que el ejemplo
+SHRINK_MIN = 0.5
 
 
 class Deck:
@@ -1548,16 +1596,25 @@ def starts_segment(b):
     return False
 
 
+def _is_bare_heading(text):
+    plain = plain_text_of(text).rstrip()
+    return plain.endswith(":") or len(plain) <= 90
+
+
 def segment_height(blocks, idx, width_emu):
     h = estimate_block_height(blocks[idx], width_emu) + GAP
     j = idx + 1
     while j < len(blocks) and not starts_segment(blocks[j]):
-        h += estimate_block_height(blocks[j], width_emu) + GAP
+        bh = estimate_block_height(blocks[j], width_emu)
+        h += (bh * SHRINK_MIN if blocks[j].get("shrink") else bh) + GAP
         j += 1
     # un encabezado en negritas sin cuerpo propio ("Ubicar un bono en la
     # curva." seguido de su ejemplo) viaja con el segmento que le sigue
+    # Un párrafo con contenido propio ("**Cuándo conviene.** El Bono M
+    # conviene si...") no es un encabezado: solo viaja el corto o el que
+    # termina en ":"
     if j == idx + 1 and j < len(blocks) and blocks[idx]["type"] == "para" and \
-            not is_subheading(blocks[j]):
+            not is_subheading(blocks[j]) and _is_bare_heading(blocks[idx]["text"]):
         h += segment_height(blocks, j, width_emu)
     return h
 
@@ -1620,6 +1677,14 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
                 nxt_h = estimate_block_height(blocks[idx + 1], CONTENT_W)
                 if h + nxt_h > avail:
                     break
+            if h > avail and placed_any and b.get("shrink") and avail - GAP >= h * SHRINK_MIN:
+                # la figura de un ejemplo se reduce para quedarse con él
+                s = (avail - GAP) / h
+                hh = draw_image_block(slide, b["img_path"], b["img_w_emu"] * s,
+                                      b["img_h_emu"] * s, MARGIN_L, y, CONTENT_W)
+                y += hh + GAP
+                idx += 1
+                continue
             if h > avail and placed_any:
                 break
             if h > avail and b["type"] == "table":
@@ -1743,8 +1808,11 @@ def add_cierre_slides(deck, title, items):
 
 def build_deck(doc, out_pptx, md_dir="."):
     tmpdir = tempfile.mkdtemp(prefix="mdpptx_")
-    for s in doc["sections"]:
-        prepare_media(s["blocks"], tmpdir, f"sec{s['title'][:10]}", md_dir)
+    # el prefijo es el índice de la sección: con el título truncado, dos
+    # secciones que empiezan igual ("Estrategias pasivas", "Estrategias
+    # activas") escribían sus fórmulas en el mismo archivo
+    for si, s in enumerate(doc["sections"]):
+        prepare_media(s["blocks"], tmpdir, f"sec{si}", md_dir)
 
     deck = Deck()
     add_cover_slide(deck, doc)

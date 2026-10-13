@@ -206,7 +206,7 @@ Es la misma función $v_0(r)$ de la sección 1, vista completa: allá se fijó e
 | 10 años | \$180.00 | \$114.72 | \$100.00 | \$93.58 | \$87.71 | \$77.40 |
 | 30 años | \$340.00 | \$127.53 | \$100.00 | \$89.73 | \$81.15 | \$67.78 |
 
-La tabla resume la figura. La pendiente de cada curva, cuánto se mueve el precio por cada punto de rendimiento, es el riesgo de tasa de interés de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#2-riesgo-de-tasa-de-interés), y [`5_duracion_convexidad.md`](5_duracion_convexidad.md) la convierte en un número (las dos son lectura complementaria, no se evalúan).
+La tabla resume la figura. La pendiente de cada curva, cuánto se mueve el precio por cada punto de rendimiento, es el riesgo de tasa de interés de [`3_riesgos_mercado_deuda.md`](3_riesgos_mercado_deuda.md#2-riesgo-de-tasa-de-interés) (lectura complementaria, no se evalúa).
 
 > **Ejemplo resuelto.** La misma sensibilidad se ve con bonos reales, no solo con el hipotético de cupón 8%. Con el cupón implícito del Bono M a 10 y a 30 años (8.61% y 8.22% anual, pagado cada 182 días; ver el apéndice), subir el YTM de cada uno 50 puntos base sobre el observado el 21 de septiembre de 2026 da:
 >

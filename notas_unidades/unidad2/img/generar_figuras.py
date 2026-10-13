@@ -23,6 +23,10 @@ from datos_fred import cargar  # noqa: E402
 from simulacion import DT, simular_precios  # noqa: E402
 from valuacion import tabla_amortizacion  # noqa: E402
 from estrategias import ejemplos as ejemplos_estrategias  # noqa: E402
+from estrategias import (  # noqa: E402
+    BONOS_M, CORPORATIVO, CURVA, TASA_OBJETIVO, TIPO_CAMBIO, TREASURY_1A, UDIBONOS,
+    rendimiento_bonde_f, rendimiento_en_dolares, rendimiento_horizonte, rendimiento_real, ytm_curva,
+)
 
 NAVY = "#1E2761"
 GOLD = "#C9A227"
@@ -45,6 +49,15 @@ OUT_AMORT_TABLA = os.path.join(IMG_DIR, "amortizacion_interes_capital.png")
 OUT_FIJO_VARIABLE = os.path.join(IMG_DIR, "fijo_vs_variable_simulacion.png")
 OUT_CALIBRACION = os.path.join(IMG_DIR, "calibracion_tasas.png")
 OUT_CALCE = os.path.join(IMG_DIR, "flujo_calce.png")
+OUT_CONSERVAR = os.path.join(IMG_DIR, "flujo_comprar_conservar.png")
+OUT_ESCALERA = os.path.join(IMG_DIR, "flujo_escalera.png")
+OUT_FONDO = os.path.join(IMG_DIR, "directo_vs_fondo.png")
+OUT_BONDE_F = os.path.join(IMG_DIR, "bonde_f_vs_cete.png")
+OUT_RECORRER = os.path.join(IMG_DIR, "recorrer_la_curva.png")
+OUT_BALA_BARRA = os.path.join(IMG_DIR, "bala_vs_barra.png")
+OUT_NOMINAL_REAL = os.path.join(IMG_DIR, "nominal_vs_real.png")
+OUT_DIFERENCIAL = os.path.join(IMG_DIR, "diferencial_credito.png")
+OUT_ACARREO = os.path.join(IMG_DIR, "acarreo.png")
 OUT_ESCENARIOS = os.path.join(IMG_DIR, "estrategia_escenarios.png")
 OUT_TASAS_TIEMPO = os.path.join(IMG_DIR, "tasa_10a_en_el_tiempo.png")
 OUT_VPN_YTM = os.path.join(IMG_DIR, "vpn_ytm_raiz.png")
@@ -54,18 +67,20 @@ def _scale(f):
     return np.sign(f) * np.sqrt(abs(f))
 
 
-def _panel_flujo(ax, periods, flows, titulo, y_max=None):
+def _panel_flujo(ax, periods, flows, titulo, y_max=None, etiquetas=None):
     """Dibuja, sobre un eje ya existente, una linea de tiempo con una
     flecha vertical por flujo: hacia arriba (azul) si es entrada, hacia
     abajo (dorado) si es salida. Reutilizable en figuras de un solo panel
-    o de varios paneles apilados."""
+    o de varios paneles apilados. `etiquetas` reemplaza el numero de periodo
+    bajo cada flecha (por ejemplo, plazos en dias)."""
     ax.axhline(0, color=LGRAY, lw=1.4, zorder=1)
     t_min, t_max = min(periods), max(periods)
     ax.annotate("", xy=(t_max + 0.55, 0), xytext=(t_min - 0.35, 0),
                 arrowprops={"arrowstyle": "-|>", "color": LGRAY, "lw": 1.4})
     ax.text(t_max + 0.6, 0, "tiempo", va="center", fontsize=10, color=GRAY)
 
-    for t, f in zip(periods, flows):
+    etiquetas = etiquetas or [str(t) for t in periods]
+    for t, f, etiqueta in zip(periods, flows, etiquetas):
         y = _scale(f)
         color = NAVY if f > 0 else GOLD
         ax.annotate("", xy=(t, y), xytext=(t, 0),
@@ -74,7 +89,7 @@ def _panel_flujo(ax, periods, flows, titulo, y_max=None):
         va, dy = ("bottom", 10) if f > 0 else ("top", -10)
         ax.annotate(label, xy=(t, y), xytext=(0, dy), textcoords="offset points",
                     ha="center", va=va, fontsize=11, color=BODY, fontweight="bold")
-        ax.annotate(str(t), xy=(t, 0), xytext=(0, 10 if f < 0 else -18),
+        ax.annotate(etiqueta, xy=(t, 0), xytext=(0, 10 if f < 0 else -18),
                     textcoords="offset points", ha="center",
                     va="bottom" if f < 0 else "top", fontsize=10, color=GRAY)
 
@@ -439,6 +454,228 @@ def fig_flujo_calce():
     print(f"figura generada: {OUT_CALCE}")
 
 
+def fig_flujo_comprar_conservar():
+    """Comprar y conservar de 4_estrategias_renta_fija.md, seccion 2:
+    100,000 en el Bono M a 3 anios, con dos cupones y el ultimo cupon mas
+    el valor nominal al vencimiento."""
+    titulos, flujos, _, _ = next(iter(ejemplos_estrategias()["conservar"].values()))
+    fig, ax = plt.subplots(figsize=(7.5, 3.4))
+    _panel_flujo(ax, [0, 1, 2, 3], [-100_000.0] + [float(f) for f in flujos],
+                 f"Comprar y conservar: {titulos:,.2f} títulos del Bono M a 3 años")
+    fig.tight_layout()
+    fig.savefig(OUT_CONSERVAR, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_CONSERVAR}")
+
+
+def fig_flujo_escalera():
+    """Escalera de CETES de 4_estrategias_renta_fija.md, seccion 2: 100,000
+    hoy en cuatro partes iguales, y lo que devuelve cada tramo al vencer."""
+    vence = ejemplos_estrategias()["escalera_vence"]
+    fig, ax = plt.subplots(figsize=(7.5, 3.4))
+    _panel_flujo(ax, [0, 1, 2, 3, 4], [-100_000.0] + list(vence.values()),
+                 "Escalera de CETES: lo que vence en cada plazo",
+                 etiquetas=["hoy"] + [f"{d} días" for d in vence])
+    fig.tight_layout()
+    fig.savefig(OUT_ESCALERA, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_ESCALERA}")
+
+
+def fig_directo_vs_fondo():
+    """Indexacion de 4_estrategias_renta_fija.md, seccion 2: 100,000 en
+    CETES directo contra un fondo que replica el mismo indice y cobra 0.5% o
+    1% al anio, durante 10 anios (ilustrativo)."""
+    fondo = ejemplos_estrategias()["fondo"]
+    fig, ax = plt.subplots(figsize=(7.5, 4.2))
+    estilos = {0.0: (NAVY, "Directo, sin comisión"), 0.005: (GOLD, "Fondo con comisión de 0.5%"),
+               0.01: (GRAY, "Fondo con comisión de 1%")}
+    for k, valores in fondo.items():
+        color, nombre = estilos[k]
+        t = np.arange(len(valores))
+        ax.plot(t, valores, "-o", color=color, lw=2.4, ms=4, label=nombre, zorder=3)
+        ax.annotate(f"\\${valores[-1]:,.0f}", xy=(t[-1], valores[-1]), xytext=(8, 0),
+                    textcoords="offset points", va="center", fontsize=10.5, color=BODY, fontweight="bold")
+    ax.set_xlim(0, 12.3)
+    ax.set_xticks(range(0, 11))
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"\\${v:,.0f}"))
+    ax.set_xlabel("Años", fontsize=11, color=GRAY)
+    ax.set_ylabel("Valor de la inversión", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.legend(frameon=False, fontsize=10.5, loc="upper left")
+    ax.set_title("\\$100,000 en CETES: directo o a través de un fondo (ilustrativo)",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_FONDO, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_FONDO}")
+
+
+def _fig_equilibrio(out, x, y_estr, y_alt, x_eq, nombre_estr, nombre_alt, xlabel, titulo,
+                    fmt_x, marcas=(), nota_eq=None):
+    """Rendimiento de una estrategia (linea azul) contra su alternativa
+    (linea gris punteada) segun una variable de escenario, con el punto de
+    equilibrio en dorado y los escenarios de la tabla de la nota como puntos."""
+    fig, ax = plt.subplots(figsize=(7.5, 4.3))
+    ax.plot(x, np.asarray(y_estr) * 100, color=NAVY, lw=2.6, label=nombre_estr, zorder=3)
+    ax.plot(x, np.asarray(y_alt) * 100, color=GRAY, lw=2.2, ls="--", label=nombre_alt, zorder=2)
+    # las etiquetas van del lado vacio: arriba a la izquierda de una linea que
+    # sube, arriba a la derecha de una que baja
+    sube = y_estr[-1] > y_estr[0]
+    for xm, ym in marcas:
+        ax.plot([xm], [ym * 100], "o", color=NAVY, ms=6, zorder=4)
+        ax.annotate(f"{ym * 100:.2f}%", xy=(xm, ym * 100), xytext=(-8 if sube else 8, 6),
+                    textcoords="offset points", ha="right" if sube else "left",
+                    fontsize=10, color=BODY, fontweight="bold")
+    y_eq = float(np.interp(x_eq, x, np.asarray(y_alt))) * 100
+    ax.axvline(x_eq, color=GOLD, lw=1.2, ls=":", zorder=1)
+    ax.plot([x_eq], [y_eq], "o", color=GOLD, ms=9, zorder=5)
+    ax.annotate(nota_eq or f"equilibrio: {fmt_x(x_eq)}", xy=(x_eq, y_eq),
+                xytext=(10, -22 if sube else 12), textcoords="offset points",
+                fontsize=10.5, color=BODY, fontweight="bold")
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: fmt_x(v)))
+    rango = (max(max(y_estr), max(y_alt)) - min(min(y_estr), min(y_alt))) * 100
+    decimales = 1 if rango < 4 else 0
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.{decimales}f}%"))
+    ax.set_xlabel(xlabel, fontsize=11, color=GRAY)
+    ax.set_ylabel("Rendimiento", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.legend(frameon=False, fontsize=10.5, loc="best")
+    ax.set_title(titulo, fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(out, dpi=200, facecolor="white")
+    print(f"figura generada: {out}")
+
+
+def fig_bonde_f_vs_cete():
+    """Bonde F contra CETE a 364 dias segun la TIIE de Fondeo promedio del
+    anio (4_estrategias_renta_fija.md, seccion 4.1)."""
+    e = ejemplos_estrategias()
+    x = np.linspace(0.060, 0.080, 81)
+    _fig_equilibrio(OUT_BONDE_F, x, [rendimiento_bonde_f(r) for r in x], [e["r_cete"]] * len(x),
+                    e["fondeo_eq"], "Bonde F", "CETE a 364 días (7.32%)",
+                    "TIIE de Fondeo promedio del año", "Bonde F o CETE: depende de la TIIE de Fondeo",
+                    lambda v: f"{v * 100:.2f}%",
+                    marcas=[(TASA_OBJETIVO + d, r) for d, r in e["bonde_f"].items()])
+
+
+def fig_recorrer_la_curva():
+    """Curva de rendimientos del 21 de septiembre de 2026 hasta 10 anios y
+    dos bonos que bajan por ella en un anio si no cambia: el Bono M a 3 anios
+    (8.24% a 7.74%) y el Bono M a 10 anios (9.16% a 9.13%)
+    (4_estrategias_renta_fija.md, seccion 4.2)."""
+    e = ejemplos_estrategias()
+    plazos = np.linspace(1, 10, 200)
+    fig, ax = plt.subplots(figsize=(7.5, 4.3))
+    ax.plot(plazos, [ytm_curva(t) * 100 for t in plazos], color=NAVY, lw=2.6, zorder=2)
+    puntos = [p for p in sorted(CURVA) if p <= 10]
+    ax.plot(puntos, [CURVA[p] * 100 for p in puntos], "o", color=NAVY, ms=6, zorder=3)
+    for n, pos, ha in ((3, (3.3, 7.6), "left"), (10, (9.6, 8.75), "center")):
+        y0, y1 = ytm_curva(n) * 100, ytm_curva(n - 1) * 100
+        ax.annotate("", xy=(n - 1, y1), xytext=(n, y0),
+                    arrowprops={"arrowstyle": "-|>", "color": GOLD, "lw": 2.4, "mutation_scale": 16,
+                                "connectionstyle": "arc3,rad=0.4"}, zorder=4)
+        ax.text(*pos, f"Bono M a {n} años: {y0:.2f}% → {y1:.2f}%\nrinde {e['rodada'][n] * 100:.2f}% en el año",
+                ha=ha, va="top", fontsize=10, color=BODY, fontweight="bold")
+    ax.set_xlim(0.5, 10.8)
+    ax.set_ylim(6.8, 9.6)
+    ax.set_xticks(range(1, 11))
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f} a"))
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.1f}%"))
+    ax.set_xlabel("Plazo", fontsize=11, color=GRAY)
+    ax.set_ylabel("YTM", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.set_title("Recorrer la curva: en un año, cada bono baja un año de plazo",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_RECORRER, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_RECORRER}")
+
+
+def fig_bala_vs_barra():
+    """Bala (Bono M a 10 anios) contra barra (CETE y Bono M a 20 anios, mismo
+    plazo promedio) si el tramo largo baja 50 pb, no cambia o sube 50 pb
+    (4_estrategias_renta_fija.md, seccion 4.2)."""
+    e = ejemplos_estrategias()
+    escenarios = sorted(e["bala_barra"])
+    etiquetas = {-0.005: "La curva se aplana\n(20 años baja 50 pb)", 0.0: "La curva\nno cambia",
+                 0.005: "La curva se empina\n(20 años sube 50 pb)"}
+    bala = [e["bala_barra"][d][0] * 100 for d in escenarios]
+    barra = [e["bala_barra"][d][1] * 100 for d in escenarios]
+    x = np.arange(len(escenarios))
+    w = 0.36
+    fig, ax = plt.subplots(figsize=(8.5, 4.4))
+    for desp, vals, color, nombre in ((-w / 2, bala, NAVY, "Bala: Bono M a 10 años"),
+                                      (w / 2, barra, GOLD, "Barra: CETE y Bono M a 20 años")):
+        barras = ax.bar(x + desp, vals, w, color=color, label=nombre, zorder=3)
+        for b, v in zip(barras, vals):
+            ax.text(b.get_x() + b.get_width() / 2, v + 0.2, f"{v:.2f}%",
+                    ha="center", va="bottom", fontsize=10.5, color=BODY, fontweight="bold")
+    ax.set_xticks(x, [etiquetas[d] for d in escenarios])
+    ax.set_ylim(0, max(bala + barra) * 1.3)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}%"))
+    ax.set_ylabel("Rendimiento en un año", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10.5)
+    ax.legend(frameon=False, fontsize=10.5, loc="upper right")
+    ax.set_title("Bala o barra con el mismo plazo promedio (10 años)",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_BALA_BARRA, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_BALA_BARRA}")
+
+
+def fig_nominal_vs_real():
+    """Rendimiento real del Bono M a 10 anios (9.16%) contra el UDIBONO
+    (4.75% real) segun la inflacion promedio (4_estrategias_renta_fija.md,
+    seccion 4.3)."""
+    e = ejemplos_estrategias()
+    r_nom, r_real = BONOS_M[10][1], UDIBONOS[10]
+    x = np.linspace(0.02, 0.07, 101)
+    _fig_equilibrio(OUT_NOMINAL_REAL, x, [rendimiento_real(r_nom, i) for i in x], [r_real] * len(x),
+                    e["infl_exacta"], "Bono M a 10 años, en términos reales", "UDIBONO a 10 años (4.75% real)",
+                    "Inflación promedio de los 10 años", "Bono M o UDIBONO: depende de la inflación",
+                    lambda v: f"{v * 100:.1f}%",
+                    marcas=[(i, rendimiento_real(r_nom, i)) for i in (0.03, 0.06)],
+                    nota_eq=f"inflación implícita: {e['infl_exacta'] * 100:.2f}%")
+
+
+def fig_diferencial_credito():
+    """Rendimiento a un anio del bono corporativo ilustrativo contra el Bono M
+    a 10 anios (9.16% si su YTM no cambia) segun cuanto se abra o se cierre
+    su sobretasa (4_estrategias_renta_fija.md, seccion 4.4)."""
+    e = ejemplos_estrategias()
+    p, c, _ = CORPORATIVO
+    r_gob = BONOS_M[10][1]
+    x = np.linspace(-0.005, 0.0075, 101)
+
+    def corp(d):
+        return rendimiento_horizonte(p, c, 10, r_gob + e["sobretasa"] + d)
+
+    _fig_equilibrio(OUT_DIFERENCIAL, x, [corp(d) for d in x], [e["escenarios"][0.0]] * len(x),
+                    e["sobretasa_eq"] - e["sobretasa"], "Bono corporativo a 10 años",
+                    "Bono M a 10 años (9.16%)", "Cambio de la sobretasa en el año",
+                    "Corporativo o Bono M: depende de la sobretasa (ilustrativo)",
+                    lambda v: f"{v * 1e4:+.0f} pb",
+                    marcas=[(d, corp(d)) for d in (-0.0025, 0.0, 0.005)])
+
+
+def fig_acarreo():
+    """Rendimiento en dolares de un CETE a 364 dias contra el Treasury a un
+    anio, segun el tipo de cambio al cierre del anio
+    (4_estrategias_renta_fija.md, seccion 4.5)."""
+    e = ejemplos_estrategias()
+    x = np.linspace(16.4, 18.4, 101)
+    s_eq = TIPO_CAMBIO * (1 + e["deprec_eq"])
+    _fig_equilibrio(OUT_ACARREO, x, [rendimiento_en_dolares(e["r_cete"], TIPO_CAMBIO, s) for s in x],
+                    [TREASURY_1A] * len(x), s_eq, "CETE a 364 días, en dólares",
+                    "Treasury a un año (4.45%)", "Pesos por dólar al cierre del año",
+                    "Acarreo: CETE o Treasury según el tipo de cambio",
+                    lambda v: f"{v:.2f}",
+                    marcas=[(TIPO_CAMBIO * (1 + m), r) for m, r in e["carry"].items()],
+                    nota_eq=f"equilibrio: {s_eq:.2f} pesos por dólar")
+
+
 def fig_estrategia_escenarios():
     """Rendimiento a un anio del CETE a 364 dias contra el Bono M a 10
     anios vendido al cierre del anio, si su YTM baja 100 pb, no cambia,
@@ -611,6 +848,15 @@ def main():
     fig_amortizacion_interes_capital()
     fig_fijo_vs_variable()
     fig_calibracion_tasas()
+    fig_flujo_comprar_conservar()
+    fig_flujo_escalera()
+    fig_directo_vs_fondo()
+    fig_bonde_f_vs_cete()
+    fig_recorrer_la_curva()
+    fig_bala_vs_barra()
+    fig_nominal_vs_real()
+    fig_diferencial_credito()
+    fig_acarreo()
     fig_flujo_calce()
     fig_estrategia_escenarios()
     fig_tasa_10a_en_el_tiempo()

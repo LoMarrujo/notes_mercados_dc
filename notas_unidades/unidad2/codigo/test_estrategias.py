@@ -11,11 +11,11 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from estrategias import (  # noqa: E402
-    calce_flujos, cupon_anual_implicito, depreciacion_equilibrio,
-    duracion_macaulay, ejemplos, rendimiento_bonde_f, rendimiento_en_dolares, rendimiento_horizonte, rendimiento_real,
+    CETES, calce_flujos, cupon_anual_implicito, depreciacion_equilibrio, precio_cete,
+    ejemplos, rendimiento_bonde_f, rendimiento_en_dolares, rendimiento_horizonte, rendimiento_real,
     tasa_equilibrio, tasa_fondeo_equilibrio, ytm_curva,
 )
-from valuacion import flujos_bono, precio_bono  # noqa: E402
+from valuacion import precio_bono  # noqa: E402
 
 E = ejemplos()
 
@@ -68,29 +68,6 @@ def test_tasa_de_equilibrio_iguala_al_cete():
     assert rendimiento_horizonte(96.40, E["c10"], 10, E["r_eq"]) == pytest.approx(E["r_cete"])
 
 
-def test_duracion_de_un_cupon_cero_es_su_plazo():
-    assert duracion_macaulay([0, 0, 0, 100], 0.08) == pytest.approx(4)
-
-
-def test_duracion_con_cupones_es_menor_que_el_plazo():
-    assert duracion_macaulay(flujos_bono(8, 10, 100), 0.09) < 10
-
-
-def test_inmunizacion_ejemplo_de_la_nota():
-    v0, d_obl, m_a, m_b = E["inm"]
-    assert round(v0, 2) == 168961.47
-    assert round(d_obl, 2) == 1.91
-    assert round(E["d_b"], 2) == 7.05
-    assert m_a + m_b == pytest.approx(v0)
-    assert (round(m_a, 2), round(m_b, 2)) == (143451.07, 25510.39)
-
-
-def test_inmunizacion_protege_ante_choques_de_100_pb():
-    for vp, vo in E["choque"].values():
-        assert vp >= vo
-        assert (vp - vo) / vo < 0.001
-
-
 def test_tasa_equilibrio_con_bono_a_la_par():
     r_eq = tasa_equilibrio(100.0, 9.0, 5, 0.09)
     assert r_eq == pytest.approx(0.09, abs=1e-8)
@@ -131,6 +108,17 @@ def test_udibono_contra_bono_m():
     assert rendimiento_real(0.0916, E["infl_exacta"]) == pytest.approx(0.0475)
 
 
+def test_comprar_y_conservar_bono_m_3_anios():
+    (n, flujos, vf, rend), (_, _, vf_baja, rend_baja) = E["conservar"].values()
+    assert round(n, 2) == 990.69
+    assert [round(float(f), 2) for f in flujos] == [8526.19, 8526.19, 107594.94]
+    # reinvirtiendo al YTM de la compra se gana exactamente ese YTM
+    assert rend == pytest.approx(0.0824)
+    assert round(vf, 2) == 126812.88
+    assert round(vf_baja, 2) == 126345.94
+    assert round(rend_baja * 100, 2) == 8.11
+
+
 def test_escalera_de_cetes():
     parte, tasa = E["escalera"]
     assert parte == 25000.0
@@ -163,3 +151,37 @@ def test_carry_en_dolares():
     s1 = 17.2252 * (1 + depreciacion_equilibrio(E["r_cete"], 0.0445))
     assert rendimiento_en_dolares(E["r_cete"], 17.2252, s1) == pytest.approx(0.0445)
     assert round(s1, 2) == 17.70
+
+
+def test_escalera_lo_que_vence_cada_tramo():
+    vence = {d: round(v, 2) for d, v in E["escalera_vence"].items()}
+    assert vence == {28: 25121.53, 91: 25420.88, 182: 25872.08, 364: 26830.11}
+
+
+def test_fondo_contra_directo():
+    directo, medio, uno = (E["fondo"][k] for k in (0.0, 0.005, 0.01))
+    assert round(directo[1], 2) == 107320.44
+    assert round(medio[1], 2) == 106820.44
+    assert round(directo[10] - medio[10], 2) == 9247.51
+    assert round(directo[10] - uno[10], 2) == 18113.55
+
+
+def test_bala_y_barra_mismo_plazo_promedio():
+    cete, largo = E["barra_montos"]
+    assert cete + largo == pytest.approx(1_000_000)
+    assert (cete * 1 + largo * 20) / 1_000_000 == pytest.approx(10)
+    assert round(largo, 2) == 473684.21
+
+
+def test_bala_y_barra_escenarios_y_equilibrio():
+    tabla = {d: (round(b1 * 100, 2), round(b2 * 100, 2)) for d, (b1, b2) in E["bala_barra"].items()}
+    assert tabla == {-0.005: (9.35, 10.81), 0.0: (9.35, 8.62), 0.005: (9.35, 6.58)}
+    assert round(E["barra_eq"] * 1e4) == -17
+
+
+def test_escalera_precio_y_titulos_por_tramo():
+    # CETE de $10 de valor nominal: precio y titulos que compran $25,000
+    tabla = {d: (round(precio_cete(r, d, vn=10), 4), round(25_000 / precio_cete(r, d, vn=10), 2))
+             for d, r in CETES.items()}
+    assert tabla == {28: (9.9516, 2512.15), 91: (9.8344, 2542.09),
+                     182: (9.6629, 2587.21), 364: (9.3179, 2683.01)}
