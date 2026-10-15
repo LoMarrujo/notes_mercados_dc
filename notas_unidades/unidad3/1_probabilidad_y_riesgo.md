@@ -109,7 +109,7 @@ Cuando $\Omega$ es discreto, siempre podemos tomar todos sus subconjuntos como �
 
 ### 1.4 Medida de Probabilidad
 
-Con $\Omega$ y $\mathcal{F}$ ya sabemos qué preguntas podemos hacer sobre el experimento; falta una regla que le asigne a cada pregunta un número. Para que esa regla sea coherente, Kolmogorov (1933) le pide cumplir tres axiomas.
+Con $\Omega$ y $\mathcal{F}$ ya sabemos qué preguntas podemos hacer; falta una regla $P$ que le asigne a cada pregunta un número. Para que esa regla sea coherente, Kolmogorov (1933) le pide cumplir tres axiomas.
 
 **Definición (espacio de probabilidad).** La terna $(\Omega, \mathcal{F}, P)$ es un **espacio de probabilidad** si
 
@@ -148,6 +148,118 @@ La regla de Laplace de 1.1, que le da $1/3$ a cada resultado, también cumple lo
 > 3. **Probabilidad subjetiva.** $P(A)$ es el grado de creencia de una persona en que ocurra $A$. Sirve para experimentos que no se repiten, que en finanzas son la regla: los pesos $0.3$, $0.2$ y $0.5$ del ejemplo son la opinión de la analista, y el precio de una acción resume las creencias de muchos inversionistas.
 >
 > Los tres enfoques son formas de asignar $P$, y en un espacio muestral finito los tres producen asignaciones que cumplen los axiomas. Por eso los axiomas son el punto de partida común: valen sin importar de dónde salgan los números.
+
+### 1.5 Variable Aleatoria, Distribución y Densidad
+
+Sea $(\Omega, \mathcal{F}, P)$ un espacio de probabilidad. Las variables aleatorias nos permiten enlazar números con espacios muestrales y eventos. Una definición algo informal es que una variable aleatoria es una función
+
+$$X: \Omega \to \mathbb{R}$$
+
+que asigna un número real $X(\omega) \in \mathbb{R}$ a cada resultado $\omega \in \Omega$.
+
+En un nivel intuitivo, una variable aleatoria $X$ es una cantidad cuyo valor queda determinado por el resultado $\omega$ del experimento, dentro del universo $\Omega$ de todos los resultados posibles.
+
+**Ejemplo (incumplimiento de un bono).** Con $\Omega = \{\text{paga}, \text{incumple}\}$, definimos $D(\text{paga}) := 0$ y $D(\text{incumple}) := 1$. Una variable que solo toma los valores 0 y 1 se llama variable de Bernoulli: vale 1 justo cuando ocurre el evento que nos interesa, aquí que la emisora no pague.
+
+**Ejemplo (precio de una acción).** Hoy compramos una acción que no paga dividendo a $s_0 = 100$ pesos. Su precio dentro de un año, $S_1$, hoy no lo conocemos: puede ser cualquier número no negativo. Con $\Omega = [0, \infty)$, los precios posibles, la variable $S_1(\omega) := \omega$ es una variable aleatoria continua y no negativa. No puede ser negativa por la responsabilidad limitada del accionista: en el peor caso la acción vale cero y se pierde lo invertido, nunca más.
+
+El rendimiento del año es una función de $S_1$:
+
+$$R = \frac{S_1 - s_0}{s_0}.$$
+
+Una función de una variable aleatoria también es variable aleatoria, así que $R$ lo es, y toma valores en $[-100\%, \infty)$, el intervalo de 1.1. Lo mismo el valor final de invertir 10,000 pesos en la acción, $V = 10{,}000(1 + R)$. $S_1$, $R$ y $V$ van en mayúscula porque son inciertas; $s_0$ ya se conoce, por eso va en minúscula.
+
+**Ejemplo (tipo de cambio).** Con $\Omega = (0, \infty)$, los posibles valores del tipo de cambio FIX de mañana, la variable $X(\omega) := \omega$ simplemente lee el resultado. Cuando el resultado ya es un número, la variable aleatoria es el propio resultado.
+
+#### Distribución
+
+La **distribución** de $X$ dice qué valores toma $X$ y con qué probabilidad. Una vez que la conocemos, ya no necesitamos $\Omega$: todas las preguntas sobre $X$ se contestan con ella.
+
+> **¿De dónde sale la fórmula?** Para cada número $x$, el conjunto
+>
+> $$\{X \leq x\} = \{\omega \in \Omega : X(\omega) \leq x\}$$
+>
+> reúne los resultados que hacen que $X$ no pase de $x$. Pedimos que sea un evento de $\mathcal{F}$, para poder aplicarle $P$ (sección 1.4); esa es la condición que hace de $X$ una variable aleatoria.
+
+**Definición (función de distribución).** La función de distribución de $X$ es
+
+$$F_X(x) = P(X \leq x), \qquad x \in \mathbb{R}.$$
+
+De los axiomas se deduce que:
+
+1. $0 \leq F_X(x) \leq 1$.
+2. $F_X$ nunca decrece: si $a < b$, entonces $\{X \leq a\} \subseteq \{X \leq b\}$, y por la monotonía de 1.4, $F_X(a) \leq F_X(b)$.
+3. $F_X(x)$ se acerca a 0 cuando $x \to -\infty$ y a 1 cuando $x \to \infty$.
+4. Como $\{X \leq b\}$ se parte en $\{X \leq a\}$ y $\{a < X \leq b\}$, la aditividad da
+
+   $$P(a < X \leq b) = F_X(b) - F_X(a), \qquad a < b.$$
+
+Por la propiedad 4, $F_X$ basta para calcular la probabilidad de cualquier intervalo: conocer $F_X$ es conocer la distribución.
+
+**Definición (densidad).** Para cualquier conjunto $B$ de valores (un intervalo o una unión de intervalos), la probabilidad de que $X$ caiga en $B$ es
+
+$$P(X \in B) = \int_B dF_X(x),$$
+
+donde $dF_X(x)$, la **densidad** de $X$, es la probabilidad que hay en $x$ o muy cerca de $x$. La densidad es no negativa y su total es 1, $\int_{\mathbb{R}} dF_X(x) = 1$. Hay tres casos:
+
+- **$X$ discreta**, si solo toma una cantidad contable de valores $x_1, x_2, \dots$. La probabilidad está concentrada en los saltos de $F_X$: $dF_X(x_i) = P(X = x_i)$, y la integral es una suma, $P(X \in B) = \sum_{x_i \in B} dF_X(x_i)$.
+- **$X$ continua**, si $P(X = x) = 0$ para cada valor exacto $x$, como vimos en 1.1. La probabilidad está repartida a lo largo de la recta: $dF_X(x) = F_X'(x)\, dx$, y $P(X \in B)$ es el área bajo la curva $F_X'$ sobre $B$.
+- **$X$ mixta**, si combina los dos casos: $F_X$ tiene saltos en algunos valores y entre ellos sube de forma continua. En los saltos, $dF_X(x_i) = P(X = x_i)$; en el resto, $dF_X(x) = F_X'(x)\, dx$. Así, $P(X \in B)$ es la suma de los saltos que caen en $B$ más el área sobre $B$.
+
+**Ejemplo (incumplimiento de un bono).** Supongamos que la emisora del bono incumple con probabilidad $0.05$. La variable $D$ de arriba es discreta, con dos valores posibles:
+
+| Resultado | $x$ | $dF(x) = P(D = x)$ |
+| --------- | --- | ------------------ |
+| Paga      | $0$ | $0.95$             |
+| Incumple  | $1$ | $0.05$             |
+
+Sumando estas probabilidades, la función de distribución de $D$ es una escalera que sube en cada valor posible:
+
+$$F(x) = \begin{cases} 0, & x < 0 \\ 0.95, & 0 \leq x < 1 \\ 1, & x \geq 1 \end{cases}$$
+
+Así, $F(0) = 0.95$ es la probabilidad de que la emisora pague.
+
+![Dos paneles para el incumplimiento de un bono con probabilidad 0.05: a la izquierda, la densidad con una barra de 0.95 en x = 0 (paga) y otra de 0.05 en x = 1 (incumple); a la derecha, la función de distribución, una escalera que vale 0 antes de 0, salta a 0.95 en x = 0 y a 1 en x = 1](img/incumplimiento_masa_distribucion.png)
+
+**Ejemplo (precio de la acción).** Si ignoramos la posibilidad de quiebra, un modelo común para $S_1$ es la distribución **lognormal**. El rendimiento continuo del año, $X = \ln(S_1 / s_0)$, se supone repartido en forma de campana (una normal, sección VIII) alrededor de una media $\mu$ y con desviación estándar $\sigma$; el precio es entonces $S_1 = s_0 e^{X}$, que nunca es negativo porque $e^{X} > 0$. Su densidad es
+
+$$dF_{S_1}(x) = \frac{1}{x \sigma \sqrt{2\pi}} \exp\left( -\frac{(\ln(x / s_0) - \mu)^2}{2\sigma^2} \right) dx, \qquad x > 0,$$
+
+y $dF_{S_1}(x) = 0$ para $x \leq 0$: no hay probabilidad por debajo de cero. Con $s_0 = 100$, $\mu = 5\%$ y $\sigma = 25\%$ (valores ilustrativos):
+
+- $F_{S_1}(100) = 0.421$ es la probabilidad de perder: que en un año la acción no valga más de lo que pagamos.
+- $P(90 < S_1 \leq 110) = \int_{90}^{110} dF_{S_1}(x) = F_{S_1}(110) - F_{S_1}(90) = 0.572 - 0.267 = 0.305$: el área en dorado bajo la densidad, o la subida de $F_{S_1}$ entre 90 y 110.
+
+![Dos paneles para el precio de la acción en un año con distribución lognormal, s0 = 100, mu = 5% y sigma = 25%: a la izquierda, la densidad, una curva asimétrica con su máximo cerca de 100 y cola larga a la derecha, con el área entre 90 y 110 sombreada en dorado (0.305); a la derecha, la función de distribución, una curva en S que pasa por F(90) = 0.267 y F(110) = 0.572](img/accion_lognormal_densidad_distribucion.png)
+
+**Ejemplo (pérdida con incumplimiento).** Volvamos al bono, ahora con valor nominal de 100 pesos, y midamos la pérdida $L$ del inversionista. Con probabilidad $0.95$ la emisora paga y no hay pérdida: $L = 0$. Con probabilidad $0.05$ incumple, y como algo se recupera, la pérdida queda en algún punto entre 20 y 100 pesos, cualquiera con la misma posibilidad (ilustrativo). $L$ es mixta: tiene un salto en 0 y una parte continua entre 20 y 100.
+
+$$dF_L(x) = \begin{cases} 0.95, & x = 0 \quad \text{(salto: paga)} \\ \dfrac{0.05}{80}\, dx, & 20 < x \leq 100 \quad \text{(continua: incumple)} \\ 0, & \text{en otro caso} \end{cases}$$
+
+La parte continua reparte la probabilidad de incumplir, $0.05$, de manera pareja sobre los 80 pesos que van de 20 a 100. Sumando el salto y el área, el total es $0.95 + 0.05 = 1$. Por ejemplo, la probabilidad de perder más de la mitad del bono es
+
+$$P(L > 50) = \int_{(50, 100]} dF_L(x) = \frac{0.05}{80} \times 50 = 0.03125,$$
+
+y la de perder algo es $P(L > 0) = 1 - F_L(0) = 1 - 0.95 = 0.05$.
+
+![Dos paneles para la pérdida de un bono de 100 pesos que incumple con probabilidad 0.05: a la izquierda, la densidad, con una flecha en 0 que representa el salto P(L = 0) = 0.95 y un rectángulo dorado de área 0.05 entre 20 y 100; a la derecha, la función de distribución, que salta de 0 a 0.95 en x = 0, se queda plana hasta 20 y sube en línea recta hasta 1 en 100](img/perdida_incumplimiento_mixta.png)
+
+### 1.6 Vector Aleatorio e Independencia
+
+
+
+
+### 1.7 Esperanza, Varianza, Cuantiles
+
+
+
+
+### 1.8 Convergencia Estocastica
+
+
+
+
+
 
 ## Fuentes y referencias recomendadas
 
