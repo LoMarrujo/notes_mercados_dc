@@ -21,7 +21,7 @@ Que el estudiante calcule el valor de una acción con el modelo de descuento de 
 
 > La práctica de este tema está en [`practica_3_valuacion_acciones.md`](../../practicas/unidad3/practica_3_valuacion_acciones.md).
 
-> **Por redactar.** Esta nota solo tiene el objetivo y la estructura; falta la teoría. La sección II se deriva del descuento de flujos de [`1_valuacion_instrumentos_deuda.md`](../unidad2/1_valuacion_instrumentos_deuda.md), y la tasa requerida viene de la prima de riesgo de [`1_rendimiento_y_riesgo_acciones.md`](1_rendimiento_y_riesgo_acciones.md). El rendimiento implícito de la sección V es la versión accionaria del rendimiento al vencimiento de [`2_rendimiento_y_curva_de_rendimientos.md`](../unidad2/2_rendimiento_y_curva_de_rendimientos.md). La ética pasa a [`3_lecciones_modernas.md`](3_lecciones_modernas.md).
+> **Por redactar.** Esta nota solo tiene el objetivo y la estructura; falta la teoría. La sección II se deriva del descuento de flujos de [`1_valuacion_instrumentos_deuda.md`](../unidad2/1_valuacion_instrumentos_deuda.md), y la tasa requerida viene de la prima de riesgo de [`2_rendimiento_y_riesgo_acciones.md`](2_rendimiento_y_riesgo_acciones.md). El rendimiento implícito de la sección V es la versión accionaria del rendimiento al vencimiento de [`2_rendimiento_y_curva_de_rendimientos.md`](../unidad2/2_rendimiento_y_curva_de_rendimientos.md). La ética pasa a [`4_lecciones_modernas.md`](4_lecciones_modernas.md).
 
 ## Fuentes y referencias recomendadas
 
