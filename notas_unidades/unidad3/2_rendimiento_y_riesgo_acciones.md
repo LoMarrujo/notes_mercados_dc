@@ -21,7 +21,7 @@ Que el estudiante calcule el rendimiento anualizado (con dividendos) y la volati
 
 > La práctica de este tema está en [`practica_2_rendimiento_riesgo_acciones.md`](../../practicas/unidad3/practica_2_rendimiento_riesgo_acciones.md).
 
-> **Por redactar.** Esta nota solo tiene el objetivo y la estructura; falta la teoría. La sección III reusa la TEA de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md). La diversificación entra como idea; la cartera de dos activos con su fórmula va en un Apéndice no evaluado. El enigma de la prima de riesgo (Mehra y Prescott) y los factores de Fama y French van solo como mención. Las cifras de Bessembinder están por verificar.
+> **Por redactar.** Esta nota solo tiene el objetivo y la estructura; falta la teoría. La sección III reusa la TEA de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md). La diversificación entra como idea; la cartera de dos activos con su fórmula va en un Apéndice no evaluado. El enigma de la prima de riesgo (Mehra y Prescott) y los factores de Fama y French van solo como mención. Las cifras de Bessembinder están por verificar. La convergencia estocástica (ley de los grandes números y teorema central del límite) se ve aquí y no en [`1_probabilidad_y_riesgo.md`](1_probabilidad_y_riesgo.md), como fundamento de estimar con datos: el error del promedio es $\sigma/\sqrt{n}$, y con él se puede mostrar qué tan precisa es la estimación de $E[R]$ con los 98 años del S&P 500 de la 1_.
 
 ## Fuentes y referencias recomendadas
 
