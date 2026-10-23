@@ -1,4 +1,5 @@
-"""Genera las figuras de 1_probabilidad_y_riesgo.md. Se versiona junto a las
+"""Genera las figuras de la Unidad 3 (0_mercado_e_instrumentos_participacion.md y
+1_probabilidad_y_riesgo.md). Se versiona junto a las
 imagenes que produce para que sean reproducibles: si el contenido cambia, se
 corrige este script y se vuelve a correr, nunca se edita el .png a mano.
 
@@ -46,12 +47,15 @@ MU_NORMAL, SIGMA_NORMAL = 0.08, (0.15, 0.25)  # ilustrativos
 DATOS_SP500_PRECIO = os.path.join(IMG_DIR, "..", "datos", "sp500_precio_mensual.csv")
 DATOS_SP500 = os.path.join(IMG_DIR, "..", "datos", "sp500_rendimientos_anuales.csv")
 MU_VECTOR, SIGMA_VECTOR, RHO_VECTOR = (0.05, 0.08), (0.25, 0.30), 0.6  # ilustrativos
+OUT_PRELACION = os.path.join(IMG_DIR, "prelacion_pagos_liquidacion.png")
+BONO_LIQ, PREF_LIQ = 50, 15  # millones, los del ejemplo de la seccion 1 de 0_
+ESCENARIOS_LIQ = (40, 60, 120)
 
 
 def fig_incumplimiento_masa_distribucion():
     """Densidad y funcion de distribucion de la variable de
     incumplimiento D (0 si la emisora paga, 1 si incumple), del ejemplo de
-    la seccion 1.5, "Distribucion". En la de distribucion, el punto relleno
+    la seccion 3.2, "Distribucion y densidad". En la de distribucion, el punto relleno
     marca el valor que F si toma en cada salto y el hueco el que no."""
     q = PROB_INCUMPLIR
     valores = [0, 1]
@@ -109,7 +113,7 @@ def fig_incumplimiento_masa_distribucion():
 
 def fig_accion_lognormal():
     """Densidad y funcion de distribucion del precio en un anio de una accion
-    lognormal (seccion 1.5, ejemplo "precio de la accion"): s0 = 100 y el
+    lognormal (seccion 3.2, ejemplo "precio de la accion"): s0 = 100 y el
     rendimiento continuo ln(S1/s0) normal con media 5% y desviacion 25%,
     ilustrativos. Sombrea P(90 < S1 <= 110) = F(110) - F(90) en los dos
     paneles: como area en la densidad y como subida en la distribucion."""
@@ -166,7 +170,7 @@ def fig_accion_lognormal():
 
 def fig_perdida_mixta():
     """Densidad y funcion de distribucion de la perdida L de un bono con valor
-    nominal 100 (seccion 1.5, ejemplo "perdida con incumplimiento"). Con
+    nominal 100 (seccion 3.2, ejemplo "perdida con incumplimiento"). Con
     probabilidad 0.95 la emisora paga y L = 0 (un salto); con 0.05 incumple
     y la perdida es uniforme entre 20 y 100 (parte continua). El salto se
     dibuja como flecha, fuera de escala, porque su tamano (0.95) no cabe en
@@ -233,11 +237,11 @@ def fig_perdida_mixta():
 
 def fig_vector_rendimientos(con_esperanza=False):
     """Densidad conjunta de los rendimientos en un anio de dos acciones,
-    (R_A, R_B), con sus marginales en los margenes (seccion 1.6). Modelo
+    (R_A, R_B), con sus marginales en los margenes (seccion 3.3). Modelo
     ilustrativo: normal bivariada con medias 5% y 8%, desviaciones 25% y
     30% y correlacion 0.6. La region B sombreada es el cuadrante en que las
     dos acciones pierden; su probabilidad es el volumen de la densidad
-    conjunta sobre B. Con con_esperanza=True (seccion 1.8) marca ademas
+    conjunta sobre B. Con con_esperanza=True (seccion 4.1) marca ademas
     E[R_A] y E[R_B] y el punto donde se cruzan."""
     mu = np.array(MU_VECTOR)
     sa, sb = SIGMA_VECTOR
@@ -305,7 +309,7 @@ def fig_vector_rendimientos(con_esperanza=False):
 
 
 def fig_sp500_serie():
-    """Serie de tiempo del S&P 500, 1928-2025 (seccion 1.8): arriba, el nivel
+    """Serie de tiempo del S&P 500, 1928-2025 (seccion 4.3): arriba, el nivel
     mensual del indice en escala logaritmica (Shiller hasta 2023-09, promedio
     mensual; Yahoo despues, cierre mensual; ver ../datos/); abajo, los
     rendimientos anuales con dividendos de Damodaran, con su promedio."""
@@ -352,7 +356,7 @@ def fig_sp500_serie():
 def fig_sp500_rendimientos():
     """Histograma de los 98 rendimientos anuales del S&P 500 con dividendos,
     1928-2025 (datos de Damodaran, NYU Stern, en ../datos/), con el promedio
-    aritmetico y el rendimiento geometrico marcados (seccion 1.8, ejemplo
+    aritmetico y el rendimiento geometrico marcados (seccion 4.3, ejemplo
     "rendimiento anual esperado del S&P 500")."""
     r = pd.read_csv(DATOS_SP500)["rendimiento"].to_numpy()
     aritmetico = r.mean()
@@ -385,7 +389,7 @@ def fig_sp500_rendimientos():
 
 def fig_normal_dos_rendimientos():
     """Dos rendimientos normales con la misma esperanza y distinta varianza
-    (seccion 1.9): una accion A N(8%, 15%^2) y una accion B N(8%, 25%^2),
+    (seccion 5.1): una accion C N(8%, 15%^2) y una accion D N(8%, 25%^2),
     ilustrativas. Sombrea en cada densidad el area bajo cero, la
     probabilidad de perder en el anio."""
     mu = MU_NORMAL
@@ -401,18 +405,18 @@ def fig_normal_dos_rendimientos():
     ax.axvline(mu, color=GRAY, lw=1.2, ls="--", zorder=1)
     ax.axvline(0, color=LGRAY, lw=1, zorder=1)
     tope = norm.pdf(mu, mu, sa)
-    ax.text(mu + 0.012, tope * 1.08, f"$E[R_A] = E[R_B] = {mu * 100:.0f}\\%$", fontsize=10.5,
+    ax.text(mu + 0.012, tope * 1.08, f"$E[R_C] = E[R_D] = {mu * 100:.0f}\\%$", fontsize=10.5,
             color=BODY, va="top")
     ax.text(0.27, norm.pdf(0.27, mu, sa) + tope * 0.08,
-            f"Acción A\n$\\sigma_A = {sa * 100:.0f}\\%$", fontsize=10.5, color=NAVY,
+            f"Acción C\n$\\sigma_C = {sa * 100:.0f}\\%$", fontsize=10.5, color=NAVY,
             fontweight="bold")
     ax.text(0.5, norm.pdf(0.5, mu, sb) + tope * 0.06,
-            f"Acción B\n$\\sigma_B = {sb * 100:.0f}\\%$", fontsize=10.5, color=GOLD,
+            f"Acción D\n$\\sigma_D = {sb * 100:.0f}\\%$", fontsize=10.5, color=GOLD,
             fontweight="bold")
-    ax.annotate(f"$P(R_B < 0) = {pb:.3f}$", xy=(-0.32, norm.pdf(-0.32, mu, sb) * 0.5),
+    ax.annotate(f"$P(R_D < 0) = {pb:.3f}$", xy=(-0.32, norm.pdf(-0.32, mu, sb) * 0.5),
                 xytext=(-0.69, tope * 0.33), fontsize=10.5, color=BODY,
                 arrowprops={"arrowstyle": "-", "color": LGRAY, "lw": 1})
-    ax.annotate(f"$P(R_A < 0) = {pa:.3f}$", xy=(-0.1, norm.pdf(-0.1, mu, sa) * 0.5),
+    ax.annotate(f"$P(R_C < 0) = {pa:.3f}$", xy=(-0.1, norm.pdf(-0.1, mu, sa) * 0.5),
                 xytext=(-0.55, tope * 0.68), fontsize=10.5, color=BODY,
                 arrowprops={"arrowstyle": "-", "color": LGRAY, "lw": 1})
     ax.set_xlim(-0.7, 0.85)
@@ -426,7 +430,7 @@ def fig_normal_dos_rendimientos():
     sns.despine(ax=ax)
     fig.tight_layout()
     fig.savefig(OUT_NORMAL, dpi=200, facecolor="white")
-    print(f"figura generada: {OUT_NORMAL}  P(A<0) = {pa:.4f}, P(B<0) = {pb:.4f}")
+    print(f"figura generada: {OUT_NORMAL}  P(C<0) = {pa:.4f}, P(D<0) = {pb:.4f}")
 
 
 def _sp500_cola(p=0.05):
@@ -444,7 +448,7 @@ def _sp500_cola(p=0.05):
 
 
 def fig_normal_cuantil_var():
-    """Cuantil 5% del rendimiento anual del S&P 500 (seccion 1.10), con los
+    """Cuantil 5% del rendimiento anual del S&P 500 (seccion 6.1), con los
     datos de 1928-2025 y con una normal del mismo promedio y desviacion.
     Izquierda: histograma de los datos y densidad normal, con la cola de 5%
     del modelo sombreada. Derecha: parte baja de la funcion de distribucion
@@ -502,7 +506,7 @@ def fig_normal_cuantil_var():
 
 
 def fig_normal_cvar():
-    """VaR y CVaR al 5% del modelo normal del S&P 500 (seccion 1.11): la
+    """VaR y CVaR al 5% del modelo normal del S&P 500 (seccion 6.2): la
     densidad normal sobre el histograma de los rendimientos de 1928-2025 (de
     fondo, sin anotar), la cola de 5% sombreada, una linea en el cuantil (VaR)
     y otra en el promedio de la cola (CVaR, su centro de masa)."""
@@ -539,7 +543,54 @@ def fig_normal_cvar():
     print(f"figura generada: {OUT_CVAR}  VaR = {q:.4f}, CVaR = {cvar:.4f}")
 
 
+def fig_prelacion_pagos():
+    """Lo que recibe cada instrumento en una liquidacion segun el valor de
+    liquidacion V, del ejemplo de prelacion de la seccion 1 de
+    0_mercado_e_instrumentos_participacion.md: el bono cobra min(V, 50), la
+    preferente min(max(V - 50, 0), 15) y la comun max(V - 65, 0)."""
+    d = BONO_LIQ + PREF_LIQ
+    v = np.linspace(0, 130, 521)
+    bono = np.minimum(v, BONO_LIQ)
+    pref = np.minimum(np.maximum(v - BONO_LIQ, 0), PREF_LIQ)
+    comun = np.maximum(v - d, 0)
+
+    fig, ax = plt.subplots(figsize=(10, 4.6))
+    ax.plot(v, bono, color=NAVY, lw=2.4, label=f"Bono: min(V, {BONO_LIQ})")
+    ax.plot(v, pref, color=GRAY, lw=2.4, ls="--",
+            label=f"Acción preferente: hasta {PREF_LIQ}")
+    ax.plot(v, comun, color=GOLD, lw=2.8, label=f"Acción común: max(V − {d}, 0)")
+
+    for x in ESCENARIOS_LIQ:
+        ax.axvline(x, color=LGRAY, lw=0.8, ls=":", zorder=0)
+        ax.text(x, 77, f"V = {x}", ha="center", va="bottom", fontsize=9.5, color=GRAY)
+        for y, c in ((min(x, BONO_LIQ), NAVY),
+                     (min(max(x - BONO_LIQ, 0), PREF_LIQ), GRAY),
+                     (max(x - d, 0), GOLD)):
+            ax.plot(x, y, "o", color=c, ms=6, zorder=4)
+
+    ax.annotate("Techo: el bono nunca cobra más de lo pactado", xy=(100, BONO_LIQ),
+                xytext=(72, 62), fontsize=10, color=NAVY,
+                arrowprops=dict(arrowstyle="->", color=NAVY, lw=1))
+    ax.annotate("Piso: la acción común\nnunca recibe menos de 0", xy=(45, 0),
+                xytext=(66, 28), fontsize=10, color=BODY,
+                arrowprops=dict(arrowstyle="->", color=GOLD, lw=1.2))
+
+    ax.set_xlim(0, 130)
+    ax.set_ylim(-3, 82)
+    ax.set_xlabel("Valor de liquidación V (millones de pesos)", fontsize=11, color=GRAY)
+    ax.set_ylabel("Lo que recibe (millones de pesos)", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.legend(frameon=False, fontsize=10, loc="upper left", bbox_to_anchor=(0, 0.9))
+    ax.set_title("Quién cobra qué en una liquidación, según el valor de los activos",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_PRELACION, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_PRELACION}")
+
+
 def main():
+    fig_prelacion_pagos()
     fig_incumplimiento_masa_distribucion()
     fig_accion_lognormal()
     fig_perdida_mixta()

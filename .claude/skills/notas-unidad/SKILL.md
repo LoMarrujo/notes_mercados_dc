@@ -28,7 +28,11 @@ Reglas de diseño de la sesión que sostienen a los objetivos (aplican al redact
 - **Puente narrativo:** cada concepto nuevo responde una pregunta que dejó abierta el anterior, no aparece de la nada.
 - **Teoría y práctica cercanas en el tiempo:** no amontonar todo el bloque teórico al inicio y la práctica hasta el final.
 - **Participación de bajo riesgo:** voluntaria + puntos extra, en vez de examinar en frío.
-- **Cierre = síntesis, no relleno:** 3–4 puntos que cubran todo el arco de la sesión (inicio y final), en el lenguaje del estudiante — sirve también como autochequeo de si sobraron ideas.
+- **Cierre = síntesis, no relleno:** 3–4 puntos que cubran todo el arco de la sesión (inicio y final), en el lenguaje del estudiante — sirve también como autochequeo de si sobraron ideas. En el deck conciso cada punto se recorta a su primera cláusula (hasta el primer `.`, `:` o `;`), así que la idea completa va antes de esa pausa.
+- **El objetivo se resuelve en la nota:** al menos un ejemplo hace exactamente el cálculo que pide el objetivo (si dice "a partir de escenarios", con escenarios), con su resultado en **negritas**.
+- **Un hilo conductor:** el mismo activo y los mismos números reaparecen de sección en sección (p. ej., los tres escenarios de una acción en `unidad3/1_probabilidad_y_riesgo.md` pasan por espacio muestral, variable aleatoria, esperanza y varianza), en vez de un ejemplo nuevo en cada sección. Los nombres de un ejemplo (acción A, acción B) no se reutilizan para otros datos dentro de la misma nota.
+- **Cifra clave en negritas en cada ejemplo**, también en los ejemplos escritos como párrafo `**Ejemplo (...).**`: es la oración que el modo conciso del generador conserva de la prosa del ejemplo.
+- **Presupuesto de diapositivas:** como máximo unas 5 diapositivas por sección `### N.` en el deck conciso. Si una sección se pasa, lo que no sirve al objetivo (definiciones generales, ejemplos secundarios, hilos alternos completos) va al `## Apéndice`, no se aprieta en la diapositiva. Se mide regenerando el deck, no a ojo.
 
 ## Estructura de archivos: teoría y práctica separadas
 

@@ -64,10 +64,27 @@ reemplaza a la tabla del ejemplo: la diapositiva muestra la figura y no la
 tabla, que se queda solo en el `.md`. Las tablas sin figura (fuera de un
 ejemplo, o de un ejemplo sin figura) se conservan.
 
+Las mismas reglas aplican a un ejemplo escrito como párrafo,
+`**Ejemplo (...).** ...`, en vez de blockquote: el segmento que abre (hasta
+el siguiente párrafo con encabezado en negritas o subtítulo) conserva la
+oración en negritas de su prosa, y la figura con que termina se pega al
+ejemplo, se reduce y reemplaza a su tabla. Así una nota escrita con
+ejemplos en párrafo no necesita marcas `conservar` para mostrar sus
+resultados ni deja figuras solas en una diapositiva.
+
 Si una diapositiva conciso queda demasiado escueta, se marca en el `.md` el
 bloque que debe salir completo con `<!-- diapositivas: conservar -->` en la
 línea anterior (un párrafo, una lista o un blockquote entero). El comentario
 no se ve en la nota renderizada y no afecta el modo normal.
+
+Para que una figura se vea grande, `<!-- diapositivas: figura sola -->` en
+la línea anterior a la imagen la pone sola en su diapositiva, escalada al
+alto y ancho disponibles, en ambos modos. En modo conciso no se pega a su
+ejemplo ni le quita la tabla. Es una excepción deliberada al presupuesto
+de diapositivas: cada figura marcada cuesta una diapositiva propia. Si el
+texto que precede a la figura queda suelto en una diapositiva, conviene
+reordenar el `.md` para que la figura vaya después de sus fórmulas (como
+en 4.3 de `unidad3/1_probabilidad_y_riesgo.md`).
 
 Para regenerar una unidad completa, corre el script sobre cada archivo de
 teoría de esa unidad (no sobre `practica_unidadN.md`, que no lleva
@@ -129,25 +146,33 @@ encabezado sin cuerpo propio (un párrafo en negritas corto o que termina en
 conviene.** El Bono M conviene si...") se queda donde cabe. Solo un
 segmento más alto que una diapositiva entera se parte bloque por bloque.
 
-**Límite conocido del math inline (`$...$`) y su excepción.** El math en
-línea no es LaTeX real: convierte sub/superíndices a caracteres Unicode
-(`SUB_MAP`/`SUPER_MAP` en `md_to_pptx.py`). Unicode no tiene ningún carácter
-de subíndice para letras mayúsculas (solo dígitos y un puñado de minúsculas
-como t, n), así que `$v_N$` en texto corrido siempre pierde el subíndice
-("vN"), sin importar la notación elegida. **Excepción:** en un bullet que
-empieza con un símbolo así, `- **$v_N$**: definición...`, el generador
-detecta el subíndice mayúscula y rasteriza *solo ese símbolo* como una
-imagen (vía `render_formula_png`), preservando el subíndice real; el resto
-del texto del bullet sigue siendo texto normal. Esto no aplica dentro de
-prosa corrida (Definición, Justificación): ahí PowerPoint no soporta
-imágenes ancladas dentro de un párrafo que hace wrap, así que el símbolo se
-queda como "vN" sin subíndice — limitación aceptada, no un bug a repetir
-arreglando cada vez que aparezca.
+**Math en línea (`$...$`).** No es LaTeX real: `_latex_frag_to_text` lo
+convierte a texto. Los sub/superíndices se dibujan como runs con baseline
+real (`_split_subscript`), así que `$F_X$` o `$v_N$` conservan su subíndice
+también en prosa corrida. Entiende griegas, fracciones simples, `\sqrt`,
+relaciones y la notación de conjuntos y probabilidad (`\mathcal{F}` → ℱ,
+`\mathbb{R}` → ℝ, `\cup`, `\cap`, `\emptyset`, `\subseteq`, `\in`, `\mid`,
+`\sim`, `\cdots`, `\int`, `\sum`, `\mathbf{}`/`\operatorname{}` sin
+estilo). Un comando que no esté en la tabla sale sin la diagonal
+("mathfrak{X}"): se agrega a `_latex_frag_to_text`, nunca se parchea el
+`.pptx`. En un bullet que empieza con `- **$v_N$**: ...`, ese símbolo
+todavía se rasteriza como imagen (`bullet_leading_symbol`).
+
+**Fórmulas en bloque (`$$...$$`).** Se dibujan con el mathtext de
+matplotlib, que no tiene entornos. Por eso `\begin{cases}` y
+`\begin{pmatrix}` se maquetan aparte (`_render_env_formula`: cada celda en
+una rejilla, con la llave o los paréntesis escalados), y `\big(`/`\Big(` se
+traducen a `\left(`/`\right)` (`_mathtext_compat`). Otros entornos
+(`aligned`, `array`, `bmatrix`) no están soportados: o se agrega su caso
+ahí, o la fórmula se reescribe.
 
 ## Estructura del deck generado
 
 Portada → Objetivo de la unidad → Tabla de contenido (con números de página
-reales, calculados después de generar el contenido) → una o más
+reales, calculados después de generar el contenido; con más de 6 temas el
+"qué cubre" va a la derecha de cada tema, en letra chica, para que quepan
+todos; con 6 o menos va debajo, y si alguno es largo el renglón crece para
+que su segunda línea no se encime) → una o más
 diapositivas por cada sección `### N. ...` (y por el `## Apéndice`, si
 existe) → Cierre de la unidad (una diapositiva por cada ~4-5 puntos de
 cierre) → Fuentes y referencias recomendadas.

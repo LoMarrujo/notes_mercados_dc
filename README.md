@@ -56,7 +56,7 @@ Analizar los mercados de deuda y capitales para valuar sus instrumentos y decidi
 
 **Objetivo:** al terminar esta unidad, el alumno podrá:
 
-- Clasificar un instrumento de participación (acción común, acción preferente, FIBRA, CKD, CERPI) según los derechos que da a su tenedor y el activo que financia.
+- Clasificar un instrumento de participación (acción común, acción preferente, FIBRA, CKD, CERPI, ETF) según los derechos que da a su tenedor y el activo que financia.
 - Calcular el rendimiento esperado y la desviación estándar de una acción a partir de escenarios con probabilidad.
 - Calcular el rendimiento anualizado (con dividendos) y la volatilidad de una acción o del S&P/BMV IPC a partir de sus precios históricos, para compararlo con el de un CETE.
 - Calcular el valor de una acción con el modelo de descuento de dividendos a partir de su información financiera, para decidir si su precio de mercado está caro o barato.

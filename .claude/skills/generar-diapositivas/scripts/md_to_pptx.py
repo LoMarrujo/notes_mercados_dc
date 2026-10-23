@@ -17,6 +17,7 @@ import os
 import math
 import subprocess
 import tempfile
+import unicodedata
 
 from pptx import Presentation
 from pptx.util import Emu, Pt
@@ -42,6 +43,10 @@ EMU_PER_IN = 914400
 SKIP_SLIDE_MARKER = "<!-- diapositivas: omitir -->"
 # Marcador que pide conservar completo el bloque siguiente en modo --conciso.
 KEEP_MARKER = "<!-- diapositivas: conservar -->"
+# Marcador que pide que la figura siguiente vaya sola en su diapositiva, a
+# tamaño completo, en vez de compartirla con texto (o reducirse para caber
+# con su ejemplo en modo --conciso).
+ALONE_MARKER = "<!-- diapositivas: figura sola -->"
 
 SLIDE_W = 12192000
 SLIDE_H = 6858000
@@ -197,6 +202,26 @@ SUP_OPEN, SUP_CLOSE = chr(0xE012), chr(0xE013)
 MATH_LBRACK, MATH_RBRACK = chr(0xE014), chr(0xE015)
 
 
+def _script_letter(c):
+    # algunas letras caligráficas viven en el bloque "Letterlike Symbols"
+    # (ℱ, ℒ, ...) y no en el de símbolos matemáticos
+    for name in (f"SCRIPT CAPITAL {c}", f"MATHEMATICAL SCRIPT CAPITAL {c}"):
+        try:
+            return unicodedata.lookup(name)
+        except KeyError:
+            pass
+    return c
+
+
+def _double_struck_letter(c):
+    for name in (f"DOUBLE-STRUCK CAPITAL {c}", f"MATHEMATICAL DOUBLE-STRUCK CAPITAL {c}"):
+        try:
+            return unicodedata.lookup(name)
+        except KeyError:
+            pass
+    return c
+
+
 def _latex_frag_to_text(s):
     # {,} es el separador de miles de LaTeX (100{,}000); sin esto, el strip de
     # llaves deja "100(,)000" tras la conversión de fracciones y paréntesis
@@ -225,6 +250,23 @@ def _latex_frag_to_text(s):
         if s2 == s:
             break
         s = s2
+    # notación de conjuntos y probabilidad (Unidad 3). Van antes de \cdot,
+    # \in y la tabla griega porque comparten prefijo con ellos (\cdots,
+    # \infty/\int, \varphi)
+    s = re.sub(r"\\mathcal\{([A-Z])\}", lambda m: _script_letter(m.group(1)), s)
+    s = re.sub(r"\\mathbb\{([A-Z])\}", lambda m: _double_struck_letter(m.group(1)), s)
+    s = re.sub(r"\\(?:mathbf|boldsymbol|operatorname|mathrm)\{([^{}]+)\}", r"\1", s)
+    for latex, glyph in (
+        (r"\cdots", "⋯"), (r"\vdots", "⋮"), (r"\ddots", "⋱"),
+        (r"\bigcup", "⋃"), (r"\bigcap", "⋂"), (r"\cup", "∪"), (r"\cap", "∩"),
+        (r"\emptyset", "∅"), (r"\subseteq", "⊆"), (r"\subset", "⊂"),
+        (r"\notin", "∉"), (r"\infty", "∞"), (r"\int", "∫"), (r"\in", "∈"),
+        (r"\sum", "∑"), (r"\prod", "∏"), (r"\mid", "|"), (r"\sim", "~"),
+        (r"\pm", "±"), (r"\Longrightarrow", "⟹"), (r"\Rightarrow", "⇒"),
+        (r"\varphi", "φ"), (r"\{", "{"), (r"\}", "}"),
+    ):
+        s = s.replace(latex, glyph)
+    s = re.sub(r"\\(lim|exp|min|max|log)\b", r"\1 ", s)
     s = s.replace(r"\times", "×").replace(r"\neq", "≠").replace(r"\cdot", "·")
     s = s.replace(r"\to", "→").replace(r"\rightarrow", "→").replace(r"\longrightarrow", "→")
     s = s.replace(r"\infty", "∞")
@@ -296,7 +338,9 @@ def bullet_leading_symbol(text):
 
 
 LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
-IMAGE_RE = re.compile(r"^!\[([^\]]*)\]\(([^)]+)\)$")
+# el alt puede traer corchetes de una fórmula ("E[R_A] = 5%"); con [^\]]* la
+# línea no hacía match y la figura se perdía como si fuera un párrafo
+IMAGE_RE = re.compile(r"^!\[(.*)\]\(([^()\s]+)\)$")
 
 
 def strip_links(text):
@@ -466,6 +510,10 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
             blocks.append({"type": "keep_marker"})
             i += 1
             continue
+        if stripped == ALONE_MARKER:
+            blocks.append({"type": "alone_marker"})
+            i += 1
+            continue
         if stripped.startswith("```mermaid"):
             i += 1
             code_lines = []
@@ -587,14 +635,20 @@ def parse_blocks_until_heading(lines, i, stop_levels=("#", "##", "###")):
 
 def _apply_keep_markers(blocks):
     out = []
-    keep_next = False
+    keep_next = alone_next = False
     for b in blocks:
         if b["type"] == "keep_marker":
             keep_next = True
             continue
+        if b["type"] == "alone_marker":
+            alone_next = True
+            continue
         if keep_next:
             b["keep"] = True
             keep_next = False
+        if alone_next:
+            b["alone"] = b["type"] == "image"
+            alone_next = False
         out.append(b)
     return out
 
@@ -750,11 +804,21 @@ def condense_items(items):
     return out
 
 
+def _is_para_example(b):
+    """Un ejemplo escrito como párrafo ("**Ejemplo (...).** ...") en vez de
+    blockquote ("> **Ejemplo resuelto.**"): recibe el mismo trato en el
+    modo conciso (oración en negritas, figura pegada)."""
+    return b["type"] == "para" and b["text"].startswith("**Ejemplo")
+
+
 def condense_blocks(blocks):
     out = []
+    in_example = False  # ¿el segmento actual empezó con un **Ejemplo (...)**?
     for b in blocks:
         t = b["type"]
         keep = b.get("keep")
+        if t == "para" and (b["text"].startswith("####") or BOLD_LEAD_RE.match(b["text"])):
+            in_example = _is_para_example(b)
         if keep and t != "blockquote":
             out.append(b)
         elif t in ("displaymath", "image", "table", "mermaid", "citation"):
@@ -767,6 +831,9 @@ def condense_blocks(blocks):
                 out.append(b)  # flow_blocks la vuelve título de su propia diapositiva
             elif BOLD_LEAD_RE.match(txt):
                 out.append({"type": "para", "text": condense_text(txt)})
+            elif in_example and bold_sentences(txt):
+                # la conclusión de un ejemplo en párrafo, como en un ejemplo resuelto
+                out.append({"type": "para", "text": bold_sentences(txt)})
         elif t == "blockquote":
             inner = b["blocks"]
             if not keep and not (inner and inner[0]["type"] == "para" and
@@ -802,12 +869,25 @@ def condense_blocks(blocks):
     # figura muestra lo mismo que la tabla del ejemplo, así que en la
     # diapositiva la figura reemplaza a la tabla (la tabla sigue en el .md)
     for k in range(1, len(out)):
-        if out[k]["type"] == "image" and starts_segment(out[k - 1]) and \
-                out[k - 1]["type"] == "blockquote":
+        if out[k]["type"] == "image" and not out[k].get("alone") and \
+                starts_segment(out[k - 1]) and out[k - 1]["type"] == "blockquote":
             out[k] = {**out[k], "attach": True, "shrink": True}
             out[k - 1] = {**out[k - 1],
                           "blocks": [ib for ib in out[k - 1]["blocks"] if ib["type"] != "table"]}
-    return out
+    # lo mismo para un ejemplo en párrafo: sus bloques no van dentro de un
+    # blockquote sino sueltos hasta el siguiente segmento, así que se busca
+    # hacia atrás el bloque que abrió el segmento de la figura
+    drop = set()
+    for k in range(1, len(out)):
+        if out[k]["type"] != "image" or out[k].get("attach") or out[k].get("alone"):
+            continue
+        s = k - 1
+        while s > 0 and not starts_segment(out[s]):
+            s -= 1
+        if _is_para_example(out[s]):
+            out[k] = {**out[k], "attach": True, "shrink": True}
+            drop.update(j for j in range(s + 1, k) if out[j]["type"] == "table")
+    return [b for j, b in enumerate(out) if j not in drop]
 
 
 def condense_reference(text):
@@ -864,9 +944,118 @@ def condense_doc(doc):
 # Renderizado de fórmulas (matplotlib mathtext) y diagramas mermaid
 # --------------------------------------------------------------------------
 
+ENV_RE = re.compile(r"\\begin\{(cases|pmatrix)\}(.*?)\\end\{\1\}", re.S)
+
+
+def _mathtext_compat(tex):
+    """Traduce a mathtext lo que este no entiende y no necesita maquetación:
+    delimitadores con tamaño fijo (\\big, \\Big, ...), \\displaystyle y el
+    espaciado opcional de salto de renglón (\\\\[2ex])."""
+    tex = tex.replace(r"\dfrac", r"\frac").replace(r"\displaystyle", "")
+    tex = re.sub(r"\\[Bb]igg?l?(?=[(\[])", r"\\left", tex)
+    tex = re.sub(r"\\[Bb]igg?r?(?=[)\]])", r"\\right", tex)
+    tex = re.sub(r"\\\\\[[^\]]*\]", r"\\\\", tex)
+    return tex
+
+
+def _render_env_formula(tex, out_path, fontsize, color, pad_in, dpi):
+    """mathtext no tiene entornos (cases, pmatrix). Se parte la fórmula en
+    trozos de mathtext y entornos; cada celda de un entorno se dibuja como
+    mathtext suelto en una rejilla, con su llave o paréntesis escalado a la
+    altura de la rejilla. Todo se coloca sobre una línea base común."""
+    meas_fig = plt.figure(figsize=(1, 1), dpi=dpi)
+    renderer = meas_fig.canvas.get_renderer()
+
+    def measure(s, size=fontsize):
+        t = meas_fig.text(0, 0.5, s, fontsize=size, va="baseline")
+        bb = t.get_window_extent(renderer)
+        base = meas_fig.transFigure.transform((0, 0.5))[1]
+        t.remove()
+        return bb.width, bb.y1 - base, base - bb.y0  # ancho, ascenso, descenso
+
+    px_pt = dpi / 72.0
+    em = fontsize * px_pt
+    axis = 0.25 * em  # altura del eje matemático sobre la línea base
+    items = []  # (dx, dy, texto, size): dy relativo a la línea base
+    x = 0.0
+    top, bottom = 0.0, 0.0
+    pos = 0
+    pieces = []
+    for m in ENV_RE.finditer(tex):
+        pieces.append(("math", tex[pos:m.start()]))
+        pieces.append((m.group(1), m.group(2)))
+        pos = m.end()
+    pieces.append(("math", tex[pos:]))
+
+    for kind, body in pieces:
+        if kind == "math":
+            if not body.strip():
+                continue
+            s = f"${body}$"
+            w, a, d = measure(s)
+            items.append((x, 0.0, s, fontsize))
+            x += w
+            top, bottom = max(top, a), max(bottom, d)
+            continue
+        rows = [[c.strip() for c in r.split("&")] for r in re.split(r"\\\\", body) if r.strip()]
+        ncol = max(len(r) for r in rows)
+        cells = [[(f"${c}$" if c else None) for c in r] + [None] * (ncol - len(r)) for r in rows]
+        dims = [[measure(c) if c else (0, 0, 0) for c in r] for r in cells]
+        col_w = [max(dims[i][j][0] for i in range(len(rows))) for j in range(ncol)]
+        row_a = [max(d[1] for d in r) for r in dims]
+        row_d = [max(d[2] for d in r) for r in dims]
+        row_gap = 0.35 * em
+        col_gap = 1.0 * em
+        height = sum(row_a) + sum(row_d) + row_gap * (len(rows) - 1)
+        y_top = axis + height / 2  # la rejilla queda centrada en el eje
+        open_d, close_d = ("{", None) if kind == "cases" else ("(", ")")
+        dsize = height / px_pt / 1.05
+
+        def delim(s, x0):
+            w, a, d = measure(s, dsize)
+            # centra el glifo verticalmente en el eje
+            dy = axis - (a - d) / 2
+            items.append((x0, dy, s, dsize))
+            return w
+        x += 0.15 * em
+        x += delim(open_d, x) + 0.2 * em
+        y = y_top
+        for i, r in enumerate(cells):
+            y -= row_a[i]
+            cx = x
+            for j, c in enumerate(r):
+                if c:
+                    off = 0 if kind == "cases" else (col_w[j] - dims[i][j][0]) / 2
+                    items.append((cx + off, y, c, fontsize))
+                cx += col_w[j] + col_gap
+            y -= row_d[i] + row_gap
+        x += sum(col_w) + col_gap * (ncol - 1)
+        if close_d:
+            x += 0.2 * em
+            x += delim(close_d, x)
+        x += 0.15 * em
+        top = max(top, y_top)
+        bottom = max(bottom, height - y_top)
+    plt.close(meas_fig)
+
+    w_in = x / dpi + pad_in[0]
+    h_in = (top + bottom) / dpi + pad_in[1]
+    fig = plt.figure(figsize=(w_in, h_in), dpi=dpi)
+    x0 = pad_in[0] / 2 * dpi
+    base = pad_in[1] / 2 * dpi + bottom
+    for dx, dy, s, size in items:
+        fig.text((x0 + dx) / (w_in * dpi), (base + dy) / (h_in * dpi), s,
+                 fontsize=size, va="baseline", ha="left", color=color)
+    fig.savefig(out_path, dpi=dpi, transparent=True)
+    plt.close(fig)
+    return w_in, h_in
+
+
 def render_formula_png(tex, out_path, fontsize=24, color="#1E2761",
                         pad_in=(0.15, 0.12), dpi=220):
-    tex = tex.replace(r"\dfrac", r"\frac")
+    tex = _mathtext_compat(tex)
+    if ENV_RE.search(tex):
+        return _render_env_formula(tex, out_path, fontsize, color, pad_in, dpi)
     fig = plt.figure(figsize=(0.1, 0.1))
     txt = fig.text(0, 0, f"${tex}$", fontsize=fontsize)
     fig.canvas.draw()
@@ -1613,8 +1802,10 @@ def segment_height(blocks, idx, width_emu):
     # Un párrafo con contenido propio ("**Cuándo conviene.** El Bono M
     # conviene si...") no es un encabezado: solo viaja el corto o el que
     # termina en ":"
+    # (salvo hacia una figura sola, que de todos modos va en otra diapositiva)
     if j == idx + 1 and j < len(blocks) and blocks[idx]["type"] == "para" and \
-            not is_subheading(blocks[j]) and _is_bare_heading(blocks[idx]["text"]):
+            not is_subheading(blocks[j]) and not blocks[j].get("alone") and \
+            _is_bare_heading(blocks[idx]["text"]):
         h += segment_height(blocks, j, width_emu)
     return h
 
@@ -1661,6 +1852,16 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
             bottom_limit = BODY_BOTTOM_MAX + (260000 if b["type"] == "citation" else 0)
             avail = bottom_limit - y
             if placed_any and is_subheading(b):
+                break
+            if b.get("alone"):
+                # figura sola: abre su propia diapositiva, la llena y la cierra
+                if placed_any:
+                    break
+                s = min(CONTENT_W / b["img_w_emu"], (BODY_BOTTOM_MAX - y) / b["img_h_emu"])
+                draw_image_block(slide, b["img_path"], b["img_w_emu"] * s,
+                                 b["img_h_emu"] * s, MARGIN_L, y, CONTENT_W)
+                idx += 1
+                placed_any = True
                 break
             if placed_any and starts_segment(b):
                 seg_h = segment_height(blocks, idx, CONTENT_W)
@@ -1886,20 +2087,37 @@ def _fill_toc_slide(slide, entries):
     add_eyebrow_title(slide, "", "Tabla de contenido", page_num=3)
     y = 1900000
     row_h = int((BODY_BOTTOM_MAX - y) / max(len(entries), 1))
-    row_h = min(row_h, 620000)
+    # Un "qué cubre" largo ocupa dos líneas bajo el tema; con 620000 la
+    # segunda línea se encima con el tema siguiente, así que se da más alto
+    # al renglón cuando hay espacio
+    long_desc = any(len(plain_text_of(e[2])) > 140 for e in entries)
+    row_h = min(row_h, 720000 if long_desc else 620000)
+    # Con muchos temas (más de ~6) no cabe el "qué cubre" debajo del tema:
+    # se pone a su derecha, en letra más chica y hasta dos líneas.
+    compact = row_h < 620000
+    tema_size = 13 if compact else 15
+    tema_w = 3300000 if compact else 8600000
+    page_w = 900000 if compact else 1200000
+    page_x = SLIDE_W - MARGIN_R - page_w
     for roman, tema, quecubre, pref in entries:
         rbox = add_textbox(slide, MARGIN_L, y, 700000, 400000)
         rp = rbox.text_frame.paragraphs[0]
-        set_paragraph_plain(rp, roman + ".", 15, GOLD, bold=True, font=FONT_TITLE)
-        tbox = add_textbox(slide, MARGIN_L + 750000, y, 8600000, 400000)
+        set_paragraph_plain(rp, roman + ".", tema_size, GOLD, bold=True, font=FONT_TITLE)
+        tbox = add_textbox(slide, MARGIN_L + 750000, y, tema_w, 400000)
         tp = tbox.text_frame.paragraphs[0]
-        set_paragraph_plain(tp, tema, 15, NAVY, bold=True, font=FONT_TITLE)
+        set_paragraph_plain(tp, plain_text_of(tema), tema_size, NAVY, bold=True, font=FONT_TITLE)
         if quecubre:
-            qbox = add_textbox(slide, MARGIN_L + 750000, y + 330000, 8600000, 300000)
+            if compact:
+                qx = MARGIN_L + 750000 + tema_w + 150000
+                qbox = add_textbox(slide, qx, y + 15000, page_x - qx - 150000, row_h)
+                q_size = 9
+            else:
+                qbox = add_textbox(slide, MARGIN_L + 750000, y + 330000, 8600000,
+                                   row_h - 360000)
+                q_size = 10.5
             qp = qbox.text_frame.paragraphs[0]
-            set_paragraph_plain(qp, quecubre, 10.5, GRAY)
-        pbox = add_textbox(slide, SLIDE_W - MARGIN_R - 1200000, y, 1200000, 400000,
-                            align=PP_ALIGN.RIGHT)
+            set_paragraph_plain(qp, plain_text_of(quecubre), q_size, GRAY)
+        pbox = add_textbox(slide, page_x, y, page_w, 400000, align=PP_ALIGN.RIGHT)
         pp = pbox.text_frame.paragraphs[0]
         set_paragraph_plain(pp, f"PÁG. {pref:02d}", 11, GRAY, align=PP_ALIGN.RIGHT)
         y += row_h
