@@ -19,9 +19,9 @@ Que el estudiante calcule el valor de una acción con el modelo de descuento de 
 | VII  | Escuelas de valuación            | Fundamental (Graham y Dodd), técnica y pasiva (mercados eficientes, Fama), y por qué alguien sigue analizando (Grossman y Stiglitz) |
 | VIII | Tecnología y precios             | Estrategias cuantitativas y operación de alta frecuencia: cómo cambia la tecnología la formación de precios                         |
 
-> La práctica de este tema está en [`practica_3_valuacion_acciones.md`](../../practicas/unidad3/practica_3_valuacion_acciones.md).
+> La práctica de este tema está en [`practica_4_valuacion_acciones.md`](../../practicas/unidad3/practica_4_valuacion_acciones.md).
 
-> **Por redactar.** Esta nota solo tiene el objetivo y la estructura; falta la teoría. La sección II se deriva del descuento de flujos de [`1_valuacion_instrumentos_deuda.md`](../unidad2/1_valuacion_instrumentos_deuda.md), y la tasa requerida viene de la prima de riesgo de [`2_rendimiento_y_riesgo_acciones.md`](2_rendimiento_y_riesgo_acciones.md). El rendimiento implícito de la sección V es la versión accionaria del rendimiento al vencimiento de [`2_rendimiento_y_curva_de_rendimientos.md`](../unidad2/2_rendimiento_y_curva_de_rendimientos.md). La ética pasa a [`4_lecciones_modernas.md`](4_lecciones_modernas.md).
+> **Por redactar.** Esta nota solo tiene el objetivo y la estructura; falta la teoría. La sección II se deriva del descuento de flujos de [`1_valuacion_instrumentos_deuda.md`](../unidad2/1_valuacion_instrumentos_deuda.md), y la tasa requerida viene de la prima de riesgo de [`3_rendimiento_y_riesgo_acciones.md`](3_rendimiento_y_riesgo_acciones.md). El rendimiento implícito de la sección V es la versión accionaria del rendimiento al vencimiento de [`2_rendimiento_y_curva_de_rendimientos.md`](../unidad2/2_rendimiento_y_curva_de_rendimientos.md). La ética pasa a [`5_lecciones_modernas.md`](5_lecciones_modernas.md).
 
 ## Fuentes y referencias recomendadas
 

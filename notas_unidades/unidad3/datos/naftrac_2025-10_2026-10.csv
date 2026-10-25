@@ -1,0 +1,15 @@
+fecha,concepto,monto_mxn,fuente
+2025-10-22,precio_cierre,61.19,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2025-10-30,distribucion_ex_derecho,0.207684,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2025-11-26,distribucion_ex_derecho,0.172586,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2025-12-30,distribucion_ex_derecho,0.56096644127,bmv.com.mx/docs-pub/derechos/derechos_1518991_1.pdf
+2026-01-29,distribucion_ex_derecho,0.112133,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2026-02-26,distribucion_ex_derecho,0,bmv.com.mx/docs-pub/derechos/derechos_1535201_1.pdf
+2026-03-30,distribucion_ex_derecho,0.032002,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2026-04-29,distribucion_ex_derecho,0.107631,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2026-05-28,distribucion_ex_derecho,0.328299,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2026-06-29,distribucion_ex_derecho,0.49605304689,bmv.com.mx/docs-pub/derechos/derechos_1570720_1.pdf
+2026-07-30,distribucion_ex_derecho,0.182303,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)
+2026-08-28,distribucion_ex_derecho,0.01387504835,bmv.com.mx/docs-pub/derechos/derechos_1585003_1.pdf
+2026-09-29,distribucion_ex_derecho,0.06204294969,bmv.com.mx/docs-pub/derechos/derechos_1591812_1.pdf
+2026-10-22,precio_cierre,69.62,query1.finance.yahoo.com/v8/finance/chart/NAFTRAC.MX (consultado 2026-10-24)

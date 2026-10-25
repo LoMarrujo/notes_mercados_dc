@@ -1,0 +1,7 @@
+fecha,concepto,monto_mxn,fuente
+2025-10-22,precio_cierre,177.31,query1.finance.yahoo.com/v8/finance/chart/FEMSAUBD.MX (consultado 2026-10-23)
+2026-01-16,dividendo_unidad_bd,3.67275,bmv.com.mx/docs-pub/derechos/derechos_1455445_1.pdf
+2026-04-23,dividendo_unidad_bd,3.202925,bmv.com.mx/docs-pub/derechos/derechos_1571804_1.pdf
+2026-07-16,dividendo_unidad_bd,3.202925,bmv.com.mx/docs-pub/derechos/derechos_1571804_1.pdf
+2026-10-15,dividendo_unidad_bd,3.202925,bmv.com.mx/docs-pub/derechos/derechos_1571804_1.pdf
+2026-10-22,precio_cierre,241.2,query1.finance.yahoo.com/v8/finance/chart/FEMSAUBD.MX (consultado 2026-10-23)
