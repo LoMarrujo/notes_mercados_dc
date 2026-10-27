@@ -383,6 +383,8 @@ def parse_inline(text):
     """Devuelve lista de runs (text,bold,italic,code,sub)."""
     text = convert_inline_math(text)
     text = strip_links(text).replace(MATH_LBRACK, "[").replace(MATH_RBRACK, "]")
+    # un escape de markdown ("WALMEX\*") no abre cursiva ni negritas
+    text = text.replace("\\*", "").replace("\\_", "")
     tokens = []
     pos = 0
     for m in INLINE_TOKEN_RE.finditer(text):
@@ -398,6 +400,7 @@ def parse_inline(text):
         pos = m.end()
     if pos < len(text):
         tokens.extend(_split_subscript(text[pos:], False, False, False))
+    tokens = [(t[0].replace("", "*").replace("", "_"),) + t[1:] for t in tokens]
     return [t for t in tokens if t[0] != ""]
 
 
@@ -814,11 +817,43 @@ def _is_para_example(b):
 def condense_blocks(blocks):
     out = []
     in_example = False  # ¿el segmento actual empezó con un **Ejemplo (...)**?
-    for b in blocks:
+    # un subtítulo cuya prosa se recorta entera quedaría sin cuerpo (y el
+    # siguiente `####` se dibujaría como su subtítulo): se le guardan las
+    # oraciones en negritas de sus párrafos, o la primera cláusula del
+    # primer párrafo si ninguno lleva negritas
+    sub_fill = {}  # id(subtítulo) -> (texto, ¿viene de negritas?)
+    cur_sub = None
+    # una fórmula en bloque se lee con su oración: la que la introduce (el
+    # final del párrafo anterior, si no cierra con punto: "El rendimiento
+    # ... es") y la que la continúa (un párrafo que empieza en minúscula:
+    # "la suma del **rendimiento por dividendo** ..."). Sin ellas, la
+    # diapositiva muestra símbolos sin decir qué son
+    formula_words = {}  # índice del párrafo -> oración que se conserva
+    for k, b in enumerate(blocks):
+        if b["type"] != "displaymath":
+            continue
+        p = blocks[k - 1] if k > 0 else None
+        if p and p["type"] == "para" and not p["text"].startswith("####") and \
+                not p["text"].rstrip().endswith((".", ":")):
+            formula_words[k - 1] = SENTENCE_SPLIT_RE.split(p["text"])[-1]
+        n = blocks[k + 1] if k + 1 < len(blocks) else None
+        if n and n["type"] == "para" and n["text"][:1].islower():
+            formula_words[k + 1] = SENTENCE_SPLIT_RE.split(n["text"])[0]
+    for k, b in enumerate(blocks):
         t = b["type"]
         keep = b.get("keep")
         if t == "para" and (b["text"].startswith("####") or BOLD_LEAD_RE.match(b["text"])):
             in_example = _is_para_example(b)
+        if t == "para" and b["text"].startswith("####"):
+            cur_sub = b
+        elif t == "para" and cur_sub is not None and not keep and not in_example and \
+                not BOLD_LEAD_RE.match(b["text"]) and not IMAGE_RE.match(b["text"].strip()):
+            prev = sub_fill.get(id(cur_sub))
+            bold = bold_sentences(b["text"])
+            if bold:
+                sub_fill[id(cur_sub)] = (f"{prev[0]} {bold}" if prev and prev[1] else bold, True)
+            elif prev is None:
+                sub_fill[id(cur_sub)] = (condense_text(b["text"]), False)
         if keep and t != "blockquote":
             out.append(b)
         elif t in ("displaymath", "image", "table", "mermaid", "citation"):
@@ -831,6 +866,8 @@ def condense_blocks(blocks):
                 out.append(b)  # flow_blocks la vuelve título de su propia diapositiva
             elif BOLD_LEAD_RE.match(txt):
                 out.append({"type": "para", "text": condense_text(txt)})
+            elif k in formula_words:
+                out.append({"type": "para", "text": formula_words[k]})
             elif in_example and bold_sentences(txt):
                 # la conclusión de un ejemplo en párrafo, como en un ejemplo resuelto
                 out.append({"type": "para", "text": bold_sentences(txt)})
@@ -853,7 +890,18 @@ def condense_blocks(blocks):
                     elif keep:
                         kept.append(ib)
                     elif j == 0 or ib["text"].startswith("**Ejemplo resuelto"):
-                        kept.append({"type": "para", "text": condense_text(ib["text"])})
+                        # en un ejemplo de un solo párrafo, la conclusión en
+                        # negritas va en ese mismo párrafo, tras el arranque
+                        short = condense_text(ib["text"])
+                        m = BOLD_LEAD_RE.match(ib["text"])
+                        if m and m.group(2) and len(inner) == 1:
+                            sents = SENTENCE_SPLIT_RE.split(m.group(2))
+                            # la primera oración entera si lleva la cifra en
+                            # negritas; si no, solo su primera cláusula
+                            first = sents[0] if "**" in sents[0] else first_clause(sents[0])
+                            short = " ".join([m.group(1), first] +
+                                             [s for s in sents[1:] if "**" in s])
+                        kept.append({"type": "para", "text": short})
                     elif bold_sentences(ib["text"]):
                         kept.append({"type": "para", "text": bold_sentences(ib["text"])})
                 elif keep:
@@ -864,6 +912,10 @@ def condense_blocks(blocks):
                     kept.append(ib)
             if kept:
                 out.append({"type": "blockquote", "blocks": kept})
+    for k in range(len(out) - 1, -1, -1):
+        if is_subheading(out[k]) and id(out[k]) in sub_fill and \
+                (k + 1 == len(out) or is_subheading(out[k + 1])):
+            out.insert(k + 1, {"type": "para", "text": sub_fill[id(out[k])][0]})
     # la figura que sigue a un ejemplo resuelto es parte de él: viaja en su
     # segmento y puede reducirse para caber en la misma diapositiva. La
     # figura muestra lo mismo que la tabla del ejemplo, así que en la
@@ -950,8 +1002,10 @@ ENV_RE = re.compile(r"\\begin\{(cases|pmatrix)\}(.*?)\\end\{\1\}", re.S)
 def _mathtext_compat(tex):
     """Traduce a mathtext lo que este no entiende y no necesita maquetación:
     delimitadores con tamaño fijo (\\big, \\Big, ...), \\displaystyle y el
-    espaciado opcional de salto de renglón (\\\\[2ex])."""
+    espaciado opcional de salto de renglón (\\\\[2ex]) y los alias cortos
+    \\ge/\\le."""
     tex = tex.replace(r"\dfrac", r"\frac").replace(r"\displaystyle", "")
+    tex = re.sub(r"\\([gl]e)(?![a-zA-Z])", r"\\\1q", tex)
     tex = re.sub(r"\\[Bb]igg?l?(?=[(\[])", r"\\left", tex)
     tex = re.sub(r"\\[Bb]igg?r?(?=[)\]])", r"\\right", tex)
     tex = re.sub(r"\\\\\[[^\]]*\]", r"\\\\", tex)
@@ -1839,19 +1893,22 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
         body_full = BODY_BOTTOM_MAX - y
         if idx >= len(blocks):
             break
+        has_subtitle = False
         if allow_subtitle and not cont and blocks[idx]["type"] == "para" and \
+                not is_subheading(blocks[idx]) and \
                 len(plain_text_of(blocks[idx]["text"])) <= 200:
             runs = parse_inline(blocks[idx]["text"])
             h = draw_para(slide, runs, MARGIN_L, y, CONTENT_W, size_pt=15.5, color=GRAY)
             y += h + 130000
             idx += 1
+            has_subtitle = True
         placed_any = False
         while idx < len(blocks):
             b = blocks[idx]
             h = estimate_block_height(b, CONTENT_W)
             bottom_limit = BODY_BOTTOM_MAX + (260000 if b["type"] == "citation" else 0)
             avail = bottom_limit - y
-            if placed_any and is_subheading(b):
+            if (placed_any or has_subtitle) and is_subheading(b):
                 break
             if b.get("alone"):
                 # figura sola: abre su propia diapositiva, la llena y la cierra
@@ -1872,6 +1929,24 @@ def flow_blocks(deck, eyebrow, base_title, blocks, allow_subtitle=True):
                     plain_text_of(b["text"]).rstrip().endswith(":"):
                 nxt_h = estimate_block_height(blocks[idx + 1], CONTENT_W)
                 if h + nxt_h > avail:
+                    break
+            # una fórmula no se separa de la oración que la continúa ("donde
+            # $s_{com}$ es ..."): si no caben juntas, pasan juntas
+            if b["type"] == "displaymath" and idx + 1 < len(blocks) and placed_any and \
+                    blocks[idx + 1]["type"] == "para" and blocks[idx + 1]["text"][:1].islower():
+                nxt_h = estimate_block_height(blocks[idx + 1], CONTENT_W)
+                if h + nxt_h > avail:
+                    break
+            # ni de la que la introduce ("El costo ... es"), que tampoco
+            # se queda sola al pie de la diapositiva
+            if b["type"] == "para" and placed_any and idx + 1 < len(blocks) and \
+                    blocks[idx + 1]["type"] == "displaymath" and \
+                    not b["text"].rstrip().endswith((".", ":")):
+                need = h + estimate_block_height(blocks[idx + 1], CONTENT_W)
+                if idx + 2 < len(blocks) and blocks[idx + 2]["type"] == "para" and \
+                        blocks[idx + 2]["text"][:1].islower():
+                    need += estimate_block_height(blocks[idx + 2], CONTENT_W)
+                if need > avail:
                     break
             if b["type"] == "image" and idx + 1 < len(blocks) and placed_any and \
                     blocks[idx + 1]["type"] == "blockquote":
@@ -2099,7 +2174,19 @@ def _fill_toc_slide(slide, entries):
     tema_w = 3300000 if compact else 8600000
     page_w = 900000 if compact else 1200000
     page_x = SLIDE_W - MARGIN_R - page_w
-    for roman, tema, quecubre, pref in entries:
+    # Debajo del tema, cada renglón crece lo que pida su "qué cubre" (uno de
+    # cuatro o cinco líneas se encimaría con el tema siguiente); si no caben
+    # todos, se baja la letra
+    q_size = 10.5
+    heights = [row_h] * len(entries)
+    if not compact:
+        for q_size in (10.5, 10, 9.5, 9, 8.5):
+            heights = [max(row_h, 360000 + estimate_para_height(plain_text_of(e[2]), 8600000,
+                                                                q_size) + 60000)
+                       if e[2] else row_h for e in entries]
+            if sum(heights) <= BODY_BOTTOM_MAX - y:
+                break
+    for (roman, tema, quecubre, pref), row_h in zip(entries, heights):
         rbox = add_textbox(slide, MARGIN_L, y, 700000, 400000)
         rp = rbox.text_frame.paragraphs[0]
         set_paragraph_plain(rp, roman + ".", tema_size, GOLD, bold=True, font=FONT_TITLE)
@@ -2114,7 +2201,6 @@ def _fill_toc_slide(slide, entries):
             else:
                 qbox = add_textbox(slide, MARGIN_L + 750000, y + 330000, 8600000,
                                    row_h - 360000)
-                q_size = 10.5
             qp = qbox.text_frame.paragraphs[0]
             set_paragraph_plain(qp, plain_text_of(quecubre), q_size, GRAY)
         pbox = add_textbox(slide, page_x, y, page_w, 400000, align=PP_ALIGN.RIGHT)

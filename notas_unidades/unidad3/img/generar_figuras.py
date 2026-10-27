@@ -50,6 +50,50 @@ MU_VECTOR, SIGMA_VECTOR, RHO_VECTOR = (0.05, 0.08), (0.25, 0.30), 0.6  # ilustra
 OUT_PRELACION = os.path.join(IMG_DIR, "prelacion_pagos_liquidacion.png")
 BONO_LIQ, PREF_LIQ = 50, 15  # millones, los del ejemplo de la seccion 1 de 0_
 ESCENARIOS_LIQ = (40, 60, 120)
+OUT_RESIDUAL = os.path.join(IMG_DIR, "reclamo_residual_liquidacion.png")
+
+
+def fig_reclamo_residual():
+    """El reclamo residual de 1.2 de 0_mercado_e_instrumentos_participacion.md,
+    sin cifras: quienes cobran antes reciben min(V, d) y la accion comun
+    max(V - d, 0). El eje solo marca d, porque en 1.2 d es generico; el
+    desglose por instrumento con cifras es la figura del Apendice A."""
+    d = 1.0
+    v = np.linspace(0, 2.6, 521)
+    antes = np.minimum(v, d)
+    comun = np.maximum(v - d, 0)
+
+    fig, ax = plt.subplots(figsize=(10, 3.9))
+    ax.plot(v, antes, color=NAVY, lw=2.4, label="Quienes cobran antes: min(V, d)")
+    ax.plot(v, comun, color=GOLD, lw=2.8, label="Acción común: max(V − d, 0)")
+    ax.axvline(d, color=LGRAY, lw=0.8, ls=":", zorder=0)
+
+    ax.annotate("Techo: nunca cobran más de lo pactado", xy=(1.9, d),
+                xytext=(1.45, 1.35), fontsize=10, color=NAVY,
+                arrowprops=dict(arrowstyle="->", color=NAVY, lw=1))
+    ax.annotate("Piso: si V < d,\nrecibe 0", xy=(0.3, 0), xytext=(0.48, 0.12),
+                fontsize=10, color=BODY,
+                arrowprops=dict(arrowstyle="->", color=GOLD, lw=1.2))
+    ax.annotate("Sin techo: lo que sobra\ncrece con V", xy=(2.35, 2.35 - d),
+                xytext=(1.95, 0.35), fontsize=10, color=BODY,
+                arrowprops=dict(arrowstyle="->", color=GOLD, lw=1.2))
+
+    ax.set_xlim(0, 2.6)
+    ax.set_ylim(-0.06, 1.75)
+    ax.set_xticks([0, d])
+    ax.set_xticklabels(["0", "d"])
+    ax.set_yticks([0, d])
+    ax.set_yticklabels(["0", "d"])
+    ax.set_xlabel("Valor de liquidación V", fontsize=11, color=GRAY)
+    ax.set_ylabel("Lo que recibe", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=11)
+    ax.legend(frameon=False, fontsize=10, loc="upper left")
+    ax.set_title("Reclamo residual: la acción común cobra lo que sobra",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_RESIDUAL, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_RESIDUAL}")
 
 
 def fig_incumplimiento_masa_distribucion():
@@ -590,6 +634,7 @@ def fig_prelacion_pagos():
 
 
 def main():
+    fig_reclamo_residual()
     fig_prelacion_pagos()
     fig_incumplimiento_masa_distribucion()
     fig_accion_lognormal()

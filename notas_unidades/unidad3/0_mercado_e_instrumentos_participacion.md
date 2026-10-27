@@ -11,13 +11,13 @@ Que el estudiante clasifique un instrumento de participación (acción común, a
 |     | Tema                                       | Qué cubre                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | --- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | I   | Ser dueño, no acreedor                     | La sociedad mercantil como persona moral cuyo fin es generar ganancias para sus socios. Mercado de capitales (plazo, Unidad 1) frente a mercado de participación (instrumento); reclamo residual en una liquidación y responsabilidad limitada (la prelación y el caso de ICA, en el Apéndice A). Desde el emisor, acciones frente a deuda (sin obligación de pago, dilución del control, información asimétrica) y la oferta pública inicial (OPI): SAB y SAPIB, toma en firme y mejores esfuerzos, oferta primaria y secundaria. Emisiones posteriores: dilución del valor según el precio de emisión, la señal al mercado y el split                                                               |
-| II  | Tipología de instrumentos de participación | La clasificación completa: una tabla con el activo que hay detrás, lo que recibe el tenedor, si vota y si se tiene directo (acción) o a través de un vehículo (fideicomiso o fondo). Después, cada grupo: acción común y preferente (dividendo acumulativo, por qué la preferente es rara; series de la BMV, con Walmex, FEMSA y Bimbo); FIBRA, CKD y CERPI (inmuebles, proyectos, capital privado); índices bursátiles, fondos indexados y ETFs (qué mide el S&P/BMV IPC, capitalización ajustada por flotación, índice de precios frente a rendimiento total, sesgo de supervivencia, fondo de inversión frente a ETF, el NAFTRAC; las opciones, solo mención); ADR y SIC para acciones extranjeras |
+| II  | Tipología de instrumentos de participación | La clasificación completa: una tabla con el activo que hay detrás, lo que recibe el tenedor, si vota y si se tiene directo (acción) o a través de un vehículo (fideicomiso o fondo). Después, cada grupo: acción común y preferente (dividendo acumulativo, por qué la preferente es rara; series de la BMV, con Walmex, FEMSA y Bimbo); FIBRA, CKD y CERPI (inmuebles, proyectos, capital privado); índices bursátiles, fondos indexados y ETFs (qué mide el S&P/BMV IPC, capitalización ajustada por flotación, índice de precios frente a rendimiento total, sesgo de supervivencia, fondo de inversión frente a ETF, el NAFTRAC; las opciones, solo mención)                                      |
 | III | De dónde vienen las ganancias              | Rendimiento por dividendo más rendimiento de capital, a partir de dos precios; de dónde salen el flujo y el cambio de precio en cada instrumento de la tipología, con la unidad BD de FEMSA frente al NAFTRAC en el mismo año; el piso de -100%; dividendo por acción, razón de pago y precios ajustados por split                                                                                                                                                                                                                                                                                                                                                                                    |
-| IV  | Cómo se negocia una acción                 | Libro de órdenes, diferencial de compra-venta, orden a mercado, limitada y stop; la CNBV, el RNV y los reportes periódicos de las emisoras; venta en corto, margen e ISR, solo mención (bolsas, casas de bolsa e Indeval ya están en la Unidad 1)                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| IV  | Cómo se negocia una acción                 | Libro de órdenes y diferencial de compra-venta; orden a mercado, limitada y de paro (stop). La CNBV y el RNV, la venta en corto, la compra con margen y el ISR, en el Apéndice C (bolsas, casas de bolsa e Indeval ya están en la Unidad 1)                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 > La práctica de este tema está en [`practica_0_instrumentos_participacion.md`](../../practicas/unidad3/practica_0_instrumentos_participacion.md).
 
-> **Por redactar.** Las secciones 1 a 3 están redactadas; falta la 4. Las tasas de ISR sobre ganancias y dividendos están por verificar, y la definición formal del CERPI necesita la Circular Única de Emisoras de la CNBV.
+> **Por redactar.** La definición formal del CERPI necesita la Circular Única de Emisoras de la CNBV.
 
 ---
 
@@ -31,7 +31,7 @@ La Unidad 2 recorrió el financiamiento por el lado de la deuda: quien presta re
 
 #### 1.1 La sociedad: una persona distinta de sus dueños
 
-Para ser dueño de una parte de un negocio, el negocio tiene que existir aparte de sus dueños. Una persona física con actividad empresarial responde por las deudas del negocio con todo su patrimonio. Una **sociedad anónima**, en cambio, es una **persona moral**: tiene bienes, deudas y contratos a su propio nombre, y su capital se divide en acciones que se venden sin permiso de los demás socios. La primera empresa que vendió acciones al público suele considerarse la Compañía Neerlandesa de las Indias Orientales (1602).
+Para ser dueño de una parte de un negocio, el negocio tiene que existir aparte de sus dueños. Una persona física con actividad empresarial responde por las deudas del negocio con **todo su patrimonio**. Una **sociedad anónima**, en cambio, es una **persona moral**: tiene bienes, deudas y contratos a su propio nombre, y su capital se divide en acciones que se venden sin permiso de los demás socios. La primera empresa que vendió acciones al público suele considerarse la Compañía Neerlandesa de las Indias Orientales (1602).
 
 Su propósito, por ley, es generar ganancias para sus socios. El Código Civil define a la sociedad civil por un fin "preponderantemente económico, pero que no constituya una especulación comercial"; buscar la ganancia es justo lo que hace **mercantil** a una sociedad. La Ley General de Sociedades Mercantiles reparte las ganancias en proporción a lo aportado, salvo pacto, y anula cualquier cláusula que excluya a un socio de ellas.
 
@@ -43,6 +43,8 @@ Si la sociedad existe para sus socios, ¿qué le toca a cada uno?
 
 El balance reparte los activos entre quienes financiaron a la empresa: activo = pasivo + capital contable. El pasivo es lo que se debe a los acreedores, una cantidad pactada; el capital contable es lo que sobra, y es de los accionistas. Por eso la acción es un **reclamo residual** (residual claim): da derecho a lo que queda después de cubrir todos los demás compromisos.
 
+<!-- diapositivas: conservar -->
+
 Se ve mejor en una **liquidación**: la empresa vende sus activos, paga lo que debe y desaparece. Sea $V$ lo que se obtiene por los activos, en mayúscula porque hoy es incierto, y $d$ lo pactado que debe pagarse antes que a la acción común.
 
 > **¿De dónde sale la fórmula?** Del balance, capital contable = activo − pasivo. En una liquidación el activo vale $V$ y el pasivo $d$, así que a la acción común le toca $V-d$. Si $V<d$, la resta es negativa y el accionista tendría que poner la diferencia; por la responsabilidad limitada (1.3) no la pone, y recibe 0.
@@ -53,11 +55,14 @@ $$\max(V-d,\ 0),\qquad V\ge 0,\ d\ge 0,$$
 
 y lo que reciben juntos quienes cobran antes que ella es $\min(V,d)$; entre los dos suman siempre $V$. En qué orden cobran los que van antes que la acción común, la **prelación**, se ve con un ejemplo y con el caso de ICA en el Apéndice A.
 
+<!-- diapositivas: figura sola -->
+![Lo que recibe cada parte en una liquidación según el valor de liquidación V: quienes cobran antes que la acción común, en azul marino, reciben V mientras V es menor que d y después se quedan planos en d (su techo); la acción común, en dorado, recibe 0 mientras V es menor que d (su piso) y después sube sin límite con V; una línea punteada vertical marca V = d](img/reclamo_residual_liquidacion.png)
+
 #### 1.3 Responsabilidad limitada
 
-El 0 de la fórmula es una regla legal, consecuencia de 1.1: las deudas son de la persona moral, no de sus socios. En una sociedad anónima, cada socio solo responde hasta el pago de sus acciones; si la empresa debe más de lo que vale, el faltante lo pierden los acreedores.
+El 0 de la fórmula es una regla legal, consecuencia de 1.1: las deudas son de la persona moral, no de sus socios. En una sociedad anónima, cada socio **solo responde hasta el pago de sus acciones**; si la empresa debe más de lo que vale, **el faltante lo pierden los acreedores**.
 
-Esa regla le pone un **piso al rendimiento** del accionista: en el peor caso, la acción llega a 0 sin haber pagado dividendos y pierde lo que pagó, nada más. Si la compró en 100 pesos, su rendimiento es $(0-100)/100=-100\%$, y no puede ser menor porque ni el precio ni el dividendo son negativos. Hacia arriba no hay techo, porque $V-d$ crece con $V$. El acreedor también puede perder 100%, pero su ganancia tiene techo: lo pactado. La sección 3 retoma esta cota.
+Esa regla le pone un **piso al rendimiento** del accionista: en el peor caso, la acción llega a 0 sin haber pagado dividendos y pierde lo que pagó, nada más. Si la compró en 100 pesos, su rendimiento es $(0-100)/100=-100\%$, y **no puede ser menor** porque ni el precio ni el dividendo son negativos. Hacia arriba no hay techo, porque $V-d$ crece con $V$. El acreedor también puede perder 100%, pero su ganancia tiene techo: lo pactado. La sección 3 retoma esta cota.
 
 #### 1.4 Por qué una empresa emite acciones
 
@@ -73,7 +78,7 @@ Esa ventaja la pagan los dueños anteriores:
 
 La prima por riesgo es la aversión al riesgo de [`4_ciencia_inversion.md`](../unidad1/4_ciencia_inversion.md#2-principios-del-análisis-de-inversión): nadie acepta el residual si no espera ganar, en promedio, más que con una promesa fija. Además, los intereses se restan de la utilidad gravable, mientras que el dividendo se paga de la utilidad después de impuestos.
 
-> **Ejemplo resuelto.** La fundadora de una empresa tiene sus 1,000,000 de acciones, el 100% del capital. Para financiar una planta, la empresa emite 250,000 acciones nuevas. Sin vender ninguna, ella pasa a tener $1{,}000{,}000/1{,}250{,}000=80\%$: 80% de los votos y 80% de cada peso de utilidad. A cambio, la empresa obtuvo el dinero sin prometer ningún pago.
+> **Ejemplo resuelto.** La fundadora de una empresa tiene sus 1,000,000 de acciones, el 100% del capital. Para financiar una planta, la empresa emite 250,000 acciones nuevas. Sin vender ninguna, ella pasa a tener $1{,}000{,}000/1{,}250{,}000=80\%$: **80% de los votos y 80% de cada peso de utilidad**. A cambio, la empresa obtuvo el dinero sin prometer ningún pago.
 
 Aun así, las acciones son la fuente de financiamiento menos usada. En Estados Unidos, entre 1970 y 2000, aportaron 11% del financiamiento externo de las empresas, contra 32% de los bonos y 56% de los préstamos; y más de 80% de la expansión se financia con utilidades retenidas. La razón de fondo es la **información asimétrica** (asymmetric information): quien vende acciones de su empresa sabe más que quien compra, así que el comprador sospecha que están caras y exige un descuento; y una vez que invierte, no puede vigilar fácilmente cómo gasta su dinero la administración. Una deuda solo exige revisar que se pague. En México la escasez es más clara: la BMV pasó años sin una OPI hasta que Esentia, Fibra Next y Aeroméxico rompieron la sequía en 2025. El Apéndice B desarrolla el argumento.
 
@@ -107,7 +112,7 @@ Si $s_e=s$, entonces $s'=s$: el porcentaje de los dueños anteriores baja, pero 
 >
 > y **la fundadora pierde 4 millones de pesos** ($1{,}000{,}000\times 4$), **que ganan los nuevos socios**: pagaron 80 por acciones que valen 96.
 
-**La señal al mercado.** La administración sabe más que el mercado (la selección adversa del Apéndice B). Si cree que la acción está barata, no le conviene emitir, por el ejemplo anterior; si cree que está cara, sí. Por eso el mercado lee el anuncio de una emisión como una señal de que la acción está cara, y el precio suele bajar al anunciarse (Asquith y Mullins, 1986). La **recompra de acciones** (share buyback), en la que la empresa compra sus propias acciones, es la señal contraria.
+**La señal al mercado.** El mercado lee el anuncio de una emisión como una señal de que la acción está cara, y el precio suele bajar al anunciarse (Asquith y Mullins, 1986). La razón es que la administración sabe más que el mercado (la selección adversa del Apéndice B): si cree que la acción está barata, no le conviene emitir, por el ejemplo anterior; si cree que está cara, sí. La **recompra de acciones** (share buyback), en la que la empresa compra sus propias acciones, es la señal contraria.
 
 **El split** (stock split) también crea acciones, pero sin dinero nuevo: cada acción se divide en varias. En uno de 2 por 1, la fundadora pasa de 1,000,000 de acciones a 100 pesos a 2,000,000 a 50: sigue teniendo 100 millones y el mismo porcentaje, porque todos los accionistas recibieron lo mismo. En la fórmula, un split de $k$ por 1 cambia $n$ por $kn$ y $s$ por $s/k$, y $ns$ no cambia. El **dividendo en acciones** (stock dividend) tiene el mismo efecto, con otro registro contable. Las empresas lo hacen para bajar el precio de cada acción.
 
@@ -128,11 +133,10 @@ Ninguno de los instrumentos de esta unidad promete un pago; todos son residuales
 | CERPI                                | Proyectos, con frecuencia en el extranjero                | Igual que el CKD                                              | No en las empresas que financia | Fideicomiso                             |
 | Fondo de inversión de renta variable | Una canasta de acciones                                   | Su parte del valor de la canasta, dividendos incluidos        | No                              | Fondo                                   |
 | ETF (NAFTRAC)                        | Una canasta de acciones, casi siempre la de un índice     | Su parte de los dividendos y del valor de la canasta          | No                              | Fondo o fideicomiso que cotiza en bolsa |
-| ADR                                  | Acciones de una empresa extranjera que guarda un banco    | Los dividendos de esas acciones, en dólares                   | Según el contrato con el banco  | Recibo de un banco                      |
 
 > **Ejemplo resuelto.** Un certificado de Fibra Next se tiene a través de un **vehículo (un fideicomiso), tiene inmuebles detrás, paga al menos 95% de su resultado fiscal y no da voto en una empresa**. Una acción WALMEX\* se tiene **directo, tiene detrás a la empresa, paga el dividendo que decida el consejo y vota sin límite**.
 
-Las subsecciones siguientes recorren la tabla por grupos de filas: la acción (2.2), los fideicomisos (2.3), las canastas (2.4) y las acciones de otro país (2.5).
+Las subsecciones siguientes recorren la tabla por grupos de filas: la acción (2.2), los fideicomisos (2.3) y las canastas (2.4).
 
 #### 2.2 Acción común y acción preferente
 
@@ -162,11 +166,30 @@ Quien compra una acción es socio de la empresa. En los demás instrumentos de e
 - **CKD** (certificado de capital de desarrollo): proyectos de infraestructura, inmuebles o empresas privadas en México. Nacieron en octubre de 2009, cuando la crisis había cerrado el crédito, y en su primera década las Afores compraron 90.5% de lo colocado. Se emiten con **llamadas de capital** (capital calls): el inversionista se compromete con un monto y lo aporta cuando el fideicomiso lo pide para un proyecto, no todo al comprar.
 - **CERPI** (certificado bursátil fiduciario de proyectos de inversión): el mismo esquema de llamadas de capital, para proyectos que con frecuencia están fuera de México.
 
+**Qué los distingue** de los demás instrumentos:
+
+<!-- diapositivas: conservar -->
+
+- **De una acción:** el tenedor no es socio ni vota en las empresas que financia; es dueño de una parte del fideicomiso, y el fideicomiso es el dueño de los activos.
+- **De un bono:** nada le promete un pago; recibe lo que generen los activos.
+- **De un ETF,** que también puede ser un fideicomiso: lo que hay detrás no son acciones que cotizan, sino inmuebles o proyectos que casi no se negocian.
+- **Entre ellos:** la FIBRA reparte por ley al menos 95% de su resultado fiscal; el CKD y el CERPI piden el dinero por llamadas de capital y distribuyen cuando un proyecto genera flujo o se vende.
+
 #### 2.4 Índices bursátiles, fondos indexados y ETFs
 
 Comprar una acción es apostar por una empresa. Para tener una parte de todo el mercado hay que comprar una canasta, y la canasta de referencia es un índice.
 
-**El índice.** Un **índice bursátil** resume en un número cuánto vale una canasta de acciones. El de México es el **S&P/BMV IPC**, que calcula S&P Dow Jones Indices con la BMV: sigue unas 35 series de las emisoras más grandes y más negociadas, cada una con un peso proporcional a su **capitalización ajustada por flotación** (float-adjusted market capitalization), el precio por el número de acciones que de verdad se negocian, sin contar las que guarda el grupo de control. En México el ajuste importa, porque muchas emisoras tienen un dueño con la mayoría de las acciones; además, la metodología pone topes para que ninguna serie pese demasiado. Es el equivalente mexicano del S&P 500 de [`1_probabilidad_y_riesgo.md`](1_probabilidad_y_riesgo.md).
+**El índice.** Un **índice bursátil** resume en un número cuánto vale una canasta de acciones, y se mueve con el promedio de los rendimientos de sus acciones, ponderado por lo que vale cada una en bolsa. El de México es el **S&P/BMV IPC**, que calcula S&P Dow Jones Indices con la BMV: sigue unas 35 series de las emisoras más grandes y más negociadas, cada una con un peso proporcional a su **capitalización ajustada por flotación** (float-adjusted market capitalization), el precio por el número de acciones que de verdad se negocian, sin contar las que guarda el grupo de control. En México el ajuste importa, porque muchas emisoras tienen un dueño con la mayoría de las acciones; además, la metodología pone topes para que ninguna serie pese demasiado. Es el equivalente mexicano del S&P 500 de [`1_probabilidad_y_riesgo.md`](1_probabilidad_y_riesgo.md).
+
+> **¿De dónde sale la fórmula?** Como en 1.6, lo que vale en bolsa la serie $i$ es su precio $s_i$ por su número de acciones en flotación $n_i$, y la canasta vale la suma $\sum_j n_js_j$. Si las $n_i$ no cambian en el periodo, la fórmula de 3.1 con $c=0$ aplicada a la canasta da $r=\sum_i n_i(s_{i,1}-s_{i,0})/\sum_j n_js_{j,0}$. Al multiplicar y dividir cada término por $s_{i,0}$, queda cada rendimiento $r_i=(s_{i,1}-s_{i,0})/s_{i,0}$ multiplicado por la fracción de la canasta que vale la serie $i$ al inicio.
+
+El peso de la serie $i$ y el rendimiento del índice en el periodo son
+
+$$w_i=\frac{n_is_{i,0}}{\sum_j n_js_{j,0}},\qquad r=\sum_i w_ir_i,\qquad \sum_i w_i=1,$$
+
+donde $n_i$ es el número de acciones en flotación de la serie $i$ (sin las del grupo de control), $s_{i,0}$ su precio al inicio del periodo y $r_i$ el rendimiento de su precio. Una serie que vale el doble en bolsa mueve el índice el doble; por eso el ajuste por flotación y los topes cambian cuánto pesa cada emisora.
+
+> **Ejemplo resuelto (ilustrativo).** Una canasta tiene dos series, una grande y una chica. La grande vale 300 mil millones de pesos en flotación y la chica 100, así que sus pesos son **75% y 25%** ($300/400$ y $100/400$). Si en el periodo la grande sube 10% y la chica baja 20%, el índice gana $0.75\times10\%+0.25\times(-20\%)=$ **2.5%**: **sube aunque la chica cayó el doble de lo que subió la grande**, porque la grande pesa tres veces más.
 
 **Precios o rendimiento total.** El IPC que se cita en las noticias es un **índice de precios**: solo sigue el precio de las acciones, así que el día en que una emisora paga dividendo y su precio baja, el índice baja con ella. Su versión de **rendimiento total** (total return) supone que cada dividendo se reinvierte en la canasta, y es la que se compara con un CETE, porque incluye las dos vías de ganancia de la sección 3.
 
@@ -183,13 +206,6 @@ Comprar una acción es apostar por una empresa. Para tener una parte de todo el 
 El **NAFTRAC** es el ETF del IPC. Lo administra BlackRock con la marca iShares desde abril de 2002, y legalmente es un fideicomiso de Nacional Financiera que emite certificados bursátiles: cada certificado es una parte de la canasta de las 35 series, con una comisión de administración de 0.25% al año. Su precio en bolsa no se aleja del valor de la canasta porque algunas casas de bolsa pueden crear certificados nuevos entregando las acciones de la canasta, o deshacerlos a cambio de ellas: si el certificado cotiza por encima de la canasta, les conviene crear y vender; si cotiza por debajo, comprar y deshacer.
 
 Por qué conviene tener la canasta en vez de una sola acción (la diversificación) y cuánto ha rendido el IPC se miden en [`3_rendimiento_y_riesgo_acciones.md`](3_rendimiento_y_riesgo_acciones.md). Las **opciones** sobre acciones o sobre el IPC no son instrumentos de participación: son derivados, contratos que dan el derecho a comprar o vender a un precio pactado, y quedan fuera de esta unidad.
-
-#### 2.5 Acciones de otro país: ADR y SIC
-
-Hay dos caminos para comprar acciones de un país desde otro:
-
-- **Certificado de depósito estadounidense** (American depositary receipt, ADR): un banco de Estados Unidos guarda acciones de una empresa extranjera y emite recibos que cotizan en dólares; el banco convierte los dividendos a dólares. Es el ADS de 1.5: el de Aeroméxico representa 10 acciones, y el de FEMSA, 10 unidades BD.
-- **Sistema Internacional de Cotizaciones** (SIC): el camino inverso; en la BMV se compran acciones y ETF extranjeros, con un riesgo de tipo de cambio que retoma [`3_rendimiento_y_riesgo_acciones.md`](3_rendimiento_y_riesgo_acciones.md).
 
 En todos los casos, el tenedor gana por dos vías: lo que recibe mientras tiene el título y lo que vale cuando lo vende. La sección 3 las mide.
 
@@ -226,7 +242,6 @@ La fórmula es la misma para todos los títulos de la tabla de 2.1; lo que cambi
 | FIBRA                        | Al menos 95% del resultado fiscal: casi toda la renta                                 | El valor de los inmuebles y de sus rentas futuras                 |
 | CKD y CERPI                  | Distribuciones cuando un proyecto genera flujo o se vende; antes, llamadas de capital | La valuación de proyectos que casi no se negocian                 |
 | Fondo de renta variable, ETF | Los dividendos de las acciones de la canasta, menos la comisión                       | El valor de la canasta: el del índice, si es indexado             |
-| ADR                          | Los dividendos de las acciones, convertidos a dólares                                 | El precio de las acciones y el tipo de cambio                     |
 
 Tres filas se salen del caso de la acción. En una FIBRA, $c$ pesa más que en una acción, porque la ley la obliga a repartir. En un CKD o un CERPI, las llamadas de capital son pagos del inversionista, un $c$ negativo que la fórmula no admite, y las distribuciones llegan años después; su rendimiento se mide con la tasa interna de retorno (TIR) de todos sus flujos, como el rendimiento al vencimiento de un bono en la Unidad 2. En un ETF indexado, $r$ sigue al del índice de rendimiento total de 2.4, menos la comisión.
 
@@ -246,17 +261,21 @@ Hacia arriba no hay cota, porque $s_1$ puede crecer sin límite. Es el caso de l
 
 #### 3.4 Dividendo por acción y razón de pago
 
-> **¿De dónde sale la fórmula?** Las ganancias se reparten en proporción a lo aportado (1.1), así que cada acción recibe el total entre el número de acciones. La **utilidad por acción** (UPA) se obtiene igual, con la utilidad neta en vez de los dividendos; dividir una entre otra dice qué fracción de lo que ganó la empresa se repartió.
+> **¿De dónde sale la fórmula?** Las ganancias se reparten en proporción a lo aportado (1.1), así que cada acción recibe el total entre el número de acciones. Lo que ganó la empresa se divide igual; dividir una entre otra dice qué fracción de lo que ganó la empresa se repartió.
 
-El **dividendo por acción** (DPA) y la **razón de pago** (payout ratio) son
+El **dividendo por acción** (DPA), la **utilidad por acción** (UPA, earnings per share) y la **razón de pago** (payout ratio) son
 
-$$\text{DPA}=\frac{\text{dividendos totales}}{\text{acciones en circulación}},\qquad\text{razón de pago}=\frac{\text{DPA}}{\text{UPA}},\quad\text{UPA}>0.$$
+$$\text{DPA}=\frac{\text{dividendos totales}}{\text{acciones en circulación}},\qquad\text{UPA}=\frac{\text{utilidad neta}}{\text{acciones en circulación}},$$
+
+$$\text{razón de pago}=\frac{\text{DPA}}{\text{UPA}},\qquad\text{UPA}>0.$$
 
 Como el dividendo no es obligatorio (1.4), la razón de pago la decide el consejo. Lo que no se reparte son utilidades retenidas, la fuente con la que la empresa financia la mayor parte de su crecimiento.
 
 > **Ejemplo resuelto (ilustrativo).** Una empresa que gana 10 pesos por acción y reparte 4 tiene una **razón de pago de 40%**, y retiene 6 pesos por acción para invertir. La nota de valuación de esta unidad usa estos dos datos para estimar cuánto vale la acción.
 
 #### 3.5 Precios ajustados
+
+<!-- diapositivas: conservar -->
 
 Para calcular un rendimiento con dos precios a través de un split, hay que expresar los dos en el número de acciones de hoy. Con el split de 2 por 1 de 1.6, comparar 100 con 50 sin ajustar daría $r=(50-100)/100=-50\%$, aunque nadie perdió nada; con el precio anterior ajustado, $100/2=50$, el rendimiento es 0. El DPA se ajusta igual.
 
@@ -266,7 +285,57 @@ Para cobrar cualquiera de las dos ganancias hay que comprar y después vender la
 
 ### 4. Cómo se negocia una acción
 
-> **Por redactar.** Libro de órdenes, diferencial de compra-venta, orden a mercado, limitada y stop; la CNBV, el RNV y los reportes periódicos de las emisoras; venta en corto, margen e ISR, solo mención. Se apoya en [`3_mecanica_mercado.md`](../unidad1/3_mecanica_mercado.md), donde ya están las bolsas, las casas de bolsa e Indeval. El NAFTRAC de 2.4 se compra igual que una acción.
+En 3.1, alguien compró una unidad FEMSAUBD a 177.31 pesos y la vendió a 241.20. Los dos precios salieron del mercado secundario de [`3_mecanica_mercado.md`](../unidad1/3_mecanica_mercado.md): la orden pasa por una casa de bolsa a la bolsa, e Indeval registra el cambio de dueño. La BMV es un mercado dirigido por órdenes, así que no hay un precio de lista: el precio sale de lo que piden y ofrecen los propios inversionistas.
+
+#### 4.1 El libro de órdenes
+
+<!-- diapositivas: conservar -->
+
+Una **orden** es la instrucción que el inversionista le da a su casa de bolsa para comprar o vender cierto número de títulos de una serie, y dice a qué precio está dispuesto a hacerlo. La casa de bolsa la envía a la bolsa, que la cruza con una orden del lado contrario: una compra con una venta. Las órdenes que todavía no encuentran contraparte esperan en el **libro de órdenes** (order book). Del lado de compra están las **posturas de compra** (bids), ordenadas de la más alta a la más baja; del lado de venta, las **posturas de venta** (asks), de la más baja a la más alta. La mejor postura de cada lado es la que se ejecuta primero.
+
+Un libro ilustrativo de la unidad FEMSAUBD, alrededor del precio de 3.1:
+
+| Títulos (compra) | Postura de compra | Postura de venta | Títulos (venta) |
+| ---------------- | ----------------- | ---------------- | --------------- |
+| 1,500            | 241.10            | 241.30           | 1,000           |
+| 2,000            | 241.00            | 241.40           | 2,000           |
+| 3,500            | 240.90            | 241.50           | 3,000           |
+| 2,500            | 240.80            | 241.60           | 4,000           |
+
+<!-- diapositivas: conservar -->
+
+La distancia entre las dos mejores posturas es el **diferencial de compra-venta** (bid-ask spread). Lo cobra el mercado a quien tiene prisa: quien compra ahora paga la mejor postura de venta, y quien vende ahora recibe la mejor postura de compra.
+
+> **¿De dónde sale la fórmula?** De la fórmula de 3.1 con $c=0$: quien compra al mejor precio de venta, $s_0=s_{ven}$, y vende de inmediato al mejor precio de compra, $s_1=s_{com}$, gana $r=(s_{com}-s_{ven})/s_{ven}$, que es negativo. Su pérdida es el diferencial entre el precio que pagó.
+
+El costo de comprar y vender de inmediato, la **ida y vuelta** (round trip), es
+
+$$\frac{s_{ven}-s_{com}}{s_{ven}},\qquad s_{ven}\geq s_{com}>0,$$
+
+donde $s_{com}$ es la mejor postura de compra y $s_{ven}$ la mejor de venta. No incluye la comisión de la casa de bolsa, que se suma aparte.
+
+> **Ejemplo resuelto (ilustrativo).** En el libro de FEMSAUBD, el diferencial es $241.30-241.10=0.20$ pesos, y la ida y vuelta cuesta $0.20/241.30=$ **0.08%**, nada frente al 43.5% que ganó la unidad BD en el año de 3.1. En una emisora poco negociada, el diferencial puede ser de varios por ciento, y se paga cada vez que se entra y se sale.
+
+#### 4.2 Orden a mercado y orden limitada
+
+<!-- diapositivas: conservar -->
+
+- **Orden a mercado** (market order): se ejecuta ya, al precio que haya. Se cruza con la mejor postura del otro lado y, si esa no alcanza, sigue con la siguiente.
+- **Orden limitada** (limit order): fija el precio máximo al que se compra, o el mínimo al que se vende. No paga más de lo que dice, pero puede quedarse sin ejecutar, o ejecutarse solo en parte; lo que falta se queda en el libro como una postura más.
+
+Cuántos títulos hay en cada nivel es la **profundidad** (depth) del libro: una orden a mercado grande en un libro poco profundo recorre varios niveles.
+
+> **Ejemplo resuelto (ilustrativo).** Una orden a mercado para comprar 2,500 unidades FEMSAUBD toma las 1,000 de 241.30 y 1,500 de las 2,000 de 241.40. Paga $1{,}000\times241.30+1{,}500\times241.40=603{,}400$ pesos, un **precio promedio de 241.36**, seis centavos más que la mejor postura. Con una orden limitada a 241.30, **compra solo las 1,000 unidades** a ese precio; las otras 1,500 quedan en el libro como la nueva mejor postura de compra, a 241.30.
+
+#### 4.3 Orden de paro (stop)
+
+<!-- diapositivas: conservar -->
+
+Una **orden de paro** (stop order) espera sin entrar al libro hasta que el precio toca un nivel, y entonces se vuelve una orden a mercado. La de venta, el **stop-loss**, sirve para salir si el precio cae. Como se ejecuta a mercado, no garantiza el precio del paro: si la acción salta por debajo, por ejemplo al abrir después de una noticia, se vende al primer precio que haya.
+
+> **Ejemplo resuelto (ilustrativo).** Quien compró FEMSAUBD a 241.30 pone un paro de venta a 230, para perder a lo más $(230-241.30)/241.30=-4.68\%$. Si una noticia nocturna hace que la acción abra en 220, el paro se activa y vende cerca de 220: **pierde 8.83%, no 4.68%**.
+
+Quién vigila a las emisoras, la venta en corto, la compra con margen y el ISR sobre las dos vías de ganancia se mencionan en el Apéndice C.
 
 ## Apéndice A: Prelación: quién cobra primero
 
@@ -310,15 +379,23 @@ Los mercados se defienden de los dos problemas con información y con intermedia
 
 Una precisión sobre el 11% de la sección 1: es un porcentaje de los flujos de financiamiento, y una emisión de acciones consigue dinero una sola vez y para siempre, mientras que la deuda se tiene que volver a emitir cada vez que vence. Medido así, el peso de las acciones queda subestimado, aunque siguen siendo la fuente menor.
 
+## Apéndice C: Regulación e impuestos de la operación
+
+**Quién vigila.** La CNBV supervisa a las bolsas, a las casas de bolsa y a las emisoras. Para ofrecer una acción al público, la emisora debe inscribirla en el **Registro Nacional de Valores** (RNV), que lleva la CNBV, y desde entonces queda obligada a publicar a través de la bolsa reportes trimestrales con sus estados financieros, un reporte anual y sus **eventos relevantes** en cuanto los conoce, como el aviso de Aeroméxico con el resultado de su OPI (1.5). Es la regulación de revelación del Apéndice B.
+
+**Venta en corto y compra con margen.** En la **venta en corto** (short selling), el inversionista vende acciones que pidió prestadas y las recompra después para devolverlas: gana si el precio baja, y su pérdida no tiene techo, porque el precio tampoco lo tiene; es el caso opuesto al piso de $-100\%$ de 1.3. En la **compra con margen** (margin buying), compra con dinero que le presta la casa de bolsa, con las acciones como garantía: la ganancia y la pérdida se multiplican, y si el precio baja, la casa de bolsa le pide más garantía (llamada de margen, margin call) o vende las acciones.
+
+**ISR.** Una persona física que vende en bolsa acciones de sociedades mexicanas, o títulos que representan un índice como el NAFTRAC, paga **10% sobre la ganancia** del año, como pago definitivo. Los dividendos de una empresa mexicana se suman a sus demás ingresos en la declaración anual, con un crédito por el impuesto que ya pagó la empresa, y además pagan una **tasa adicional de 10%**, que la empresa retiene al repartirlos.
+
 ## Fuentes y referencias recomendadas
 
-- Mishkin, F. S. y Eakins, S. G. (2014). *Financial Markets and Institutions* (8ª ed.). Pearson: la acción común como reclamo residual con derecho a voto; la acción preferente y su lugar en la prelación; la colocación de acciones por la banca de inversión (toma en firme, mejores esfuerzos, sindicato, prospecto); el financiamiento de la expansión con utilidades retenidas; la preferente como fuente menor de capital y el ADR para comprar acciones extranjeras.
+- Mishkin, F. S. y Eakins, S. G. (2014). *Financial Markets and Institutions* (8ª ed.). Pearson: la acción común como reclamo residual con derecho a voto; la acción preferente y su lugar en la prelación; la colocación de acciones por la banca de inversión (toma en firme, mejores esfuerzos, sindicato, prospecto); el financiamiento de la expansión con utilidades retenidas; la preferente como fuente menor de capital.
 - Mishkin, F. S. (2019). *The Economics of Money, Banking, and Financial Markets* (Business School Edition, 5ª ed.). Pearson: el accionista como reclamante residual; los hechos básicos de la estructura financiera (las acciones como la fuente menor de financiamiento externo); selección adversa, riesgo moral y problema principal-agente en la elección entre deuda y acciones.
 - Fabozzi, F. J. (2009). *Capital Markets, Financial Management, and Investment Management*. Wiley: formas de empresa (empresario individual, sociedad de personas, sociedad anónima) y la sociedad anónima como entidad legal separada de sus dueños; el objetivo de maximizar la riqueza de los dueños; la responsabilidad limitada del accionista; la deuda frente al capital desde el emisor (obligación de pago, dilución del control, deducibilidad del interés); colocación con toma en firme o mejores esfuerzos; dividendo por acción, razón de pago, dividendo en acciones y split; mecánica de las bolsas, tipos de orden, venta en corto y compra con margen.
-- Ley del Impuesto sobre la Renta (vigente): tratamiento de las ganancias por enajenación de acciones en bolsa y de los dividendos para personas físicas; artículo 25, fracción VII, deducción de los intereses a cargo de una persona moral.
+- Ley del Impuesto sobre la Renta (vigente; última reforma DOF 1 de abril de 2024): artículo 129, tasa de 10% como pago definitivo sobre las ganancias de personas físicas por enajenación de acciones en bolsa y de títulos que representan índices accionarios; artículo 140, acumulación de los dividendos y tasa adicional de 10% retenida por la persona moral que los distribuye; artículo 25, fracción VII, deducción de los intereses a cargo de una persona moral.
 - Ley General de Sociedades Mercantiles (vigente): artículo 2, personalidad jurídica de la sociedad distinta de la de sus socios; artículo 4, sociedades mercantiles; artículos 16 y 17, reparto de las ganancias y nulidad de las cláusulas que excluyan a un socio de ellas; artículo 87, la sociedad anónima y la obligación del socio limitada al pago de sus acciones.
 - Código Civil Federal (vigente): artículo 2688, la sociedad civil y su fin económico que no constituye una especulación comercial.
-- Ley del Mercado de Valores (vigente): artículo 29, deber del consejo de administración de una SAB de procurar la creación de valor en beneficio de la sociedad.
+- Ley del Mercado de Valores (vigente; última reforma DOF 14 de noviembre de 2025): artículo 7, inscripción en el Registro Nacional de Valores para la oferta pública; artículo 29, deber del consejo de administración de una SAB de procurar la creación de valor en beneficio de la sociedad; artículo 104, reportes continuos, trimestrales y anuales de las emisoras; artículo 105, revelación de eventos relevantes.
 - Expansión. (2018, 5 de marzo). *ICA logra acuerdo y sale de concurso mercantil*. <https://expansion.mx/empresas/2018/03/05/ica-logra-acuerdo-y-sale-de-concurso-mercantil>: deuda, quita y reparto del capital tras el concurso de ICA.
 - El Universal. (2017, 6 de septiembre). *Reestructura de ICA diluye a los accionistas actuales*. <https://www.eluniversal.com.mx/cartera/negocios/reestructura-de-ica-diluye-los-accionistas-actuales/>: el 0.01% de los accionistas anteriores en el plan de reestructura.
 - Grupo Aeroméxico. (2025, 6 de noviembre). *Aeroméxico anuncia los resultados de su oferta global* [Evento relevante]. Bolsa Mexicana de Valores. <https://bmv.com.mx/docs-pub/eventemi/eventemi_1506079_1.pdf>: precio, acciones de la oferta primaria y secundaria, y recursos esperados.
@@ -334,7 +411,7 @@ Una precisión sobre el 11% de la sección 1: es un porcentaje de los flujos de 
 - Bolsa Mexicana de Valores. (2025, 14 de abril). *Aviso de derechos: Fomento Económico Mexicano, S.A.B. de C.V., dividendo en efectivo*. <https://www.bmv.com.mx/docs-pub/derechos/derechos_1455445_1.pdf>: dividendo de 2025 por unidad BD, cuyo último pago fue el 16 de enero de 2026.
 - Yahoo Finanzas. (s. f.). *FEMSAUBD.MX, precios diarios*. Consultado el 23 de octubre de 2026: precios de cierre del 22 de octubre de 2025 y del 22 de octubre de 2026, guardados con los dividendos en [`datos/femsaubd_2025-10_2026-10.csv`](datos/femsaubd_2025-10_2026-10.csv).
 - NVIDIA Corporation. (2024, 22 de mayo). *Form 8-K*. U.S. Securities and Exchange Commission. <https://www.sec.gov/Archives/edgar/data/1045810/000104581024000113/nvda-20240522.htm>: split de 10 por 1 con cotización ajustada desde el 10 de junio de 2024, y dividendo de 0.10 dólares por acción antes del split, equivalente a 0.01 después.
-- Fomento Económico Mexicano. (2023). *Description of Securities* [Anexo 2.2 del Form 20-F]. U.S. Securities and Exchange Commission. <https://www.sec.gov/Archives/edgar/data/1061736/000162828023012491/exhibit220descriptionofsec.htm>: composición de la unidad BD, voto limitado y dividendo preferente de 125% de las acciones serie D, y ADS de 10 unidades BD.
+- Fomento Económico Mexicano. (2023). *Description of Securities* [Anexo 2.2 del Form 20-F]. U.S. Securities and Exchange Commission. <https://www.sec.gov/Archives/edgar/data/1061736/000162828023012491/exhibit220descriptionofsec.htm>: composición de la unidad BD, voto limitado y dividendo preferente de 125% de las acciones serie D.
 - Bolsa Mexicana de Valores. (2022, 23 de noviembre). *Actualización de la inscripción: América Móvil, S.A.B. de C.V.* <https://www.bmv.com.mx/docs-pub/actinsac/actinsac_1234822_1.pdf>: asuntos en los que vota la serie L y propuesta de unificar las series AA, A y L en una sola serie B.
 - Bolsa Mexicana de Valores. (2024, 12 de abril). *Actualización de la inscripción: Grupo Bimbo, S.A.B. de C.V.* <https://www.bmv.com.mx/docs-pub/actinsac/actinsac_1363619_1.pdf>: acciones serie A, ordinarias, nominativas.
 - Wal-Mart de México. (2021). *Reporte anual 2020* [Presentado a la BMV]. <https://files.walmex.mx/assets/files/Informacion%20financiera/Anual/Esp/BMV/Walmex_Reporte_Anual_2020_BMV.pdf>: capital formado por acciones ordinarias de una sola serie, clave WALMEX.
@@ -347,4 +424,4 @@ Una precisión sobre el 11% de la sección 1: es un porcentaje de los flujos de 
 - Una acción es una parte de una **sociedad mercantil** y un **reclamo residual**: la sociedad es una **persona moral**, distinta de sus socios, que por ley existe para generar ganancias y repartirlas entre ellos; en una liquidación, a la acción común le toca $\max(V-d,\ 0)$, lo que sobra después de pagar a todos los que cobran antes (bono, acción preferente, acción común, en ese orden). Por la **responsabilidad limitada**, su rendimiento tiene un piso de $-100\%$ y ningún techo; el del acreedor tiene techo en lo pactado.
 - Desde el emisor, la acción tiene una ventaja: no obliga a pagar nada, así que no se puede incumplir. A cambio, **diluye** el control y las ganancias de los dueños anteriores y cuesta más, porque el accionista exige una prima por riesgo. Además, como el que emite sabe más que el que compra (**información asimétrica**), las acciones son la fuente de financiamiento menos usada. En una **oferta pública inicial (OPI)**, la oferta **primaria** (acciones nuevas) lleva el dinero a la empresa y la **secundaria** se lo lleva a los socios que venden: en la de Aeroméxico (2025), 56% fue primaria y 44% secundaria. Emitir por debajo del valor pasa riqueza de los dueños anteriores a los nuevos; un split solo cambia el número de acciones. En la secundaria, el comprador es la **liquidez de salida** de quien vende; si este sabe más, el comprador puede terminar **cargando la bolsa**.
 - Un instrumento de participación se **clasifica** por el activo que hay detrás, lo que recibe su tenedor, si vota y si se tiene directo o por un **vehículo**: la acción común y la preferente son directas; la FIBRA (inmuebles, al menos 95% de su resultado fiscal), el CKD y el CERPI (proyectos, con llamadas de capital) son fideicomisos; el fondo de inversión y el **ETF** son canastas, y el ETF cotiza como una acción (el NAFTRAC sigue al **S&P/BMV IPC**). En la BMV el voto se lee en la serie: la unidad BD de FEMSA recibe 20% más dividendo que la B, pero solo una de sus cinco acciones vota sin límite.
-- Todos ganan por dos vías, **por dividendo (o distribución) más de capital**: $r=(c+s_1-s_0)/s_0$, y la tipología dice de dónde sale cada parte. De octubre de 2025 a octubre de 2026, la unidad BD de FEMSA ganó 43.5% y el NAFTRAC, la canasta del IPC, 17.5%.
+- Todos ganan por dos vías, **por dividendo (o distribución) más de capital**, y para cobrarlas se compra y se vende contra el **libro de órdenes**: $r=(c+s_1-s_0)/s_0$, y la tipología dice de dónde sale cada parte. De octubre de 2025 a octubre de 2026, la unidad BD de FEMSA ganó 43.5% y el NAFTRAC, la canasta del IPC, 17.5%. Quien tiene prisa paga el **diferencial de compra-venta** con una orden a mercado; una orden limitada fija el precio, pero puede no ejecutarse, y una orden de paro sale a mercado cuando el precio toca su nivel.
