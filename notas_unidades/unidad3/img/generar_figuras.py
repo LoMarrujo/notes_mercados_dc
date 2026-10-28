@@ -891,7 +891,7 @@ def fig_proceso_estadistico():
         ("Predecir", "Rendimiento esperado\ny pérdida en los\npeores años (CVaR),\ncon su intervalo",
          "sección 4"),
         ("Evaluar", "¿Predice bien con\ndatos que no usó?\n¿Sirve para la\ndecisión de negocio?",
-         "secciones 3.3 y 5"),
+         "sección 5"),
     )
     ancho, alto, paso_x, y0 = 1.85, 1.5, 2.25, 0.0
     fig, ax = plt.subplots(figsize=(11, 3.6))
@@ -916,12 +916,12 @@ def fig_proceso_estadistico():
     ax.annotate("", xy=(x_mod, y0 + alto + 0.04), xytext=(x_eval, y0 + alto + 0.04),
                 arrowprops=dict(arrowstyle="-|>", color=RED, lw=1.6, ls="--",
                                 connectionstyle="arc3,rad=0.17"))
-    ax.text((x_eval + x_mod) / 2, y0 + alto + 0.88, "si falla en alguna, se vuelve a especificar",
+    ax.text((x_eval + x_mod) / 2, y0 + alto + 0.88, "si no es lo suficientemente bueno, se vuelve a especificar",
             ha="center", va="bottom", fontsize=10, color=RED)
     ax.set_xlim(-0.1, 4 * paso_x + ancho + 0.1)
     ax.set_ylim(-0.6, alto + 1.2)
     ax.axis("off")
-    ax.set_title("De la pregunta al conocimiento: el ciclo de la estadística", fontsize=12.5,
+    ax.set_title("El ciclo del descubrimiento de conocimiento", fontsize=12.5,
                  color=NAVY, fontweight="bold", loc="left", pad=4)
     fig.tight_layout()
     fig.savefig(OUT_PROCESO, dpi=200, facecolor="white")
