@@ -1,5 +1,5 @@
-"""Genera las figuras de la Unidad 3 (0_mercado_e_instrumentos_participacion.md y
-1_probabilidad_y_riesgo.md). Se versiona junto a las
+"""Genera las figuras de la Unidad 3 (0_mercado_e_instrumentos_participacion.md,
+1_probabilidad_y_riesgo.md y 2_estadistica_y_datos.md). Se versiona junto a las
 imagenes que produce para que sean reproducibles: si el contenido cambia, se
 corrige este script y se vuelve a correr, nunca se edita el .png a mano.
 
@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from scipy.stats import lognorm, multivariate_normal, norm
+from scipy.stats import cauchy, lognorm, multivariate_normal, norm
 
 NAVY = "#1E2761"
 GOLD = "#C9A227"
@@ -51,6 +51,19 @@ OUT_PRELACION = os.path.join(IMG_DIR, "prelacion_pagos_liquidacion.png")
 BONO_LIQ, PREF_LIQ = 50, 15  # millones, los del ejemplo de la seccion 1 de 0_
 ESCENARIOS_LIQ = (40, 60, 120)
 OUT_RESIDUAL = os.path.join(IMG_DIR, "reclamo_residual_liquidacion.png")
+OUT_SP500_MEDIA_DESV = os.path.join(IMG_DIR, "sp500_histograma_media_desviacion.png")
+OUT_FEMSA_SP500 = os.path.join(IMG_DIR, "femsa_sp500_dispersion.png")
+OUT_RUIDO_BLANCO = os.path.join(IMG_DIR, "ruido_blanco_dispersion.png")
+SEMILLA = 2026  # fija, para que las simulaciones sean reproducibles
+OUT_LIMITE_PERDIDAS = os.path.join(IMG_DIR, "limite_perdidas_normal_cauchy.png")
+DATOS_SP500_DIARIO = os.path.join(IMG_DIR, "..", "datos", "sp500_cierre_diario.csv")
+SIGMA_DIARIA, DIAS = 0.012, 252  # el modelo del area de riesgos de la seccion 1.1 de 2_
+N_SIMULACIONES = 10_000
+DATOS_SP500_MES = os.path.join(IMG_DIR, "..", "datos", "sp500_cierre_fin_de_mes.csv")
+DATOS_FEMSA = os.path.join(IMG_DIR, "..", "datos", "femsaubd_mensual_2020-01_2026-09.csv")
+OUT_BAYES = os.path.join(IMG_DIR, "sp500_bayes_priori_posteriori.png")
+OUT_PROCESO = os.path.join(IMG_DIR, "proceso_estadistico.png")
+MU_PRIORI, SIGMA_PRIORI = 0.08, 0.02  # la opinion ilustrativa del analista (2_, seccion 3.1)
 
 
 def fig_reclamo_residual():
@@ -633,6 +646,329 @@ def fig_prelacion_pagos():
     print(f"figura generada: {OUT_PRELACION}")
 
 
+def fig_sp500_histograma_media_desviacion():
+    """Histograma de los 98 rendimientos anuales del S&P 500 (2_, seccion 2.1)
+    con la media muestral, la media geometrica y la franja de una desviacion
+    estandar a cada lado."""
+    r = pd.read_csv(DATOS_SP500)["rendimiento"].to_numpy()
+    media, s = r.mean(), r.std(ddof=1)
+    geometrica = np.prod(1 + r) ** (1 / len(r)) - 1
+    dentro = int(np.sum(np.abs(r - media) <= s))
+
+    fig, ax = plt.subplots(figsize=(8, 4.4))
+    bordes = np.round(np.arange(-0.5, 0.61, 0.1), 2) + 0.0
+    ax.axvspan(media - s, media + s, color=GOLD, alpha=0.15, lw=0, zorder=1)
+    ax.hist(r, bins=bordes, color=NAVY, alpha=0.85, edgecolor="white", linewidth=2, zorder=2)
+    ax.axvline(media, color=GOLD, lw=2.4, zorder=3)
+    ax.axvline(geometrica, color=RED, lw=2.2, ls="-.", zorder=4)
+    for borde in (media - s, media + s):
+        ax.axvline(borde, color=GOLD, lw=1.4, ls="--", zorder=3)
+    tope = ax.get_ylim()[1] * 1.3
+    ax.set_ylim(0, tope)
+    ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+    ax.text(media + 0.008, tope * 0.84, rf"media $\bar{{x}}$ = {media:.2%}", fontsize=10.5,
+            color=BODY, ha="left", va="top",
+            bbox={"facecolor": "white", "edgecolor": "none", "pad": 1.5})
+    ax.text(geometrica - 0.008, tope * 0.84, f"media geométrica\n{geometrica:.2%}", fontsize=10.5,
+            color=BODY, ha="right", va="top",
+            bbox={"facecolor": "white", "edgecolor": "none", "pad": 1.5})
+    ax.text(media - s - 0.012, tope * 0.98, rf"$\bar{{x}} - s$ = {media - s:.2%}",
+            fontsize=10.5, color=BODY, va="top", ha="right")
+    ax.text(media + s + 0.012, tope * 0.98, rf"$\bar{{x}} + s$ = {media + s:.2%}",
+            fontsize=10.5, color=BODY, va="top")
+    ax.text(media, tope * 0.98, f"{dentro} de {len(r)} años dentro de la franja", fontsize=10.5,
+            color=BODY, ha="center", va="top", zorder=5,
+            bbox={"facecolor": "white", "edgecolor": "none", "pad": 1.5})
+    ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    ax.set_xticks(bordes)
+    ax.set_xlabel("Rendimiento anual con dividendos", fontsize=11, color=GRAY)
+    ax.set_ylabel("Número de años", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.set_title(f"S&P 500, 1928-2025: medias y una desviación estándar (s = {s:.2%})",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_SP500_MEDIA_DESV, dpi=200, facecolor="white")
+    print(f"figura generada: {OUT_SP500_MEDIA_DESV}  media = {media:.4f}, s = {s:.4f}, "
+          f"dentro = {dentro}")
+
+
+def _rendimientos_mensuales(ruta):
+    """Rendimientos mensuales con el cierre ajustado por dividendos."""
+    precio = pd.read_csv(ruta)["cierre_ajustado"].to_numpy()
+    return precio[1:] / precio[:-1] - 1
+
+
+def _dispersion_cuadrantes(x, y, xlabel, ylabel, titulo, out, limites, unidad):
+    """Diagrama de dispersion con lineas en las medias: los puntos dorados caen
+    del mismo lado de las dos medias y suman a la covarianza; los grises, de
+    lados opuestos, restan."""
+    mx, my = x.mean(), y.mean()
+    r = np.corrcoef(x, y)[0, 1]
+    mismo = (x - mx) * (y - my) > 0
+
+    fig, ax = plt.subplots(figsize=(6.6, 5.4))
+    ax.axvline(mx, color=LGRAY, lw=1, zorder=1)
+    ax.axhline(my, color=LGRAY, lw=1, zorder=1)
+    ax.scatter(x[mismo], y[mismo], s=34, color=GOLD, edgecolor=NAVY, linewidth=0.6, zorder=3,
+               label=f"mismo lado de las medias ({mismo.sum()} {unidad})")
+    ax.scatter(x[~mismo], y[~mismo], s=34, color=LGRAY, edgecolor=GRAY, linewidth=0.6, zorder=2,
+               label=f"lados opuestos ({(~mismo).sum()} {unidad})")
+    for eje in (ax.xaxis, ax.yaxis):
+        eje.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    ax.set_xlim(limites[0])
+    ax.set_ylim(limites[1])
+    ax.set_xlabel(xlabel, fontsize=11, color=GRAY)
+    ax.set_ylabel(ylabel, fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.legend(loc="upper left", fontsize=9.5, frameon=False, labelcolor=BODY)
+    ax.set_title(rf"{titulo}: correlación $\hat{{\rho}}$ = {r:.2f}",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(out, dpi=200, facecolor="white")
+    print(f"figura generada: {out}  r = {r:.4f}, mismo lado = {mismo.sum()}")
+    plt.close(fig)
+
+
+def _sp500_mensual_2020():
+    """Rendimientos mensuales del S&P 500 (cierre de fin de mes, en dolares y
+    sin dividendos) en los mismos 80 meses que FEMSA, 2020-02 a 2026-09. Se
+    alinea por posicion y no por la etiqueta del mes: el archivo de FEMSA
+    tiene etiquetas de mes corridas de mayo a octubre de 2020-2022 (abril
+    repetido, octubre ausente), aunque sus 81 cierres estan en orden."""
+    sp = pd.read_csv(DATOS_SP500_MES).set_index("mes").loc["2020-01":"2026-09", "cierre"]
+    precio = sp.to_numpy()
+    return precio[1:] / precio[:-1] - 1
+
+
+def fig_femsa_sp500_y_ruido_blanco():
+    """Dos diagramas de dispersion con la misma escala (2_, seccion 2.3): los
+    rendimientos mensuales del S&P 500 (eje x) y FEMSA (eje y), 2020-02 a
+    2026-09, y, para comparar, dos ruidos blancos independientes: 80 pares de
+    normales con media 0 y las desviaciones estandar del S&P 500 y FEMSA, sin
+    ninguna relacion entre si."""
+    x_real = _sp500_mensual_2020()
+    y_real = _rendimientos_mensuales(DATOS_FEMSA)
+    assert len(x_real) == len(y_real)
+    rng = np.random.default_rng(SEMILLA)
+    x_ruido = rng.normal(0, x_real.std(ddof=1), len(x_real))
+    y_ruido = rng.normal(0, y_real.std(ddof=1), len(y_real))
+
+    def limite(*series):
+        bajo, alto = min(s.min() for s in series), max(s.max() for s in series)
+        margen = 0.05 * (alto - bajo)
+        return bajo - margen, alto + margen
+
+    limites = (limite(x_real, x_ruido), limite(y_real, y_ruido))
+    _dispersion_cuadrantes(x_real, y_real, "Rendimiento mensual del S&P 500",
+                           "Rendimiento mensual de FEMSA",
+                           f"FEMSA frente al S&P 500, {len(y_real)} meses", OUT_FEMSA_SP500,
+                           limites, "meses")
+    _dispersion_cuadrantes(x_ruido, y_ruido, "Ruido blanco con la desviación del S&P 500",
+                           "Ruido blanco con la desviación de FEMSA",
+                           f"Dos ruidos blancos independientes, {len(x_ruido)} pares",
+                           OUT_RUIDO_BLANCO, limites, "pares")
+
+
+def _sp500_diario():
+    """Rendimientos diarios del S&P 500 desde 1928 (cierres sin dividendos)."""
+    precio = pd.read_csv(DATOS_SP500_DIARIO)["cierre"].to_numpy()
+    return precio[1:] / precio[:-1] - 1
+
+
+def simular_limite_perdidas():
+    """Rendimientos diarios de N_SIMULACIONES anios de 252 dias (2_, seccion
+    3.3), simulados con una normal de media 0 y desviacion SIGMA_DIARIA y con
+    una Cauchy ajustada por maxima verosimilitud a los rendimientos diarios del
+    S&P 500 (la Cauchy no tiene media ni varianza: se ajustan su centro y su
+    escala). El limite de perdidas es el VaR al 99% a un dia del modelo normal,
+    el del area de riesgos de la seccion 1.1."""
+    centro, escala = cauchy.fit(_sp500_diario())
+    rng = np.random.default_rng(SEMILLA)
+    caucht = centro + escala * rng.standard_cauchy((N_SIMULACIONES, DIAS))
+    normal = rng.normal(0, SIGMA_DIARIA, (N_SIMULACIONES, DIAS))
+    limite = norm.ppf(0.01) * SIGMA_DIARIA
+    return normal, caucht, limite, centro, escala
+
+
+def fig_limite_perdidas():
+    """Limite de perdidas con una normal y una Cauchy ajustada a los datos
+    (2_, seccion 3.3). Izquierda: las dos densidades sobre el histograma de los
+    rendimientos diarios del S&P 500, con el limite y un acercamiento a las
+    perdidas grandes. Derecha: cuantos dias al anio se rebasa el limite en los
+    anios simulados con cada distribucion, y el promedio del S&P 500."""
+    normal, caucht, limite, centro, escala = simular_limite_perdidas()
+    sp = _sp500_diario()
+    rebases_sp = np.mean(sp < limite) * DIAS
+    x = np.linspace(-0.08, 0.08, 1600)
+    dens_n = norm.pdf(x, 0, SIGMA_DIARIA)
+    dens_c = cauchy.pdf(x, centro, escala)
+
+    fig, (ax_d, ax_c) = plt.subplots(1, 2, figsize=(10, 4.4))
+    ax_d.hist(sp, bins=np.arange(-0.08, 0.0801, 0.0025), density=True, color=LGRAY, alpha=0.6,
+              edgecolor="white", linewidth=0.5, label="S&P 500 diario, 1928-2026")
+    ax_d.plot(x, dens_n, color=GOLD, lw=1.4, label="normal (supuesta)")
+    ax_d.plot(x, dens_c, color=NAVY, lw=1.4, label='Cauchy ("real")')
+    ax_d.axvline(limite, color=RED, lw=1.2, ls="--")
+    ax_d.text(limite - 0.002, ax_d.get_ylim()[1] * 0.95, f"límite\n{limite:.2%}", fontsize=10.5,
+              color=BODY, ha="right", va="top")
+    ax_d.set_xlim(-0.08, 0.08)
+    ax_d.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    ax_d.set_xlabel("Rendimiento diario", fontsize=11, color=GRAY)
+    ax_d.set_ylabel("Densidad", fontsize=11, color=GRAY)
+    ax_d.legend(loc="upper right", fontsize=9, frameon=False, labelcolor=BODY)
+    ax_d.set_title("Dos modelos para los mismos datos", fontsize=12.5, color=NAVY,
+                   fontweight="bold", loc="left", pad=10)
+
+    # Acercamiento a las perdidas grandes, en la misma escala lineal
+    zoom = ax_d.inset_axes([0.06, 0.28, 0.33, 0.33])
+    xz = (x >= -0.07) & (x <= -0.025)
+    # Densidad del histograma con respecto a todos los dias, no solo a los del acercamiento
+    bordes_z = np.arange(-0.07, -0.0249, 0.0025)
+    cuentas, _ = np.histogram(sp, bins=bordes_z)
+    zoom.bar(bordes_z[:-1], cuentas / (len(sp) * 0.0025), width=0.0025, align="edge",
+             color=LGRAY, alpha=0.6, edgecolor="white", linewidth=0.5)
+    zoom.plot(x[xz], dens_n[xz], color=GOLD, lw=1.4)
+    zoom.plot(x[xz], dens_c[xz], color=NAVY, lw=1.4)
+    zoom.axvline(limite, color=RED, lw=1, ls="--")
+    zoom.set_xlim(-0.07, -0.025)
+    zoom.set_ylim(0, 2.6)
+    zoom.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    zoom.set_xticks([-0.06, -0.04])
+    zoom.tick_params(colors=GRAY, labelsize=8)
+    zoom.set_title("acercamiento", fontsize=9, color=GRAY, pad=2)
+
+    rebases_n = (normal < limite).sum(axis=1)
+    rebases_c = (caucht < limite).sum(axis=1)
+    bordes = np.arange(-0.5, 30.5, 1)
+    ax_c.hist(rebases_c, bins=bordes, color=NAVY, alpha=0.8, edgecolor="white", linewidth=1,
+              label=f"Cauchy: {rebases_c.mean():.1f} días al año")
+    ax_c.hist(rebases_n, bins=bordes, histtype="step", color=GOLD, lw=2.2,
+              label=f"normal: {rebases_n.mean():.1f} días al año")
+    ax_c.axvline(rebases_sp, color=RED, lw=1.6, ls="--",
+                 label=f"S&P 500 real: {rebases_sp:.1f} días al año")
+    ax_c.set_xlabel("Días del año que la pérdida rebasa el límite", fontsize=11, color=GRAY)
+    ax_c.set_ylabel("Número de años", fontsize=11, color=GRAY)
+    ax_c.legend(loc="upper right", fontsize=9.5, frameon=False, labelcolor=BODY)
+    ax_c.set_title(f"Rebases del límite en {N_SIMULACIONES:,} años", fontsize=12.5, color=NAVY,
+                   fontweight="bold", loc="left", pad=10)
+
+    for ax in (ax_d, ax_c):
+        ax.tick_params(colors=GRAY, labelsize=10)
+        sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(OUT_LIMITE_PERDIDAS, dpi=200, facecolor="white")
+    plt.close(fig)
+    print(f"Cauchy ajustada: centro = {centro:.5f}, escala = {escala:.5f}")
+    for nombre, r in (("normal", normal), ("cauchy", caucht)):
+        medias = r.mean(axis=1)
+        q25, q75 = np.quantile(medias, [0.25, 0.75])
+        print(f"{nombre}: rango intercuartil del promedio anual = {q75 - q25:.5f}, "
+              f"rebases/anio = {(r < limite).sum(axis=1).mean():.3f}, "
+              f"CVaR simulado = {-r[r < limite].mean():.4f}, "
+              f"perdidas > 5%/anio = {(r < -0.05).sum(axis=1).mean():.4f}, "
+              f"perdidas > 100%/anio = {(r < -1).sum(axis=1).mean():.4f}")
+    print(f"S&P 500: rebases/anio = {rebases_sp:.3f}, CVaR = {-sp[sp < limite].mean():.4f}, "
+          f"perdidas > 5%/anio = {np.mean(sp < -0.05) * DIAS:.4f}")
+    print(f"figura generada: {OUT_LIMITE_PERDIDAS}")
+
+
+def fig_proceso_estadistico():
+    """El ciclo de la estadistica que ordena la nota 2_ (seccion 1.1): de la
+    pregunta a los datos y el modelo (un solo paso, cuyo orden depende de si
+    el trabajo es de exploracion o de confirmacion), la estimacion, la
+    prediccion y la evaluacion (si predice bien y si sirve a la decision de
+    negocio), que regresa a especificar si falla en alguna de las dos. Cada
+    paso indica la seccion de la nota que lo cubre."""
+    pasos = (
+        ("Pregunta", "¿Cuánto rinde en\npromedio el S&P 500?\n¿Cuánto pierde en sus\npeores años (CVaR)?",
+         "sección 1.1"),
+        ("Datos y modelo",
+         "Explorar: los datos\nsugieren el modelo\nConfirmar: el modelo\nse fija antes de verlos",
+         "secciones 1.2 y 2"),
+        ("Estimar", "Estimadores y su\npropia incertidumbre", "sección 3"),
+        ("Predecir", "Rendimiento esperado\ny pérdida en los\npeores años (CVaR),\ncon su intervalo",
+         "sección 4"),
+        ("Evaluar", "¿Predice bien con\ndatos que no usó?\n¿Sirve para la\ndecisión de negocio?",
+         "secciones 3.3 y 5"),
+    )
+    ancho, alto, paso_x, y0 = 1.85, 1.5, 2.25, 0.0
+    fig, ax = plt.subplots(figsize=(11, 3.6))
+    for i, (titulo, texto, seccion) in enumerate(pasos):
+        x = i * paso_x
+        color = GOLD if titulo == "Datos y modelo" else NAVY
+        ax.add_patch(matplotlib.patches.FancyBboxPatch(
+            (x, y0), ancho, alto, boxstyle="round,pad=0.02,rounding_size=0.12",
+            facecolor=color, edgecolor="none"))
+        ax.text(x + ancho / 2, y0 + alto - 0.22, titulo, ha="center", va="center",
+                fontsize=12.5, color="white", fontweight="bold")
+        ax.text(x + ancho / 2, y0 + 0.58, texto, ha="center", va="center",
+                fontsize=9.5, color="white", linespacing=1.25)
+        ax.text(x + ancho / 2, y0 - 0.2, seccion, ha="center", va="top",
+                fontsize=10, color=GRAY)
+        if i < len(pasos) - 1:
+            ax.annotate("", xy=(x + paso_x - 0.02, y0 + alto / 2),
+                        xytext=(x + ancho + 0.02, y0 + alto / 2),
+                        arrowprops=dict(arrowstyle="-|>", color=GRAY, lw=1.6))
+    # Regreso de Evaluar a Datos y modelo, por arriba
+    x_eval, x_mod = 4 * paso_x + ancho / 2, 1 * paso_x + ancho / 2
+    ax.annotate("", xy=(x_mod, y0 + alto + 0.04), xytext=(x_eval, y0 + alto + 0.04),
+                arrowprops=dict(arrowstyle="-|>", color=RED, lw=1.6, ls="--",
+                                connectionstyle="arc3,rad=0.17"))
+    ax.text((x_eval + x_mod) / 2, y0 + alto + 0.88, "si falla en alguna, se vuelve a especificar",
+            ha="center", va="bottom", fontsize=10, color=RED)
+    ax.set_xlim(-0.1, 4 * paso_x + ancho + 0.1)
+    ax.set_ylim(-0.6, alto + 1.2)
+    ax.axis("off")
+    ax.set_title("De la pregunta al conocimiento: el ciclo de la estadística", fontsize=12.5,
+                 color=NAVY, fontweight="bold", loc="left", pad=4)
+    fig.tight_layout()
+    fig.savefig(OUT_PROCESO, dpi=200, facecolor="white")
+    plt.close(fig)
+    print(f"figura generada: {OUT_PROCESO}")
+
+
+def fig_bayes_sp500():
+    """A priori del analista, verosimilitud de los 98 rendimientos anuales del
+    S&P 500 y a posteriori del rendimiento esperado (2_, seccion 3.1). Con
+    sigma igual a s, la verosimilitud de mu es normal centrada en la media con
+    desviacion el error estandar, y la a posteriori es otra normal."""
+    r = pd.read_csv(DATOS_SP500)["rendimiento"].to_numpy()
+    media, ee = r.mean(), r.std(ddof=1) / np.sqrt(len(r))
+    precision = 1 / ee**2 + 1 / SIGMA_PRIORI**2
+    w = (1 / ee**2) / precision
+    mu_post, sigma_post = w * media + (1 - w) * MU_PRIORI, np.sqrt(1 / precision)
+
+    x = np.linspace(0, 0.2, 800)
+    fig, ax = plt.subplots(figsize=(8, 4.2))
+    curvas = (
+        (MU_PRIORI, SIGMA_PRIORI, GOLD, "--", f"a priori del analista: {MU_PRIORI:.0%} ± {SIGMA_PRIORI:.0%}"),
+        (media, ee, LGRAY, "-", f"verosimilitud, 98 años: {media:.2%} ± {ee:.2%}"),
+        (mu_post, sigma_post, NAVY, "-", f"a posteriori: {mu_post:.2%} ± {sigma_post:.2%}"),
+    )
+    for centro, escala, color, estilo, etiqueta in curvas:
+        ax.plot(x, norm.pdf(x, centro, escala), color=color, lw=2.4, ls=estilo, label=etiqueta)
+        ax.axvline(centro, color=color, lw=1, ls=":")
+    ax.set_xlim(0, 0.2)
+    ax.set_xticks(np.arange(0, 0.201, 0.02))
+    ax.set_ylim(0, None)
+    ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    ax.set_yticks([])
+    ax.set_xlabel(r"Rendimiento esperado anual del S&P 500, $\mu$", fontsize=11, color=GRAY)
+    ax.set_ylabel("Densidad", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    ax.legend(loc="upper right", fontsize=10, frameon=False, labelcolor=BODY)
+    ax.set_title(f"La a posteriori pondera la opinión y los datos (peso de los datos: {w:.2f})",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax, left=True)
+    fig.tight_layout()
+    fig.savefig(OUT_BAYES, dpi=200, facecolor="white")
+    plt.close(fig)
+    print(f"figura generada: {OUT_BAYES}  w = {w:.3f}, a posteriori = {mu_post:.4f}, "
+          f"sigma = {sigma_post:.4f}")
+
+
 def main():
     fig_reclamo_residual()
     fig_prelacion_pagos()
@@ -646,6 +982,11 @@ def main():
     fig_normal_dos_rendimientos()
     fig_normal_cuantil_var()
     fig_normal_cvar()
+    fig_sp500_histograma_media_desviacion()
+    fig_femsa_sp500_y_ruido_blanco()
+    fig_limite_perdidas()
+    fig_bayes_sp500()
+    fig_proceso_estadistico()
 
 
 if __name__ == "__main__":
