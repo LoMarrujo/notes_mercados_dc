@@ -891,7 +891,7 @@ def fig_proceso_estadistico():
         ("Predecir", "Rendimiento esperado\ny pérdida en los\npeores años (CVaR),\ncon su intervalo",
          "sección 4"),
         ("Evaluar", "¿Predice bien con\ndatos que no usó?\n¿Sirve para la\ndecisión de negocio?",
-         "sección 5"),
+         "nota 3_"),
     )
     ancho, alto, paso_x, y0 = 1.85, 1.5, 2.25, 0.0
     fig, ax = plt.subplots(figsize=(11, 3.6))

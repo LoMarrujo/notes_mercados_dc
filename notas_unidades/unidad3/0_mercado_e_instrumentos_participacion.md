@@ -193,7 +193,7 @@ donde $n_i$ es el número de acciones en flotación de la serie $i$ (sin las del
 
 **Precios o rendimiento total.** El IPC que se cita en las noticias es un **índice de precios**: solo sigue el precio de las acciones, así que el día en que una emisora paga dividendo y su precio baja, el índice baja con ella. Su versión de **rendimiento total** (total return) supone que cada dividendo se reinvierte en la canasta, y es la que se compara con un CETE, porque incluye las dos vías de ganancia de la sección 3.
 
-**Sesgo de supervivencia** (survivorship bias). La canasta cambia: en cada rebalanceo salen las emisoras que se achicaron o dejaron de cotizar y entran las que crecieron. Quien mira solo a las empresas que siguen hoy en el índice ve un pasado mejor del que fue. [`5_lecciones_modernas.md`](5_lecciones_modernas.md) retoma el sesgo con los fondos.
+**Sesgo de supervivencia** (survivorship bias). La canasta cambia: en cada rebalanceo salen las emisoras que se achicaron o dejaron de cotizar y entran las que crecieron. Quien mira solo a las empresas que siguen hoy en el índice ve un pasado mejor del que fue. [`5_valuacion_acciones.md`](5_valuacion_acciones.md) retoma el sesgo con los fondos.
 
 **Fondo indexado y ETF.** Comprar las 35 series en sus pesos exige mucho dinero y muchas operaciones. Un **fondo indexado** (index fund) lo hace por el inversionista: junta el dinero de muchos y compra la canasta del índice, sin intentar ganarle. Es la indexación de [`4_estrategias_renta_fija.md`](../unidad2/4_estrategias_renta_fija.md#2-estrategias-pasivas), ahora con acciones, y hay dos formas de tenerla:
 
@@ -205,7 +205,7 @@ donde $n_i$ es el número de acciones en flotación de la serie $i$ (sin las del
 
 El **NAFTRAC** es el ETF del IPC. Lo administra BlackRock con la marca iShares desde abril de 2002, y legalmente es un fideicomiso de Nacional Financiera que emite certificados bursátiles: cada certificado es una parte de la canasta de las 35 series, con una comisión de administración de 0.25% al año. Su precio en bolsa no se aleja del valor de la canasta porque algunas casas de bolsa pueden crear certificados nuevos entregando las acciones de la canasta, o deshacerlos a cambio de ellas: si el certificado cotiza por encima de la canasta, les conviene crear y vender; si cotiza por debajo, comprar y deshacer.
 
-Por qué conviene tener la canasta en vez de una sola acción (la diversificación) y cuánto ha rendido el IPC se miden en [`3_rendimiento_y_riesgo_acciones.md`](3_rendimiento_y_riesgo_acciones.md). Las **opciones** sobre acciones o sobre el IPC no son instrumentos de participación: son derivados, contratos que dan el derecho a comprar o vender a un precio pactado, y quedan fuera de esta unidad.
+Por qué conviene tener la canasta en vez de una sola acción (la diversificación) y cuánto ha rendido el IPC se miden en [`4_rendimiento_y_riesgo_acciones.md`](4_rendimiento_y_riesgo_acciones.md). Las **opciones** sobre acciones o sobre el IPC no son instrumentos de participación: son derivados, contratos que dan el derecho a comprar o vender a un precio pactado, y quedan fuera de esta unidad.
 
 En todos los casos, el tenedor gana por dos vías: lo que recibe mientras tiene el título y lo que vale cuando lo vende. La sección 3 las mide.
 

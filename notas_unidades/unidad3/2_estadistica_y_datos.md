@@ -14,12 +14,10 @@ Que el estudiante construya un intervalo de confianza para el rendimiento espera
 | II  | Describir los datos              | Histograma, media, desviación estándar y media geométrica; distribución empírica, cuantil empírico y VaR y CVaR históricos; covarianza y correlación muestrales frente a un ruido blanco; con los 98 rendimientos anuales del S&P 500 y los mensuales de FEMSA y del S&P 500 |
 | III | Estimadores                      | El estimador como variable aleatoria; principios de estimación: sustitución, máxima verosimilitud y Bayes; media muestral, error estándar $s/\sqrt{n}$ y $\sigma\sqrt{t}$; un límite de pérdidas con la normal, la Cauchy y los datos                                        |
 | IV  | Ley de los grandes números y TCL | Por qué el promedio converge y por qué es aproximadamente normal; intervalo de confianza al 95% para el rendimiento esperado del S&P 500                                                                                                                                     |
-| V   | Hechos estilizados               | Colas pesadas, asimetría negativa, normalidad por agregación (anual frente a diario), rendimientos sin autocorrelación y agrupamiento de volatilidad; efecto apalancamiento, solo mención                                                                                    |
-| VI  | Regresión                        | Mínimos cuadrados, pendiente como covarianza entre varianza y $R^2$; tendencia del logaritmo del S&P 500 y beta de FEMSA frente a NAFTRAC: riesgo sistemático frente al de la emisora                                                                                        |
 
 > La práctica de este tema está en [`practica_2_estadistica_y_datos.md`](../../practicas/unidad3/practica_2_estadistica_y_datos.md).
 
-> **Por redactar.** Las secciones 1 a 3 están escritas; falta la teoría de las secciones 4 a 6. Sigue el estilo de [`1_probabilidad_y_riesgo.md`](1_probabilidad_y_riesgo.md), que va del modelo a los datos; aquí se va de los datos al modelo. El hilo son los 98 rendimientos anuales del S&P 500 de la sección 4.3 de esa nota ($\bar{r} = 11.86\%$, $s = 19.40\%$, mediana $15.22\%$, error estándar $1.96\%$, intervalo al 95% de $8.01\%$ a $15.70\%$), con la acción de los escenarios (5.5%, 15.40%) como modelo conocido del que se simulan muestras. La sección V usa los cierres diarios y de fin de mes del S&P 500, no la serie mensual de Shiller, porque esta promedia los cierres diarios y crea una autocorrelación que no existe. La sección VI usa la tendencia de $\ln p_t$ (pendiente $0.0668$, $6.91\%$ anual sin dividendos, $R^2 = 0.96$, con la serie de Shiller) y la beta de FEMSA frente a NAFTRAC con 80 rendimientos mensuales ajustados por dividendos ($b = 0.82$, $R^2 = 0.39$). Pendiente para el Apéndice: la $t$ de Student, prueba de hipótesis y valor p, el error estándar de la pendiente y los supuestos de la regresión. La nota es la base de [`3_rendimiento_y_riesgo_acciones.md`](3_rendimiento_y_riesgo_acciones.md), que aplica estos estimadores al IPC, y de la prima de riesgo que usa [`4_valuacion_acciones.md`](4_valuacion_acciones.md).
+> **Por redactar.** Las secciones 1 a 3 están escritas; falta la teoría de la sección 4, que además del intervalo para el rendimiento esperado debe dar uno para el CVaR, el que promete la caja "Predecir" del ciclo de la sección 1.1. Sigue el estilo de [`1_probabilidad_y_riesgo.md`](1_probabilidad_y_riesgo.md), que va del modelo a los datos; aquí se va de los datos al modelo. El hilo son los 98 rendimientos anuales del S&P 500 de la sección 4.3 de esa nota ($\bar{r} = 11.86\%$, $s = 19.40\%$, mediana $15.22\%$, error estándar $1.96\%$, intervalo al 95% de $8.01\%$ a $15.70\%$), con la acción de los escenarios (5.5%, 15.40%) como modelo conocido del que se simulan muestras. Pendiente para el Apéndice: la $t$ de Student, prueba de hipótesis y valor p. Los hechos estilizados y la regresión siguen en [`3_hechos_estilizados_y_regresion.md`](3_hechos_estilizados_y_regresion.md). La nota es la base de [`4_rendimiento_y_riesgo_acciones.md`](4_rendimiento_y_riesgo_acciones.md), que aplica estos estimadores al IPC, y de la prima de riesgo que usa [`5_valuacion_acciones.md`](5_valuacion_acciones.md).
 
 ### 1. Contexto
 
@@ -45,7 +43,7 @@ El trabajo del descubrimimento de conocimiento sigue un ciclo iterativo:
     - Segundo, si la respuesta sirve al problema de negocio: si el capital reservado alcanza para un año malo, o si el rendimiento esperado compensa el riesgo para el inversionista.
 
 <!-- diapositivas: figura sola -->
-![Diagrama del ciclo del descubrimiento de conocimiento en cinco cajas unidas por flechas de izquierda a derecha, cada una con la sección de la nota que la cubre: Pregunta, cuánto rinde en promedio el S&P 500 y cuánto pierde en sus peores años (CVaR) (sección 1.1); Datos y modelo, en dorado, donde al explorar los datos sugieren el modelo y al confirmar el modelo se fija antes de verlos (secciones 1.2 y 2); Estimar, estimadores y su propia incertidumbre (sección 3); Predecir, rendimiento esperado y pérdida en los peores años (CVaR), con su intervalo (sección 4); y Evaluar, si predice bien con datos que no usó y si sirve para la decisión de negocio (sección 5); una flecha roja punteada regresa de Evaluar a Datos y modelo con la leyenda si no es lo suficientemente bueno, se vuelve a especificar](img/proceso_estadistico.png)
+![Diagrama del ciclo del descubrimiento de conocimiento en cinco cajas unidas por flechas de izquierda a derecha, cada una con la sección de la nota que la cubre: Pregunta, cuánto rinde en promedio el S&P 500 y cuánto pierde en sus peores años (CVaR) (sección 1.1); Datos y modelo, en dorado, donde al explorar los datos sugieren el modelo y al confirmar el modelo se fija antes de verlos (secciones 1.2 y 2); Estimar, estimadores y su propia incertidumbre (sección 3); Predecir, rendimiento esperado y pérdida en los peores años (CVaR), con su intervalo (sección 4); y Evaluar, si predice bien con datos que no usó y si sirve para la decisión de negocio (nota 3_); una flecha roja punteada regresa de Evaluar a Datos y modelo con la leyenda si no es lo suficientemente bueno, se vuelve a especificar](img/proceso_estadistico.png)
 
 
 
@@ -54,13 +52,13 @@ Los rendimientos rendimientos se model como una **serie de tiempo**, una sucesi�
 
 $$\{X_t\}_{t=1}^{T} = X_1, X_2, \dots, X_T,$$
 
-donde $X_t$ es el rendimiento del índice en el año $t$, en el dejmplo de los rendimientos del SP500 tenemos de 1928 ($t = 1$) a 2025 ($t = T = 98$). Como en la nota anterior, la mayúscula $X_t$ es la variable aleatoria antes de observarla y la minúscula $x_t$ el número observado, como $x_4 = -43.84\%$ en 1931. La historia ocurrió una sola vez: $x_1, \dots, x_{98}$ son una realización de la serie, una de las muchas trayectorias que el mercado pudo haber seguido. Tratarlos como 98 observaciones del mismo fenómeno exige suponer que la distribución de $X_t$ no cambia con $t$ (estacionariedad, stationarity), un supuesto que la sección 5 revisa.
+donde $X_t$ es el rendimiento del índice en el año $t$, en el dejmplo de los rendimientos del SP500 tenemos de 1928 ($t = 1$) a 2025 ($t = T = 98$). Como en la nota anterior, la mayúscula $X_t$ es la variable aleatoria antes de observarla y la minúscula $x_t$ el número observado, como $x_4 = -43.84\%$ en 1931. La historia ocurrió una sola vez: $x_1, \dots, x_{98}$ son una realización de la serie, una de las muchas trayectorias que el mercado pudo haber seguido. Tratarlos como 98 observaciones del mismo fenómeno exige suponer que la distribución de $X_t$ no cambia con $t$ (estacionariedad, stationarity), un supuesto que la nota 3_ revisa.
 
 Oliver Linton (2019) bromea que los datos son el plural de las anécdotas: el $-43.84\%$ de 1931 es una anécdota y 98 años juntos son datos. Advierte que una sola observación extrema, como el desplome de octubre de 1987, puede pesar demasiado en una estimación, y que la crisis de 2008 dejó escepticismo sobre lo que la econometría puede predecir "y, ojalá, algo de humildad". Por eso el resultado de esta nota no es un número, sino un intervalo.
 
 <!-- diapositivas: conservar -->
 - **Probabilidad (nota 1_):** con el modelo conocido se calculan $E[R]$, $\sigma$, el VaR y el CVaR.
-- **Estadística:** con los datos se estiman $E[R]$, $\sigma$, el VaR y el CVaR (estos dos, con el IPC en la nota 3_), y se mide qué tan lejos pueden estar de los parámetros del modelo.
+- **Estadística:** con los datos se estiman $E[R]$, $\sigma$, el VaR y el CVaR (estos dos, con el IPC en la nota 4_), y se mide qué tan lejos pueden estar de los parámetros del modelo.
 - **Los datos como realización:** 98 rendimientos son una de muchas trayectorias posibles; suponer que la distribución no cambia en el tiempo permite tratarlos como una muestra.
 - **Reconocer lo que no sabemos:** el promedio de 98 años, $11.86\%$, es solo una estimación de $E[R]$; con otra historia del mercado habría salido otro número. Por eso la respuesta es un intervalo, de $8.01\%$ a $15.70\%$ al 95% de confianza, que dice cuánto puede alejarse la estimación del rendimiento esperado. Suele ser más angosto cuanto más datos hay y cuanto menos dispersos son los rendimientos.
 
@@ -88,7 +86,7 @@ Cada uno enseña algo sobre la especificación:
 - **Parámetros con interpretación.** La beta del CAPM dice cuánto se mueve la acción cuando se mueve el mercado, y por eso se puede discutir si $b = 0.82$ es razonable para FEMSA.
 - **El error de especificación.** El modelo normal de 1.1 predice una caída de más de $5\%$ en un día del S&P 500 una vez cada 300 años; de 1928 a 2026 hubo 87. Mandelbrot (1963) ya había advertido que las colas son más pesadas, y 1987 y 2008 lo confirmaron. Por eso el VaR normal subestima la pérdida de un día malo, y el CVaR, que promedia las pérdidas más allá del VaR, depende todavía más de la cola que se suponga. Los incumplimientos independientes fallaron por lo mismo: en una crisis los deudores quiebran juntos.
 
-El modelo de esta nota también es una especificación: rendimientos anuales del S&P 500 independientes, con la misma $E[R]$ y la misma $\sigma$ de 1928 a 2025, aunque en esos años hubo una guerra mundial, la inflación de los setenta y un índice que pasó de 90 a 500 empresas. La sección 5 revisa qué tanto se sostiene. El Apéndice muestra un caso, la eficiencia del mercado, en que el error de especificación no se puede separar de lo que se quiere probar.
+El modelo de esta nota también es una especificación: rendimientos anuales del S&P 500 independientes, con la misma $E[R]$ y la misma $\sigma$ de 1928 a 2025, aunque en esos años hubo una guerra mundial, la inflación de los setenta y un índice que pasó de 90 a 500 empresas. La nota 3_ revisa qué tanto se sostiene. El Apéndice muestra un caso, la eficiencia del mercado, en que el error de especificación no se puede separar de lo que se quiere probar.
 
 <!-- diapositivas: conservar -->
 - **Especificar:** elegir la familia de distribuciones y sus supuestos; lo decide sobre todo el conocimiento del problema. Un modelo no es correcto ni equivocado, sino más o menos razonable.
@@ -123,7 +121,7 @@ La media es el promedio de los datos y $s$ mide qué tan lejos de la media caen 
 
 $$\bar{x} = 11.86\%, \qquad s = 19.40\%.$$
 
-En la figura, 65 de los 98 años (66%) caen a una desviación estándar de la media, entre $-7.55\%$ y $31.26\%$, y 94 (96%) a dos. Una normal tendría 68% y 95%, así que con datos anuales el histograma se parece bastante a una normal; la sección 5 muestra que con datos diarios no.
+En la figura, 65 de los 98 años (66%) caen a una desviación estándar de la media, entre $-7.55\%$ y $31.26\%$, y 94 (96%) a dos. Una normal tendría 68% y 95%, así que con datos anuales el histograma se parece bastante a una normal; la nota 3_ muestra que con datos diarios no.
 
 La línea roja es la **media geométrica**,
 
@@ -327,11 +325,9 @@ al completar el cuadrado, con $\hat{\mu}_{post} = w \bar{x} + (1 - w) \mu_0$ y $
 
 ## Fuentes y referencias recomendadas
 
-- Cont, R. (2001). *Empirical Properties of Asset Returns: Stylized Facts and Statistical Issues*. Quantitative Finance, 1(2), 223-236: los hechos estilizados de los rendimientos.
 - Linton, O. (2019). *Financial Econometrics: Models and Methods*. Cambridge University Press: estimación de la media y la volatilidad, autocorrelación y regresión con rendimientos.
 - Damodaran, A. (2026). *Historical Returns on Stocks, Bonds and Bills: 1928-2025*. NYU Stern School of Business. https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html: rendimientos anuales del S&P 500 con dividendos.
 - Yahoo Finance. (2026). *S&P 500 (^GSPC), FEMSA (FEMSAUBD.MX) y NAFTRAC (NAFTRAC.MX), historial de precios* [datos]. https://finance.yahoo.com: cierres diarios del S&P 500 desde 1927 y cierres mensuales de FEMSA y NAFTRAC desde 2020, consultados el 24 de octubre de 2026.
-- Shiller, R. J. (2023). *U.S. Stock Markets 1871-Present and CAPE Ratio* [datos]. Yale University. http://www.econ.yale.edu/~shiller/data.htm: nivel mensual del S&P 500.
 - Bachelier, L. (1900). *Théorie de la spéculation*. Annales scientifiques de l'École Normale Supérieure, 17, 21-86: primer modelo probabilístico de los precios de mercado.
 - Markowitz, H. (1952). Portfolio selection. *The Journal of Finance*, 7(1), 77-91: el modelo de media y varianza.
 - Gordon, M. J. (1959). Dividends, earnings, and stock prices. *The Review of Economics and Statistics*, 41(2), 99-105: el modelo de dividendos crecientes.
