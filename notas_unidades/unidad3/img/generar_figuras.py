@@ -886,7 +886,7 @@ def fig_proceso_estadistico():
          "sección 1.1"),
         ("Datos y modelo",
          "Explorar: los datos\nsugieren el modelo\nConfirmar: el modelo\nse fija antes de verlos",
-         "secciones 1.2 y 2"),
+         "secciones 1.2, 1.3 y 2"),
         ("Estimar", "Estimadores y su\npropia incertidumbre", "sección 3"),
         ("Predecir", "Rendimiento esperado\ny pérdida en los\npeores años (CVaR),\ncon su intervalo",
          "sección 4"),

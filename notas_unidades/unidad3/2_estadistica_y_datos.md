@@ -8,12 +8,12 @@ Que el estudiante construya un intervalo de confianza para el rendimiento espera
 
 ## Contenido
 
-|     | Tema                             | Qué cubre                                                                                                                                                                                                                                                                    |
-| --- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| I   | Contexto                         | De los datos al modelo: probabilidad deductiva y estadística inductiva, el ciclo de la estadística, la serie de tiempo y los datos como una realización suya; especificación del modelo, paramétrico o no paramétrico, con modelos clásicos de finanzas                      |
-| II  | Describir los datos              | Histograma, media, desviación estándar y media geométrica; distribución empírica, cuantil empírico y VaR y CVaR históricos; covarianza y correlación muestrales frente a un ruido blanco; con los 98 rendimientos anuales del S&P 500 y los mensuales de FEMSA y del S&P 500 |
-| III | Estimadores                      | El estimador como variable aleatoria; principios de estimación: sustitución, máxima verosimilitud y Bayes; media muestral, error estándar $s/\sqrt{n}$ y $\sigma\sqrt{t}$; un límite de pérdidas con la normal, la Cauchy y los datos                                        |
-| IV  | Ley de los grandes números y TCL | Por qué el promedio converge y por qué es aproximadamente normal; intervalo de confianza al 95% para el rendimiento esperado del S&P 500                                                                                                                                     |
+|     | Tema                             | Qué cubre                                                                                                                                                                                                                                                                                                          |
+| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| I   | Contexto                         | Los datos y el modelo: probabilidad deductiva y estadística inductiva, el ciclo de la estadística, datos observacionales, muestreo y muestra aleatoria simple, la serie de tiempo y los datos como una realización suya; especificación del modelo, paramétrico o no paramétrico, con modelos clásicos de finanzas |
+| II  | Describir los datos              | Histograma, media, desviación estándar y media geométrica; distribución empírica, cuantil empírico y VaR y CVaR históricos; covarianza y correlación muestrales frente a un ruido blanco; con los 98 rendimientos anuales del S&P 500 y los mensuales de FEMSA y del S&P 500                                       |
+| III | Estimadores                      | El estimador como variable aleatoria; principios de estimación: sustitución, máxima verosimilitud y Bayes; media muestral, error estándar $s/\sqrt{n}$ y $\sigma\sqrt{t}$; un límite de pérdidas con la normal, la Cauchy y los datos                                                                              |
+| IV  | Ley de los grandes números y TCL | Por qué el promedio converge y por qué es aproximadamente normal; intervalo de confianza al 95% para el rendimiento esperado del S&P 500                                                                                                                                                                           |
 
 > La práctica de este tema está en [`practica_2_estadistica_y_datos.md`](../../practicas/unidad3/practica_2_estadistica_y_datos.md).
 
@@ -21,21 +21,22 @@ Que el estudiante construya un intervalo de confianza para el rendimiento espera
 
 ### 1. Contexto
 
-#### 1.1 El Ciclo de Descubrimiento de cono
+#### 1.1 El ciclo de descubrimiento del conocimiento
 
-La probabilidad es deductiva: se toma modelo dado y deducen implicaciones.
+La probabilidad es deductiva: se toma un modelo dado y se deducen sus implicaciones.
 
 > Ejemplo: Si el rendimiento diario del S&P 500 fuera normal, con media 0 y la desviación estándar de $1.2\%$, una caída de $1.2\%$ o más debería ocurrir uno de cada seis días, y una caída de más de $5\%$, una vez cada 300 años. Así trabaja el área de riesgos de un banco con un portafolio de acciones de 100 millones de pesos: con el mismo modelo deduce, sin observar un solo precio, el valor en riesgo al 99% a un día, $2.326 \times 1.2\% \times 100 = 2.79$ millones de pesos, la pérdida que solo se supera uno de cada 100 días, unas dos o tres veces al año. La conclusión se sigue de los supuestos con certeza; qué tan útil es depende de qué tan razonables sean.
 
-La estadística es inductiva: recorre el camino partiendo de los datos y alimenta la modelacion.
+La estadística es inductiva: recorre el camino partiendo de los datos y alimenta la modelación.
 
 > Ejemplo: En la práctica nadie le da al banco ese $1.2\%$, ni le asegura que el rendimiento sea normal; tiene precios pasados, y con ellos infiere el modelo que pudo haberlos generado. El problema de esta nota es de ese tipo: cuánto rinde en promedio el S&P 500, a partir de sus 98 rendimientos anuales de 1928 a 2025. Las conclusiones de la estadística nunca son seguras, porque otros datos habrían dado otra estimación; parte de su trabajo es medir qué tan lejos puede estar la estimación del parámetro del modelo.
 
-El trabajo del descubrimimento de conocimiento sigue un ciclo iterativo:
+El trabajo de descubrimiento del conocimiento sigue un ciclo iterativo:
 
 1. Se parte de una **pregunta**: cuánto rinde en promedio el S&P 500, que interesa a quien invierte a largo plazo, o cuánto pierde en sus peores años, que interesa a quien debe reservar capital para soportarlos y se mide con el CVaR.
-2. Después vienen los **datos** y el **modelo** que pudo haberlos generado. El orden que depende del tipo de trabajo.
-    - En un trabajo de **exploración**, se describen primero los datos y estos sugieren el modelo, como cuando el histograma de los rendimientos diarios sugiere colas más pesadas que las de la normal. - En uno de **confirmación**, el modelo y la hipótesis se fijan antes de ver los datos, que solo sirven para ponerlos a prueba; si los mismos datos sugirieran el modelo y lo confirmaran, la prueba se aprobaría casi siempre.
+2. Después vienen los **datos** y el **modelo** que pudo haberlos generado. El orden depende del tipo de trabajo.
+    - En un trabajo de **exploración**, se describen primero los datos y estos sugieren el modelo, como cuando el histograma de los rendimientos diarios sugiere colas más pesadas que las de la normal.
+    - En uno de **confirmación**, el modelo y la hipótesis se fijan antes de ver los datos, que solo sirven para ponerlos a prueba; si los mismos datos sugirieran el modelo y lo confirmaran, la prueba se aprobaría casi siempre.
 3. Luego se **estiman** los parámetros, y con ellos su propia incertidumbre, porque otra historia habría dado otra estimación.
 4. Con lo estimado se **predice** lo que pide la pregunta, el rendimiento esperado y la pérdida en los peores años, cada uno con un intervalo.
 5. Al final se **evalúa** en dos sentidos. Si no es lo suficientemente bueno, se vuelve a especificar.
@@ -43,18 +44,49 @@ El trabajo del descubrimimento de conocimiento sigue un ciclo iterativo:
     - Segundo, si la respuesta sirve al problema de negocio: si el capital reservado alcanza para un año malo, o si el rendimiento esperado compensa el riesgo para el inversionista.
 
 <!-- diapositivas: figura sola -->
-![Diagrama del ciclo del descubrimiento de conocimiento en cinco cajas unidas por flechas de izquierda a derecha, cada una con la sección de la nota que la cubre: Pregunta, cuánto rinde en promedio el S&P 500 y cuánto pierde en sus peores años (CVaR) (sección 1.1); Datos y modelo, en dorado, donde al explorar los datos sugieren el modelo y al confirmar el modelo se fija antes de verlos (secciones 1.2 y 2); Estimar, estimadores y su propia incertidumbre (sección 3); Predecir, rendimiento esperado y pérdida en los peores años (CVaR), con su intervalo (sección 4); y Evaluar, si predice bien con datos que no usó y si sirve para la decisión de negocio (nota 3_); una flecha roja punteada regresa de Evaluar a Datos y modelo con la leyenda si no es lo suficientemente bueno, se vuelve a especificar](img/proceso_estadistico.png)
+![Diagrama del ciclo del descubrimiento de conocimiento en cinco cajas unidas por flechas de izquierda a derecha, cada una con la sección de la nota que la cubre: Pregunta, cuánto rinde en promedio el S&P 500 y cuánto pierde en sus peores años (CVaR) (sección 1.1); Datos y modelo, en dorado, donde al explorar los datos sugieren el modelo y al confirmar el modelo se fija antes de verlos (secciones 1.2, 1.3 y 2); Estimar, estimadores y su propia incertidumbre (sección 3); Predecir, rendimiento esperado y pérdida en los peores años (CVaR), con su intervalo (sección 4); y Evaluar, si predice bien con datos que no usó y si sirve para la decisión de negocio (nota 3_); una flecha roja punteada regresa de Evaluar a Datos y modelo con la leyenda si no es lo suficientemente bueno, se vuelve a especificar](img/proceso_estadistico.png)
 
+#### 1.2 Los datos
 
+Inicialmente se supone una variable aleatoria $X$ y queremos aprender algo sobre este proceso con base en una muestra, es decir, en un número $n$ de observaciones
+$$X_1, X_2, \dots, X_n.$$
 
+Detrás de toda muestra hay dos procesos:
 
-Los rendimientos rendimientos se model como una **serie de tiempo**, una sucesión de variables aleatorias indexadas por el tiempo,
+- El primero genera los datos. Son **experimentales** si quien investiga interviene, como al probar dos precios con clientes elegidos al azar, y **observacionales** si solo registra lo que ocurrió; en finanzas casi todo es observacional, porque nadie le asigna a una empresa su política de dividendos para ver qué pasa.
+- El segundo proceso es el **muestreo**, la regla con que se eligen las observaciones. De esa regla depende lo que la muestra permite concluir: si favorece a ciertos datos, la estimación hereda ese sesgo, y más datos no lo corrigen.
+
+> **¿De dónde sale la fórmula?** Si las observaciones son independientes, la probabilidad de que todas caigan donde caen es el producto de las probabilidades de cada una, como $P(A \cap B) = P(A) P(B)$ en la sección 3.3 de la nota anterior.
+
+**Definición (muestra aleatoria simple).** $X_1, \dots, X_n$ son una **muestra aleatoria simple** de $X$ si son independientes y cada una tiene la misma distribución que $X$ (independientes e idénticamente distribuidas, iid). Su distribución conjunta es entonces
+
+$$F_{X_1, \dots, X_n}(x_1, \dots, x_n) = F_X(x_1) F_X(x_2) \cdots F_X(x_n).$$
+
+Es el supuesto con el que la sección 3 calcula la media muestral y su error estándar. Los tipos de muestreo más simples son cuatro:
+
+| Tipo                                | Cómo se eligen las observaciones                                               | Ejemplo en finanzas                                                                                     |
+| ----------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Aleatorio simple                    | Al azar, cada una con la misma probabilidad y de forma independiente           | Sortear 30 emisoras de la BMV para estimar su rendimiento por dividendos promedio                       |
+| Estratificado (stratified sampling) | Se divide la población en grupos, los estratos, y se sortea dentro de cada uno | Un ETF de bonos que no compra todos los títulos de su índice, sino una muestra por plazo y calificación |
+| Sistemático                         | Cada $k$-ésima unidad, o a intervalos fijos de tiempo                          | Los cierres diarios, de fin de mes o de fin de año del S&P 500                                          |
+| Por conveniencia (no aleatorio)     | Las que están a la mano                                                        | Solo las emisoras que siguen cotizando hoy, con su sesgo de supervivencia (survivorship bias, nota 0_)  |
+
+Con los rendimientos de un índice no se sortea nada: el mercado produce una sola sucesión, y lo único que se elige es la frecuencia y el periodo, **un muestreo sistemático en el tiempo de datos observacionales**. Para tratar esa sucesión como una muestra aleatoria simple hace falta un supuesto más.
+
+Los rendimientos se modelan como una **serie de tiempo**, una sucesión de variables aleatorias indexadas por el tiempo,
 
 $$\{X_t\}_{t=1}^{T} = X_1, X_2, \dots, X_T,$$
 
-donde $X_t$ es el rendimiento del índice en el año $t$, en el dejmplo de los rendimientos del SP500 tenemos de 1928 ($t = 1$) a 2025 ($t = T = 98$). Como en la nota anterior, la mayúscula $X_t$ es la variable aleatoria antes de observarla y la minúscula $x_t$ el número observado, como $x_4 = -43.84\%$ en 1931. La historia ocurrió una sola vez: $x_1, \dots, x_{98}$ son una realización de la serie, una de las muchas trayectorias que el mercado pudo haber seguido. Tratarlos como 98 observaciones del mismo fenómeno exige suponer que la distribución de $X_t$ no cambia con $t$ (estacionariedad, stationarity), un supuesto que la nota 3_ revisa.
+donde $X_t$ es el rendimiento del índice en el año $t$.
 
-Oliver Linton (2019) bromea que los datos son el plural de las anécdotas: el $-43.84\%$ de 1931 es una anécdota y 98 años juntos son datos. Advierte que una sola observación extrema, como el desplome de octubre de 1987, puede pesar demasiado en una estimación, y que la crisis de 2008 dejó escepticismo sobre lo que la econometría puede predecir "y, ojalá, algo de humildad". Por eso el resultado de esta nota no es un número, sino un intervalo.
+> Ejemplo: Los rendimientos del S&P 500 son una serie de tiempo que va de 1928 ($t = 1$) a 2025 ($t = T = 98$). Como en la nota anterior, la mayúscula $X_t$ es la variable aleatoria antes de observarla y la minúscula $x_t$ el número observado, como $x_4 = -43.84\%$ en 1931. La historia ocurrió una sola vez: $x_1, \dots, x_{98}$ son una realización de la serie, una de las muchas trayectorias que el mercado pudo haber seguido. Tratarlos como 98 observaciones del mismo fenómeno exige suponer que la distribución de $X_t$ no cambia con $t$ (estacionariedad, stationarity), un supuesto que la nota 3_ revisa.
+
+Obtener buenos datos en finanzas es difícil por los dos procesos.
+
+- Del lado del **proceso generador**, no se puede experimentar ni repetir la historia, y el mecanismo cambia mientras se observa: cambian la regulación, la tecnología, las empresas que forman el índice y hasta los inversionistas, que reaccionan a lo que publican otros, de modo que un patrón que se vuelve conocido tiende a desaparecer cuando se aprovecha. Además, la señal es débil frente al ruido: el rendimiento promedio del S&P 500, $11.86\%$, es pequeño frente a la dispersión de un solo año, $19.40\%$, así que hacen falta muchos años para estimarlo, y los eventos extremos, los que más importan para el riesgo, son los que menos se observan.
+- Del lado del **muestreo y el registro**, las bases suelen guardar solo a las empresas que sobrevivieron; el precio de una acción poco operada puede ser el de una operación de hace días; hay que ajustar por dividendos y por divisiones de acciones para no confundir un reparto con una pérdida; un promedio mensual de cierres diarios, como el de la serie de Shiller, crea una autocorrelación que no existe, y hasta las fechas pueden venir mal: en los precios mensuales de FEMSA que usa la sección 2.3, el cambio de horario corrió las etiquetas de algunos meses entre 2020 y 2022.
+
+Por último, como solo hay una historia, quien prueba muchas estrategias con los mismos datos termina encontrando alguna que funcionó por suerte, el riesgo del trabajo de exploración que se presenta como confirmación. Oliver Linton (2019) bromea que los datos son el plural de las anécdotas: el $-43.84\%$ de 1931 es una anécdota y 98 años juntos son datos. Advierte que una sola observación extrema, como el desplome de octubre de 1987, puede pesar demasiado en una estimación, y que la crisis de 2008 dejó escepticismo sobre lo que la econometría puede predecir "y, ojalá, algo de humildad".
 
 <!-- diapositivas: conservar -->
 - **Probabilidad (nota 1_):** con el modelo conocido se calculan $E[R]$, $\sigma$, el VaR y el CVaR.
@@ -62,7 +94,7 @@ Oliver Linton (2019) bromea que los datos son el plural de las anécdotas: el $-
 - **Los datos como realización:** 98 rendimientos son una de muchas trayectorias posibles; suponer que la distribución no cambia en el tiempo permite tratarlos como una muestra.
 - **Reconocer lo que no sabemos:** el promedio de 98 años, $11.86\%$, es solo una estimación de $E[R]$; con otra historia del mercado habría salido otro número. Por eso la respuesta es un intervalo, de $8.01\%$ a $15.70\%$ al 95% de confianza, que dice cuánto puede alejarse la estimación del rendimiento esperado. Suele ser más angosto cuanto más datos hay y cuanto menos dispersos son los rendimientos.
 
-#### 1.2 Especificar un modelo
+#### 1.3 Los modelos
 
 Especificar un modelo es elegir la familia de distribuciones que pudo haber generado los datos y sus supuestos: si los rendimientos de años distintos son independientes, si su distribución cambia con el tiempo, si es normal. Los datos solos no lo deciden; la mayor parte viene del conocimiento del mercado. Un modelo no es correcto ni equivocado: es una simplificación, más o menos razonable para el uso que se le da. Uno bueno es consistente con lo que se sabe del fenómeno, se comporta bien en los casos extremos y tiene parámetros con una interpretación clara. Cuando sus supuestos se alejan de los datos o de lo que se sabe del mercado hay un **error de especificación**, y más datos no lo corrigen: el estimador sigue respondiendo la pregunta del modelo, no la del mercado.
 
@@ -208,9 +240,9 @@ esa es la media: $\hat{\mu} = \bar{x} = 11.86\%$. Con $\mu = \bar{x}$, la mejor 
 
 **Proposición (distribución empírica).** Entre todas las distribuciones posibles, la que hace más probables los datos observados es la distribución empírica $\hat{F}_n$: es el estimador no paramétrico de máxima verosimilitud de $F_X$ (Apéndice).
 
-Si no se supone ninguna familia, el modelo que mejor explica lo que ocurrió reparte la probabilidad por igual entre lo que ocurrió. Así, la sustitución es la máxima verosimilitud sin familia, el modelo no paramétrico de la sección 1.2 llevado a la estimación, y la máxima verosimilitud con una familia es su versión paramétrica.
+Si no se supone ninguna familia, el modelo que mejor explica lo que ocurrió reparte la probabilidad por igual entre lo que ocurrió. Así, la sustitución es la máxima verosimilitud sin familia, el modelo no paramétrico de la sección 1.3 llevado a la estimación, y la máxima verosimilitud con una familia es su versión paramétrica.
 
-La verosimilitud usa solo los datos, pero la sección 1.2 insistió en que el conocimiento del mercado también informa al modelo. El enfoque **bayesiano** lo incorpora como una distribución: trata al parámetro como incierto, con una **distribución a priori** que resume lo que se cree antes de ver los datos, y la actualiza con ellos.
+La verosimilitud usa solo los datos, pero la sección 1.3 insistió en que el conocimiento del mercado también informa al modelo. El enfoque **bayesiano** lo incorpora como una distribución: trata al parámetro como incierto, con una **distribución a priori** que resume lo que se cree antes de ver los datos, y la actualiza con ellos.
 
 > **¿De dónde sale la fórmula?** De la probabilidad condicional de la sección 3.3 de la nota anterior: $P(A \cap B) = P(A \mid B) P(B) = P(B \mid A) P(A)$, y al despejar, $P(A \mid B) = P(B \mid A) P(A) / P(B)$, la **regla de Bayes**. Si $A$ es un valor del parámetro y $B$ son los datos observados, $P(B \mid A)$ es la verosimilitud, y $P(B)$ no depende del parámetro.
 
@@ -298,7 +330,7 @@ donde $x_0$ es su centro, la mediana, y $\gamma$ su escala, la mitad de su rango
 | Días al año con una pérdida de más de $5\%$   | 0.004, uno cada 240 años | 7.4                                  | 0.88, casi uno al año |
 | Días al año con una pérdida de más de $100\%$ | 0                        | 0.38, uno cada tres años             | 0                     |
 
-La normal y la Cauchy fallan en sentidos opuestos. La normal subestima: en los datos el límite se rebasa 4.5 días al año, no 2.5. La Cauchy sobrestima: lo rebasa 13 días al año, su CVaR no existe y produce pérdidas de más de $100\%$ en un día, imposibles por la responsabilidad limitada (los casos extremos de la sección 1.2). Tampoco cumple lo que promete el error estándar de la sección 3.2: con la normal, la mitad central de los promedios anuales cabe en un rango de $0.10\%$; con la Cauchy, en uno de $0.94\%$, el mismo que el de un solo día, porque el promedio de variables Cauchy independientes es otra Cauchy con la misma escala. La fórmula $\sigma / \sqrt{n}$ supone que $\sigma$ existe. **Es el error de especificación en sus dos versiones, un modelo demasiado tranquilo y uno demasiado nervioso; los datos quedan entre los dos**, y por eso conviene medir las pérdidas grandes directamente con ellos.
+La normal y la Cauchy fallan en sentidos opuestos. La normal subestima: en los datos el límite se rebasa 4.5 días al año, no 2.5. La Cauchy sobrestima: lo rebasa 13 días al año, su CVaR no existe y produce pérdidas de más de $100\%$ en un día, imposibles por la responsabilidad limitada (los casos extremos de la sección 1.3). Tampoco cumple lo que promete el error estándar de la sección 3.2: con la normal, la mitad central de los promedios anuales cabe en un rango de $0.10\%$; con la Cauchy, en uno de $0.94\%$, el mismo que el de un solo día, porque el promedio de variables Cauchy independientes es otra Cauchy con la misma escala. La fórmula $\sigma / \sqrt{n}$ supone que $\sigma$ existe. **Es el error de especificación en sus dos versiones, un modelo demasiado tranquilo y uno demasiado nervioso; los datos quedan entre los dos**, y por eso conviene medir las pérdidas grandes directamente con ellos.
 
 <!-- diapositivas: figura sola -->
 ![Dos paneles del ejemplo del límite de pérdidas: a la izquierda, sobre el histograma gris de los rendimientos diarios del S&P 500 de 1928 a 2026, la densidad normal supuesta, con media 0 y desviación 1.2%, en dorado, y la Cauchy ajustada a los datos, la "real", en azul marino, con un pico más alto que el histograma; una línea roja punteada marca el límite de -2.79%, y un acercamiento entre -7% y -2.5% muestra el histograma entre las dos curvas, con la normal cayendo a cero antes de -4% y la Cauchy muy por encima de los datos; a la derecha, histogramas de cuántos días al año se rebasa el límite en 10,000 años simulados, 2.5 días en promedio con la normal, en contorno dorado, y 13.1 con la Cauchy, en barras azul marino, con una línea roja punteada en los 4.5 días al año del S&P 500 real, entre los dos](img/limite_perdidas_normal_cauchy.png)
