@@ -52,8 +52,7 @@ BONO_LIQ, PREF_LIQ = 50, 15  # millones, los del ejemplo de la seccion 1 de 0_
 ESCENARIOS_LIQ = (40, 60, 120)
 OUT_RESIDUAL = os.path.join(IMG_DIR, "reclamo_residual_liquidacion.png")
 OUT_SP500_MEDIA_DESV = os.path.join(IMG_DIR, "sp500_histograma_media_desviacion.png")
-OUT_FEMSA_SP500 = os.path.join(IMG_DIR, "femsa_sp500_dispersion.png")
-OUT_RUIDO_BLANCO = os.path.join(IMG_DIR, "ruido_blanco_dispersion.png")
+OUT_DISPERSION = os.path.join(IMG_DIR, "femsa_sp500_ruido_blanco_dispersion.png")
 SEMILLA = 2026  # fija, para que las simulaciones sean reproducibles
 OUT_LIMITE_PERDIDAS = os.path.join(IMG_DIR, "limite_perdidas_normal_cauchy.png")
 DATOS_SP500_DIARIO = os.path.join(IMG_DIR, "..", "datos", "sp500_cierre_diario.csv")
@@ -699,7 +698,7 @@ def _rendimientos_mensuales(ruta):
     return precio[1:] / precio[:-1] - 1
 
 
-def _dispersion_cuadrantes(x, y, xlabel, ylabel, titulo, out, limites, unidad):
+def _dispersion_cuadrantes(ax, x, y, xlabel, ylabel, titulo, limites, unidad):
     """Diagrama de dispersion con lineas en las medias: los puntos dorados caen
     del mismo lado de las dos medias y suman a la covarianza; los grises, de
     lados opuestos, restan."""
@@ -707,7 +706,6 @@ def _dispersion_cuadrantes(x, y, xlabel, ylabel, titulo, out, limites, unidad):
     r = np.corrcoef(x, y)[0, 1]
     mismo = (x - mx) * (y - my) > 0
 
-    fig, ax = plt.subplots(figsize=(6.6, 5.4))
     ax.axvline(mx, color=LGRAY, lw=1, zorder=1)
     ax.axhline(my, color=LGRAY, lw=1, zorder=1)
     ax.scatter(x[mismo], y[mismo], s=34, color=GOLD, edgecolor=NAVY, linewidth=0.6, zorder=3,
@@ -722,13 +720,10 @@ def _dispersion_cuadrantes(x, y, xlabel, ylabel, titulo, out, limites, unidad):
     ax.set_ylabel(ylabel, fontsize=11, color=GRAY)
     ax.tick_params(colors=GRAY, labelsize=10)
     ax.legend(loc="upper left", fontsize=9.5, frameon=False, labelcolor=BODY)
-    ax.set_title(rf"{titulo}: correlación $\hat{{\rho}}$ = {r:.2f}",
+    ax.set_title(rf"{titulo}: $\hat{{\rho}}$ = {r:.2f}",
                  fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
     sns.despine(ax=ax)
-    fig.tight_layout()
-    fig.savefig(out, dpi=200, facecolor="white")
-    print(f"figura generada: {out}  r = {r:.4f}, mismo lado = {mismo.sum()}")
-    plt.close(fig)
+    print(f"{titulo}: r = {r:.4f}, mismo lado = {mismo.sum()}")
 
 
 def _sp500_mensual_2020():
@@ -743,11 +738,11 @@ def _sp500_mensual_2020():
 
 
 def fig_femsa_sp500_y_ruido_blanco():
-    """Dos diagramas de dispersion con la misma escala (2_, seccion 2.3): los
-    rendimientos mensuales del S&P 500 (eje x) y FEMSA (eje y), 2020-02 a
-    2026-09, y, para comparar, dos ruidos blancos independientes: 80 pares de
-    normales con media 0 y las desviaciones estandar del S&P 500 y FEMSA, sin
-    ninguna relacion entre si."""
+    """Una figura con dos diagramas de dispersion en la misma escala (2_,
+    seccion 2.3): a la izquierda, los rendimientos mensuales del S&P 500 (eje
+    x) y FEMSA (eje y), 2020-02 a 2026-09; a la derecha, para comparar, dos
+    ruidos blancos independientes: 80 pares de normales con media 0 y las
+    desviaciones estandar del S&P 500 y FEMSA, sin ninguna relacion entre si."""
     x_real = _sp500_mensual_2020()
     y_real = _rendimientos_mensuales(DATOS_FEMSA)
     assert len(x_real) == len(y_real)
@@ -761,14 +756,17 @@ def fig_femsa_sp500_y_ruido_blanco():
         return bajo - margen, alto + margen
 
     limites = (limite(x_real, x_ruido), limite(y_real, y_ruido))
-    _dispersion_cuadrantes(x_real, y_real, "Rendimiento mensual del S&P 500",
+    fig, (izq, der) = plt.subplots(1, 2, figsize=(12.4, 5.4))
+    _dispersion_cuadrantes(izq, x_real, y_real, "Rendimiento mensual del S&P 500",
                            "Rendimiento mensual de FEMSA",
-                           f"FEMSA frente al S&P 500, {len(y_real)} meses", OUT_FEMSA_SP500,
-                           limites, "meses")
-    _dispersion_cuadrantes(x_ruido, y_ruido, "Ruido blanco con la desviación del S&P 500",
+                           f"FEMSA frente al S&P 500, {len(y_real)} meses", limites, "meses")
+    _dispersion_cuadrantes(der, x_ruido, y_ruido, "Ruido blanco con la desviación del S&P 500",
                            "Ruido blanco con la desviación de FEMSA",
-                           f"Dos ruidos blancos independientes, {len(x_ruido)} pares",
-                           OUT_RUIDO_BLANCO, limites, "pares")
+                           f"Dos ruidos blancos, {len(x_ruido)} pares", limites, "pares")
+    fig.tight_layout()
+    fig.savefig(OUT_DISPERSION, dpi=200, facecolor="white")
+    plt.close(fig)
+    print(f"figura generada: {OUT_DISPERSION}")
 
 
 def _sp500_diario():
@@ -779,7 +777,7 @@ def _sp500_diario():
 
 def simular_limite_perdidas():
     """Rendimientos diarios de N_SIMULACIONES anios de 252 dias (2_, seccion
-    3.3), simulados con una normal de media 0 y desviacion SIGMA_DIARIA y con
+    3.2), simulados con una normal de media 0 y desviacion SIGMA_DIARIA y con
     una Cauchy ajustada por maxima verosimilitud a los rendimientos diarios del
     S&P 500 (la Cauchy no tiene media ni varianza: se ajustan su centro y su
     escala). El limite de perdidas es el VaR al 99% a un dia del modelo normal,
@@ -794,7 +792,7 @@ def simular_limite_perdidas():
 
 def fig_limite_perdidas():
     """Limite de perdidas con una normal y una Cauchy ajustada a los datos
-    (2_, seccion 3.3). Izquierda: las dos densidades sobre el histograma de los
+    (2_, seccion 3.2). Izquierda: las dos densidades sobre el histograma de los
     rendimientos diarios del S&P 500, con el limite y un acercamiento a las
     perdidas grandes. Derecha: cuantos dias al anio se rebasa el limite en los
     anios simulados con cada distribucion, y el promedio del S&P 500."""
@@ -969,6 +967,30 @@ def fig_bayes_sp500():
           f"sigma = {sigma_post:.4f}")
 
 
+def simular_bolsa(n, rng):
+    """N_SIMULACIONES muestras de tamanio n, con reemplazo, de los 98
+    rendimientos anuales del S&P 500, el remuestreo de 2_, seccion 4.3: cada
+    fila es una historia posible sacada de la distribucion empirica. Devuelve
+    tambien los datos, cuya media y desviacion (divisor n) son la verdad."""
+    r = pd.read_csv(DATOS_SP500)["rendimiento"].to_numpy()
+    return rng.choice(r, size=(N_SIMULACIONES, n), replace=True), r
+
+
+def remuestreo_cvar():
+    """Intervalo por remuestreo (bootstrap) al 95% para el CVaR historico anual
+    al 95% del S&P 500, el promedio de los 5 peores de 98 anios (2_, seccion
+    4.3), y, para comparar, para la media. No genera figura: imprime las cifras."""
+    rng = np.random.default_rng(SEMILLA)
+    r = pd.read_csv(DATOS_SP500)["rendimiento"].to_numpy()
+    muestras, _ = simular_bolsa(len(r), rng)
+    peores = int(np.ceil(len(r) * 0.05))
+    cvar = np.sort(muestras, axis=1)[:, :peores].mean(axis=1)
+    medias = muestras.mean(axis=1)
+    print(f"remuestreo: CVaR de los datos = {np.sort(r)[:peores].mean():.4f}, intervalo "
+          f"{np.quantile(cvar, 0.025):.4f} a {np.quantile(cvar, 0.975):.4f}; media, intervalo "
+          f"{np.quantile(medias, 0.025):.4f} a {np.quantile(medias, 0.975):.4f}")
+
+
 def main():
     fig_reclamo_residual()
     fig_prelacion_pagos()
@@ -987,6 +1009,7 @@ def main():
     fig_limite_perdidas()
     fig_bayes_sp500()
     fig_proceso_estadistico()
+    remuestreo_cvar()
 
 
 if __name__ == "__main__":

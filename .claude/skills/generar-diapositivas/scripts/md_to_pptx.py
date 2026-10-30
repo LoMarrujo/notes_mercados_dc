@@ -283,9 +283,14 @@ def _latex_frag_to_text(s):
     # "ge0" en vez de "≥0"
     s = s.replace(r"\ge", "≥").replace(r"\le", "≤")
     s = s.replace(r"\gt", ">").replace(r"\lt", "<")
-    s = s.replace(r"\,", " ").replace(r"\;", " ").replace(r"\!", "")
+    # \, ya seguido de un espacio ("1.96\, s") dejaría dos espacios
+    s = re.sub(r"\\,\s*", " ", s)
+    s = s.replace(r"\;", " ").replace(r"\!", "")
     s = re.sub(r"\\bar\{([^{}]+)\}", lambda m: m.group(1) + "\u0304", s)
     s = re.sub(r"\\bar\s*(\S)", lambda m: m.group(1) + "\u0304", s)
+    # \sqrt{n} → √n; con un radicando de varios términos, √(n - 1)
+    s = re.sub(r"\\sqrt\{([^{}]+)\}",
+               lambda m: "√" + (m.group(1) if m.group(1).isalnum() else f"({m.group(1)})"), s)
     s = s.replace(r"\sqrt", "√").replace(r"\ln", "ln ")
     for latex, glyph in GREEK_MAP.items():
         s = s.replace(latex + " ", glyph).replace(latex, glyph)
@@ -788,7 +793,11 @@ def condense_text(text):
     return first_clause(text)
 
 
-SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿(])")
+# una oración también empieza o termina en negritas ("... la sección 3.3.
+# **Cuadruplicar la muestra ... a la mitad.** Con 4 años ..."), y es justo la
+# que el modo conciso conserva
+SENTENCE_SPLIT_RE = re.compile(
+    r"(?:(?<=[.!?])|(?<=[.!?]\*\*))\s+(?=[A-ZÁÉÍÓÚÑ¿(]|\*\*[A-ZÁÉÍÓÚÑ¿(])")
 
 
 def bold_sentences(text):
@@ -865,7 +874,15 @@ def condense_blocks(blocks):
             if txt.startswith("####"):
                 out.append(b)  # flow_blocks la vuelve título de su propia diapositiva
             elif BOLD_LEAD_RE.match(txt):
-                out.append({"type": "para", "text": condense_text(txt)})
+                short = condense_text(txt)
+                m = BOLD_LEAD_RE.match(txt)
+                if _is_para_example(b) and m.group(2):
+                    # como en un ejemplo resuelto de un solo párrafo: tras el
+                    # arranque, las oraciones con la cifra en negritas
+                    sents = SENTENCE_SPLIT_RE.split(m.group(2))
+                    first = sents[0] if "**" in sents[0] else first_clause(sents[0])
+                    short = " ".join([m.group(1), first] + [s for s in sents[1:] if "**" in s])
+                out.append({"type": "para", "text": short})
             elif k in formula_words:
                 out.append({"type": "para", "text": formula_words[k]})
             elif in_example and bold_sentences(txt):
