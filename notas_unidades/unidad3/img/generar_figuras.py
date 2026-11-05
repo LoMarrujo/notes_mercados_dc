@@ -63,6 +63,12 @@ DATOS_FEMSA = os.path.join(IMG_DIR, "..", "datos", "femsaubd_mensual_2020-01_202
 OUT_BAYES = os.path.join(IMG_DIR, "sp500_bayes_priori_posteriori.png")
 OUT_PROCESO = os.path.join(IMG_DIR, "proceso_estadistico.png")
 MU_PRIORI, SIGMA_PRIORI = 0.08, 0.02  # la opinion ilustrativa del analista (2_, seccion 3.1)
+OUT_MARKOWITZ = os.path.join(IMG_DIR, "markowitz_dos_problemas_frontera.png")
+W_EJEMPLO = 0.5  # la cartera mitad y mitad de la tabla de la seccion 3.2
+DATOS_TBILL = os.path.join(IMG_DIR, "..", "datos", "tbill_rendimientos_anuales.csv")
+OUT_MEDIA_VAR = os.path.join(IMG_DIR, "sp500_tbills_media_var.png")
+OUT_MEDIA_CVAR = os.path.join(IMG_DIR, "sp500_tbills_media_cvar.png")
+LIMITE_PERDIDA, PEORES = 0.10, 5  # l = 10% y el quinto peor de 98 anios, cerca del 5%
 
 
 def fig_reclamo_residual():
@@ -769,6 +775,159 @@ def fig_femsa_sp500_y_ruido_blanco():
     print(f"figura generada: {OUT_DISPERSION}")
 
 
+def fig_markowitz_dos_problemas():
+    """Las dos formas del problema de Markowitz con el S&P 500 (A) y FEMSA (B)
+    del ejemplo de la seccion 3.2 (80 meses, media y varianza por 12). A la
+    izquierda, fijar E[R_c] = m deja una sola cartera, aunque sea ineficiente;
+    a la derecha, fijar la volatilidad deja dos, y maximizar E[R_c] elige la
+    de arriba."""
+    x = _sp500_mensual_2020()
+    y = _rendimientos_mensuales(DATOS_FEMSA)
+    assert len(x) == len(y)
+    mu_a, mu_b = 12 * x.mean(), 12 * y.mean()
+    var_a, var_b = 12 * x.var(ddof=1), 12 * y.var(ddof=1)
+    cov = 12 * np.cov(x, y)[0, 1]
+
+    def cartera(w):
+        w = np.asarray(w, dtype=float)
+        e = w * mu_a + (1 - w) * mu_b
+        s = np.sqrt(w**2 * var_a + (1 - w)**2 * var_b + 2 * w * (1 - w) * cov)
+        return s, e
+
+    w_min = (var_b - cov) / (var_a + var_b - 2 * cov)
+    s_min, e_min = cartera(w_min)
+    s_ej, e_ej = cartera(W_EJEMPLO)
+    # la otra cartera con la misma varianza: la segunda raiz de la parabola en w
+    a2 = var_a + var_b - 2 * cov
+    w_sup = 2 * w_min - W_EJEMPLO
+    assert abs(cartera(w_sup)[0] - s_ej) < 1e-12 and a2 > 0
+    s_sup, e_sup = cartera(w_sup)
+
+    w_inef, w_ef = np.linspace(0, w_min, 200), np.linspace(w_min, 1, 200)
+    fig, paneles = plt.subplots(1, 2, figsize=(12.4, 5.2), sharex=True, sharey=True)
+    for ax in paneles:
+        ax.plot(*cartera(w_inef), color=LGRAY, lw=2.2, ls="--", zorder=2,
+                label="parte ineficiente")
+        ax.plot(*cartera(w_ef), color=NAVY, lw=2.6, zorder=3, label="frontera eficiente")
+        for (s, e), nombre, ha, dx in ((cartera(1), "S&P 500", "left", 0.003),
+                                       (cartera(0), "FEMSA", "right", -0.003)):
+            ax.plot(s, e, "o", ms=8, color=NAVY, mec="white", mew=1.5, zorder=5)
+            ax.text(s + dx, e, nombre, fontsize=10.5, color=BODY, ha=ha, va="center")
+        ax.plot(s_min, e_min, "o", ms=9, color=NAVY, mec="white", mew=1.5, zorder=5)
+        ax.annotate(f"mínima varianza\n$w$ = {w_min:.1%}", (s_min, e_min),
+                    xytext=(s_min - 0.004, e_min - 0.021), fontsize=10, color=BODY,
+                    ha="right", arrowprops=dict(arrowstyle="->", color=GRAY, lw=1))
+        ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+        ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+        ax.set_xlim(0.13, 0.235)
+        ax.set_ylim(0.085, 0.155)
+        ax.set_xlabel(r"Volatilidad $\sigma_c$", fontsize=11, color=GRAY)
+        ax.tick_params(colors=GRAY, labelsize=10)
+        sns.despine(ax=ax)
+    izq, der = paneles
+    izq.set_ylabel(r"Rendimiento esperado $E[R_c]$", fontsize=11, color=GRAY)
+
+    izq.axhline(e_ej, color=GOLD, lw=1.6, ls="--", zorder=1)
+    izq.text(0.233, e_ej + 0.0015, f"$E[R_c] = m$ = {e_ej:.2%}", fontsize=10.5, color=BODY,
+             ha="right", va="bottom")
+    izq.plot(s_ej, e_ej, "o", ms=10, color=GOLD, mec=NAVY, mew=1.2, zorder=6)
+    izq.annotate(f"la única cartera: $w$ = {W_EJEMPLO:.0%}\n" + rf"$\sigma_c$ = {s_ej:.2%}, ineficiente",
+                 (s_ej, e_ej), xytext=(s_ej + 0.020, e_ej + 0.008), fontsize=10, color=BODY,
+                 arrowprops=dict(arrowstyle="->", color=GRAY, lw=1))
+    izq.set_title(r"Mínima varianza con $E[R_c] = m$", fontsize=12.5, color=NAVY,
+                  fontweight="bold", loc="left", pad=10)
+
+    der.axvline(s_ej, color=GOLD, lw=1.6, ls="--", zorder=1)
+    der.text(s_ej + 0.0015, 0.088, rf"$\sigma_c$ = {s_ej:.2%}", fontsize=10.5, color=BODY,
+             ha="left", va="bottom")
+    der.plot(s_ej, e_ej, "o", ms=9, color=LGRAY, mec=GRAY, mew=1.2, zorder=6)
+    der.annotate(f"$w$ = {W_EJEMPLO:.0%}: {e_ej:.2%}, se descarta", (s_ej, e_ej),
+                 xytext=(s_ej + 0.020, e_ej + 0.003), fontsize=10, color=BODY,
+                 arrowprops=dict(arrowstyle="->", color=GRAY, lw=1))
+    der.plot(s_sup, e_sup, "o", ms=10, color=GOLD, mec=NAVY, mew=1.2, zorder=6)
+    der.annotate(f"$w$ = {w_sup:.1%}: {e_sup:.2%}, mayor $E[R_c]$", (s_sup, e_sup),
+                 xytext=(s_sup + 0.020, e_sup - 0.004), fontsize=10, color=BODY,
+                 arrowprops=dict(arrowstyle="->", color=GRAY, lw=1))
+    der.set_title(r"Máximo rendimiento con $\sigma_c^2 = k$", fontsize=12.5, color=NAVY,
+                  fontweight="bold", loc="left", pad=10)
+    der.legend(loc="upper right", fontsize=9.5, frameon=False, labelcolor=BODY)
+
+    fig.tight_layout()
+    fig.savefig(OUT_MARKOWITZ, dpi=200, facecolor="white")
+    plt.close(fig)
+    print(f"figura generada: {OUT_MARKOWITZ}  mu_a = {mu_a:.4f}, s_a = {np.sqrt(var_a):.4f}, "
+          f"mu_b = {mu_b:.4f}, s_b = {np.sqrt(var_b):.4f}, "
+          f"rho = {cov / np.sqrt(var_a * var_b):.3f}, w_min = {w_min:.4f}, "
+          f"s_min = {s_min:.4f}, e_min = {e_min:.4f}, s_ej = {s_ej:.4f}, e_ej = {e_ej:.4f}, "
+          f"w_sup = {w_sup:.4f}, e_sup = {e_sup:.4f}")
+
+
+def _cartera_sp500_tbills(w):
+    """VaR y CVaR historicos (como perdidas) y rendimiento promedio de la
+    cartera w x_t + (1 - w) y_t del S&P 500 y los T-bills, 1928-2025: el VaR
+    es la perdida del quinto peor anio y el CVaR, el promedio de los cinco
+    peores (nota de probabilidad, secciones 6.1 y 6.2)."""
+    x = pd.read_csv(DATOS_SP500)["rendimiento"].to_numpy()
+    y = pd.read_csv(DATOS_TBILL)["rendimiento"].to_numpy()
+    r = np.sort(np.outer(np.atleast_1d(w), x) + np.outer(1 - np.atleast_1d(w), y), axis=1)
+    return -r[:, PEORES - 1], -r[:, :PEORES].mean(axis=1), r.mean(axis=1)
+
+
+def fig_media_var_cvar(medida):
+    """La cartera de media-VaR (seccion 4.1) o de media-CVaR (seccion 4.2)
+    con el S&P 500 y los T-bills: cada w da un punto (medida de perdida,
+    rendimiento esperado estimado); la franja dorada son las carteras que
+    cumplen el limite de 10%, y se elige la de mas rendimiento. En la de
+    CVaR, la curva del VaR en gris muestra que el limite es mas estricto."""
+    w = np.linspace(0, 1, 100_001)
+    var, cvar, media = _cartera_sp500_tbills(w)
+    curvas = {"VaR": var, "CVaR": cvar}
+    riesgo = curvas[medida]
+    elegida = np.flatnonzero(riesgo <= LIMITE_PERDIDA).max()
+    salida = OUT_MEDIA_VAR if medida == "VaR" else OUT_MEDIA_CVAR
+
+    fig, ax = plt.subplots(figsize=(8, 4.6))
+    ax.axvspan(-0.02, LIMITE_PERDIDA, color=GOLD, alpha=0.15, lw=0, zorder=0)
+    ax.axvline(LIMITE_PERDIDA, color=GOLD, lw=1.6, ls="--", zorder=1)
+    ax.text(LIMITE_PERDIDA + 0.003, 0.036, rf"límite $\ell$ = {LIMITE_PERDIDA:.0%}", fontsize=10.5,
+            color=BODY, ha="left", va="bottom")
+    if medida == "CVaR":
+        ax.plot(var, media, color=LGRAY, lw=2.2, ls="--", zorder=2, label="con el VaR (sección 4.1)")
+        otra = np.flatnonzero(var <= LIMITE_PERDIDA).max()
+        ax.plot(var[otra], media[otra], "o", ms=8, color=LGRAY, mec=GRAY, mew=1.2, zorder=4)
+        ax.annotate(f"VaR: $w$ = {w[otra]:.1%}", (var[otra], media[otra]),
+                    xytext=(0.015, 0.093), fontsize=10, color=BODY,
+                    arrowprops=dict(arrowstyle="->", color=GRAY, lw=1))
+    ax.plot(riesgo, media, color=NAVY, lw=2.6, zorder=3, label=f"con el {medida}")
+    for i, nombre, ha, dx in ((0, "solo T-bills", "left", 0.006), (-1, "solo S&P 500", "right", -0.006)):
+        ax.plot(riesgo[i], media[i], "o", ms=8, color=NAVY, mec="white", mew=1.5, zorder=5)
+        ax.text(riesgo[i] + dx, media[i] + (0.003 if i == -1 else -0.002), nombre, fontsize=10.5,
+                color=BODY, ha=ha, va="center")
+    ax.plot(riesgo[elegida], media[elegida], "o", ms=10, color=GOLD, mec=NAVY, mew=1.2, zorder=6)
+    ax.annotate(f"$w$ = {w[elegida]:.1%}\nrendimiento esperado {media[elegida]:.2%}",
+                (riesgo[elegida], media[elegida]),
+                xytext=(riesgo[elegida] + 0.05, media[elegida] - 0.012), fontsize=10, color=BODY,
+                arrowprops=dict(arrowstyle="->", color=GRAY, lw=1))
+    ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+    ax.set_xlim(-0.02, 0.36)
+    ax.set_ylim(0.03, 0.13)
+    eje = "VaR o CVaR" if medida == "CVaR" else "VaR"
+    ax.set_xlabel(f"{eje} al 5% de la cartera (pérdida)", fontsize=11, color=GRAY)
+    ax.set_ylabel("Rendimiento esperado estimado", fontsize=11, color=GRAY)
+    ax.tick_params(colors=GRAY, labelsize=10)
+    if medida == "CVaR":
+        ax.legend(loc="upper left", fontsize=9.5, frameon=False, labelcolor=BODY)
+    ax.set_title(rf"Máximo rendimiento con {medida} $\leq \ell$: S&P 500 y T-bills, 1928-2025",
+                 fontsize=12.5, color=NAVY, fontweight="bold", loc="left", pad=10)
+    sns.despine(ax=ax)
+    fig.tight_layout()
+    fig.savefig(salida, dpi=200, facecolor="white")
+    plt.close(fig)
+    print(f"figura generada: {salida}  w = {w[elegida]:.4f}, {medida} = {riesgo[elegida]:.4f}, "
+          f"media = {media[elegida]:.4f}, extremos {medida} = {riesgo[0]:.4f} y {riesgo[-1]:.4f}")
+
+
 def _sp500_diario():
     """Rendimientos diarios del S&P 500 desde 1928 (cierres sin dividendos)."""
     precio = pd.read_csv(DATOS_SP500_DIARIO)["cierre"].to_numpy()
@@ -1006,6 +1165,9 @@ def main():
     fig_normal_cvar()
     fig_sp500_histograma_media_desviacion()
     fig_femsa_sp500_y_ruido_blanco()
+    fig_markowitz_dos_problemas()
+    fig_media_var_cvar("VaR")
+    fig_media_var_cvar("CVaR")
     fig_limite_perdidas()
     fig_bayes_sp500()
     fig_proceso_estadistico()
